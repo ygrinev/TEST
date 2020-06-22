@@ -1,0 +1,8 @@
+W:\TFS\MongoDbAspNetCore\MongoDbAspNetCore.DataAccess\bin\Debug\netstandard2.0\MongoDbAspNetCore.DataAccess.deps.json
+W:\TFS\MongoDbAspNetCore\MongoDbAspNetCore.DataAccess\bin\Debug\netstandard2.0\MongoDbAspNetCore.DataAccess.dll
+W:\TFS\MongoDbAspNetCore\MongoDbAspNetCore.DataAccess\bin\Debug\netstandard2.0\MongoDbAspNetCore.DataAccess.pdb
+W:\TFS\MongoDbAspNetCore\MongoDbAspNetCore.DataAccess\obj\Debug\netstandard2.0\MongoDbAspNetCore.DataAccess.csproj.CoreCompileInputs.cache
+W:\TFS\MongoDbAspNetCore\MongoDbAspNetCore.DataAccess\obj\Debug\netstandard2.0\MongoDbAspNetCore.DataAccess.AssemblyInfoInputs.cache
+W:\TFS\MongoDbAspNetCore\MongoDbAspNetCore.DataAccess\obj\Debug\netstandard2.0\MongoDbAspNetCore.DataAccess.AssemblyInfo.cs
+W:\TFS\MongoDbAspNetCore\MongoDbAspNetCore.DataAccess\obj\Debug\netstandard2.0\MongoDbAspNetCore.DataAccess.dll
+W:\TFS\MongoDbAspNetCore\MongoDbAspNetCore.DataAccess\obj\Debug\netstandard2.0\MongoDbAspNetCore.DataAccess.pdb
