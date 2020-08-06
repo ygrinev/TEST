@@ -162,8 +162,154 @@ namespace HackerRank
                     : (y2 == y1 && m2 == m1 && d2 > d1) ? (d2 - d1) * 15 : 0;
         }
 
-    static void Main(string[] args)
+        static string dayOfProgrammer(int year) // 256 th day of a year
         {
+            string leapYearDay = $"12.09.{year}", regYearDay = $"13.09.{year}",
+                    y1918Day = $"26.09.{year}";
+            return year > 1918 && (year % 400 == 0 || year % 4 == 0 && year % 100 != 0) || year < 1918 && year % 4 == 0 ? leapYearDay : year == 1918 ? y1918Day : regYearDay;
+        }
+
+        static int GetMinValOfMaxCount(List<int> arr)
+        {
+            return arr.GroupBy(i => i).Select(g => new { Val = g.Key, Size = g.Count() }).OrderByDescending(p => p.Size).ThenBy(p => p.Val).FirstOrDefault().Val;
+
+            //Dictionary<int, int> groups = new Dictionary<int, int>();
+            //int minVal = 0, maxCount = 0;
+            //foreach (int i in arr)
+            //{
+            //    if (groups.ContainsKey(i))
+            //        groups[i] = groups[i] + 1;
+            //    else
+            //        groups[i] = 1;
+            //    if (groups[i] > maxCount || groups[i] == maxCount && i < minVal)
+            //    {
+            //        maxCount = groups[i];
+            //        minVal = i;
+            //    }
+            //}
+            //return minVal;
+
+        }
+
+        static int sockMerchant(int n, int[] ar)
+        {
+            return ar.GroupBy(k => k).Select(g => g.Count() / 2).Sum();
+        }
+
+        static int pageCount(int n, int p) //min flips 1 by 1 after opened at the start or end, page #1 - on the right
+        {
+            return Math.Min((n - n % 2 + 1 - p) / 2, p / 2);
+        }
+
+        static int getMoneySpent(int[] keyboards, int[] drives, int b)
+        {
+            try
+            {
+                return (from k in keyboards
+                        from d in drives
+                        select k + d).Where(e => e <= b).Max();
+            }
+            catch
+            {
+                return -1;
+            }
+        }
+
+        static int beautifulDays(int i, int j, int k)
+        {
+            int count = 0;
+            while (i <= j)
+            {
+                if (IsBeautiful(i++, k))
+                {
+                    count++;
+                }
+            }
+            return count;
+        }
+
+        static bool IsBeautiful(int n, int k)
+        {
+            return Math.Abs(ReverseNum(n) - n) % k == 0;
+        }
+
+        static long ReverseNum(int n)
+        {
+            long r = 0;
+            while (n > 0)
+            {
+                r = r * 10 + n % 10;
+                n /= 10;
+            }
+            return r;
+        }
+
+        static int[] circularArrayRotation(int[] a, int k, int[] queries) // return idx to a-val map [queries] after k-right cyc rotation
+        {
+            return queries.Select((e, i) => a[(e + a.Length - (k % a.Length)) % a.Length]).ToArray();
+        }
+
+        static void extraLongFactorials(int n)
+        {
+            Dictionary<int, ulong> dict = new Dictionary<int, ulong> { { 0, 1 } };
+            ulong rmdr = 0, div = 10000000000;
+            while (n > 1)
+            {
+                for (int i = 0; i < dict.Keys.Count; i++)
+                {
+                    dict[i] = dict[i] * (ulong)n + rmdr;
+                    rmdr = dict[i] / div;
+                    dict[i] %= div;
+                }
+                n--;
+                if (rmdr != 0) // add 1 more dict entry
+                {
+                    dict[dict.Keys.Max() + 1] = rmdr;
+                    rmdr = 0;
+                }
+            }
+            StringBuilder sb = new StringBuilder();
+            for (int k = dict.Keys.Max(); k >= 0; k--)
+            {
+                string toAppend = k == dict.Keys.Max() ? $"{dict[k]}" : $"{dict[k]}".PadLeft(10, '0');
+                sb.Append(toAppend);
+            }
+            Console.WriteLine(sb);
+        }
+
+        static int squares(int a, int b) // count sqrts in the range
+        {
+            return Math.Max(0, 1 + (int)Math.Floor(Math.Sqrt(b)) - (int)Math.Ceiling(Math.Sqrt(a)));
+        }
+
+        static int libraryFine(int d1, int m1, int y1, int d2, int m2, int y2)
+        {
+            //DateTime ret = new DateTime(y1, m1, d1), due = new DateTime(y2, m2, d2);
+            return y1 < y2 || y1 == y2 && m1 < m2 || y1 == y2 && m1 == m2 && d1 <= d2 ? 0
+            : y1 > y2 ? 10000 : m1 > m2 ? (m1 - m2) * 500 : (d1 - d2) * 15;
+        }
+
+        static int chocolateFeast(int n, int c, int m) // n=$$$, c=cost of 1 chocolate, m - num of wrappers exchanged to 1 chocolate
+        {
+            int wrCount = n / c;
+            int total = wrCount;
+            while (wrCount >= m)
+            {
+                int newWraps = wrCount / m;
+                total += newWraps;
+                wrCount = newWraps + wrCount % m;
+            }
+            return total;
+        }
+
+        static int[] serviceLane(int[] width, int[][] cases)
+        {
+            return cases.Select(sePair => width.Skip(sePair[0]).Take(sePair[1] - sePair[0] + 1).Min()).ToArray();
+        }
+
+        static void Main(string[] args)
+        {
+            string progrDay = dayOfProgrammer(1916);
 
             int fee = GetFeeOnReturn(new DateTime(2015, 6, 6), new DateTime(2015, 6, 9));
 
