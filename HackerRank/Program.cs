@@ -19,6 +19,7 @@ namespace HackerRank
     using System.Text.RegularExpressions;
     using System.Text;
     using System;
+    using System.CodeDom;
 
     class Node
     {
@@ -307,8 +308,129 @@ namespace HackerRank
             return cases.Select(sePair => width.Skip(sePair[0]).Take(sePair[1] - sePair[0] + 1).Min()).ToArray();
         }
 
+        static int workbook(int n, int k, int[] arr)
+        {
+            int count = 0, curPage = 0, pageOffs = 0;
+            for (int i = 0; i < arr.Length; i++) // chapters
+            {
+                curPage++;
+                pageOffs = 0;
+                for (int j = 0; j < arr[i]; j++) // ch problems
+                {
+                    pageOffs++;
+                    if (pageOffs > k)
+                    {
+                        curPage++;
+                        pageOffs = 1;
+                    }
+                    if (j + 1 == curPage) count++;
+                }
+            }
+            return count;
+        }
+
+        static int flatlandSpaceStations(int n, int[] c)
+        {
+            int count = 0, max = 0, left = 0, mid = 0, leftDist = 0, rightDist = 0;
+            int[] ord = c.OrderBy(e => e).ToArray();
+            foreach (int i in ord)
+            {
+                if (count++ == 0)
+                {
+                    left = 0;
+                    mid = i;
+                    if (c.Length == 1) max = Math.Max(i, (n - i - 1));
+                    continue;
+                }
+
+                leftDist = (mid - left) / (count == 2 ? 1 : 2);
+                rightDist = (i - mid) / 2;
+                if (leftDist > max) max = leftDist;
+                if (rightDist > max) max = rightDist;
+                if (count == c.Length && max < n - i - 1) max = n - i - 1;
+
+                left = mid;
+                mid = i;
+            }
+            return max;
+        }
+
+        static int fairRations(int[] B)
+        {
+            int count = 0, prev = 0;
+            for (int i = 0; i < B.Length; i++)
+            {
+                bool even = (B[i] + prev) % 2 == 0;
+                if (i == B.Length - 1)
+                {
+                    return even ? count : -1;
+                }
+                if (even)
+                {
+                    prev = 0;
+                    continue;
+                }
+                count += 2;
+                prev = 1;
+            }
+            return count;
+        }
+
+       static string[] cavityMap(string[] grid)
+        {
+            //if (grid.Length < 3 || grid[1].Length < 3) return grid;
+            for (int i = 1; i < grid.Length - 1; i++)
+            {
+                for (int j = 1; j < grid[i].Length - 1; j++)
+                {
+                    string prev = grid[i - 1], cur = grid[i], next = grid[i + 1];
+                    int mid = cur[j], top = prev[j], btm = next[j], lft = cur[j-1], rht = cur[j+1];
+                    if(mid > top && mid > btm && mid > lft && mid > rht)
+                    {
+                        grid[i] = cur.Substring(0, j) + "X" + cur.Substring(j+1, cur.Length - j - 1);
+                    }
+                }
+            }
+            return grid;
+        }
+
+        static int[] stones(int n, int a, int b)
+        {
+            int step = Math.Max(a, b) - Math.Min(a, b), min = Math.Min(a, b) * (n - 1);
+            return Enumerable.Range(1, step == 0 ? 1 : n).Select(x => min + (x - 1) * step).ToArray();
+        }
+
+        static int[] acmTeam(string[] topic)
+        {
+            int max = 0, nTeams = 0;
+            for (int i = 0; i < topic.Length - 1; i++)
+            {
+                for (int j = i + 1; j < topic.Length; j++)
+                {
+                    int count = 0;
+                    for (int k = 0; k < topic[j].Length; k++)
+                    {
+                        if (topic[i][k] == '1' || topic[j][k] == '1')
+                            count++;
+                    }
+                    if (count > max)
+                    {
+                        max = count;
+                        nTeams = 1;
+                    }
+                    else if (count == max)
+                    {
+                        nTeams++;
+                    }
+                }
+            }
+            return new int[] { max, nTeams };
+        }
+
         static void Main(string[] args)
         {
+            int mx = flatlandSpaceStations(20, new int[] { 13, 1, 11, 10, 6 });
+            int n = workbook(5, 3, new int[] { 4, 2, 6, 1, 10 });
             string progrDay = dayOfProgrammer(1916);
 
             int fee = GetFeeOnReturn(new DateTime(2015, 6, 6), new DateTime(2015, 6, 9));
