@@ -427,8 +427,47 @@ namespace HackerRank
             return new int[] { max, nTeams };
         }
 
+        static string gridSearch(string[] G, string[] P)
+        {
+            for (int i = 0; i <= G.Length - P.Length; i++)
+            {
+                for (int ii = 0; ii <= G[i].Length - P[0].Length; ii++)
+                {
+                    bool ok = true;
+                    for (int j = 0; ok && j < P.Length; j++)
+                    {
+                        for (int jj = 0; ok && jj < P[j].Length; jj++)
+                        {
+                            if (P[j][jj] == G[i + j][ii + jj])
+                            {
+                                if (j == P.Length - 1
+                                && jj == P[j].Length - 1)
+                                    return "YES";
+                            }
+                            else
+                            {
+                                ok = false;
+                            }
+                        }
+                    }
+                }
+            }
+            return "NO";
+        }
+
+        private static string[] units = { "zero", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten", "eleven", "twelve", "thirteen", "fourteen", "fifteen", "sixteen", "seventeen", "eighteen", "nineteen" };
+        private static string[] dzUnits = { "twenty", "thirty", "forty", "fifty" };
+        static string timeToWords(int h, int m)
+        {
+            if (m > 30)
+            {
+                h = h % 11 + 1;
+            }
+            return $"{(m == 0 ? "" : m == 15 ? "quarter past " : m == 30 ? "half past " : m == 45 ? "quarter to " : m == 1 ? "one minute past " : m == 59 ? "one minute to " : m < 20 ? units[m] + " minutes past " : m < 31 ? dzUnits[m / 10 - 2] + " " + units[m % 10] + " minutes past " : (m > 40 ? units[60 - m] : dzUnits[(60 - m) / 10 - 2] + " " + units[(60 - m) % 10]) + " minutes to ")}{(h < 20 ? units[h] : dzUnits[h / 10 - 2] + " " + units[h % 10])}{(m == 0 ? " o' clock" : "")}";
+        }
         static void Main(string[] args)
         {
+            string tm = timeToWords(5, 47);
             int mx = flatlandSpaceStations(20, new int[] { 13, 1, 11, 10, 6 });
             int n = workbook(5, 3, new int[] { 4, 2, 6, 1, 10 });
             string progrDay = dayOfProgrammer(1916);
