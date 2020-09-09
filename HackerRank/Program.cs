@@ -465,8 +465,81 @@ namespace HackerRank
             }
             return $"{(m == 0 ? "" : m == 15 ? "quarter past " : m == 30 ? "half past " : m == 45 ? "quarter to " : m == 1 ? "one minute past " : m == 59 ? "one minute to " : m < 20 ? units[m] + " minutes past " : m < 31 ? dzUnits[m / 10 - 2] + " " + units[m % 10] + " minutes past " : (m > 40 ? units[60 - m] : dzUnits[(60 - m) / 10 - 2] + " " + units[(60 - m) % 10]) + " minutes to ")}{(h < 20 ? units[h] : dzUnits[h / 10 - 2] + " " + units[h % 10])}{(m == 0 ? " o' clock" : "")}";
         }
+
+        static string kaprekarNumbers(int p, int q)
+        {
+            List<string> lst = new List<string>();
+            for (int i = p; i <= q; i++)
+            {
+                string sNum = ((long)i * i).ToString();
+                int len = sNum.Length, len2 = i.ToString().Length, len1 = len - len2;
+                int i1 = int.TryParse(sNum.Substring(0, len1), out i1) ? i1 : 0,
+                    i2 = int.TryParse(sNum.Substring(len1, len2), out i2) ? i2 : 0;
+                if (i1 + i2 == i)
+                {
+                    lst.Add(i.ToString());
+                }
+            }
+
+            Console.WriteLine(lst.Count == 0 ? "INVALID RANGE" : string.Join(" ", lst));
+            return lst.Count == 0 ? "INVALID RANGE" : string.Join(" ", lst);
+        }
+
+        static string encryption(string s)
+        {
+            string ss = (s ?? "").Replace(" ", "");
+            double d = Math.Sqrt(ss.Length);
+            int cols = (int)Math.Ceiling(d), rows = (int)Math.Ceiling((double)ss.Length/cols);
+            StringBuilder[] grid = new StringBuilder[cols];
+            for (int i = 0; i < rows; i++)
+            {
+                for (int j = 0; j < cols && i * cols + j < ss.Length; j++)
+                {
+                    if (grid[j] == null)
+                        grid[j] = new StringBuilder();
+                    grid[j].Append(ss.Substring(i * cols + j, 1));
+                }
+            }
+            return string.Join<StringBuilder>(" ", grid);
+        }
+
+        static string biggerIsGreater(string w)
+        {
+            char[] arr = w.ToCharArray();
+            int frMax = 0, toMax = -1;
+            for (int i = arr.Length - 1; i > frMax; i--)
+            {
+                char fr = arr[i];
+                for (int j = i - 1; j >= frMax; j--)
+                {
+                    if (arr[i] > arr[j] && (j > frMax || toMax == -1 || fr < arr[toMax]))
+                    {
+                        frMax = j;
+                        toMax = i;
+                    }
+                }
+            }
+            return toMax == -1 ? "no answer" : ProcessArray(ref arr, frMax, toMax);
+        }
+
+        static string ProcessArray(ref char[] arr, int frIdx, int toIdx)
+        {
+            // exchange from and to
+            char temp = arr[frIdx]; arr[frIdx] = arr[toIdx]; arr[toIdx] = temp;
+            //sort the tail
+            return new string(arr.Take(frIdx + 1).Concat(arr.Skip(frIdx + 1).OrderBy(ch => ch)).ToArray());
+        }
+
+        static long repeatedString(string s, char a, long n)
+        {
+            long len = s.Length;
+            char[] arr = s.ToCharArray();
+            return arr.Where(c => c == a).Count() * (n / len) + arr.Take((int)(n % len)).Where(c => c == a).Count();
+        }
         static void Main(string[] args)
         {
+            string encr = encryption("chillout");
+            string kkn = kaprekarNumbers(1, 99999);
             string tm = timeToWords(5, 47);
             int mx = flatlandSpaceStations(20, new int[] { 13, 1, 11, 10, 6 });
             int n = workbook(5, 3, new int[] { 4, 2, 6, 1, 10 });
