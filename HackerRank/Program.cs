@@ -643,6 +643,10 @@ namespace HackerRank
             return vols.SequenceEqual(clrs) ? "Possible" : "Impossible";
         }
 
+        /// <summary>
+        /// //////////////////////////////////////////////
+        /// </summary>
+        /// <param name="args"></param>
         static void Main(string[] args)
         {
             string encr = encryption("chillout");
