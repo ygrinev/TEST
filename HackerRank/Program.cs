@@ -536,6 +536,113 @@ namespace HackerRank
             char[] arr = s.ToCharArray();
             return arr.Where(c => c == a).Count() * (n / len) + arr.Take((int)(n % len)).Where(c => c == a).Count();
         }
+
+        public static int nonDivisibleSubset(int k, List<int> s)
+        {
+            if (k == 1) return 1;
+            IEnumerable<IGrouping<int, int>> grp = s.Select(l => l % k).GroupBy(l => l).OrderBy(g => g.First());
+
+            int max = 0;
+
+            for (int loIdx = 0, hiIdx = grp.Count() - 1; loIdx <= hiIdx;)
+            {
+                int lo = grp.ElementAt(loIdx).First();
+                int hi = grp.ElementAt(hiIdx).First();
+                int loCnt = (lo * 2) % k == 0 ? 1 : grp.ElementAt(loIdx).Count();
+                int hiCnt = (hi * 2) % k == 0 ? 1 : grp.ElementAt(hiIdx).Count();
+
+                if (loIdx == hiIdx)
+                {
+                    max += loCnt;
+                    loIdx++;
+                }
+                else
+                {
+                    bool isDiv = (lo + hi) % k == 0;
+
+                    if (lo + hi < k)
+                    {
+                        max += loCnt;
+                        loIdx++;
+                    }
+                    else
+                    {
+                        max += isDiv ? Math.Max(loCnt, hiCnt) : hiCnt;
+                        hiIdx--;
+                        if (isDiv) loIdx++;
+                    }
+                }
+            }
+            return max;
+        }
+
+        static string superReducedString(string s)
+        {
+            string reduced = Regex.Replace(s, "([a-z])\\1{1}", "");
+            while (reduced.Length != s.Length)
+            {
+                s = reduced;
+                reduced = Regex.Replace(s, "([a-z])\\1{1}", "");
+            }
+            return reduced.Length == 0 ? "Empty String" : reduced;
+        }
+
+        static int queensAttack(int n, int k, int r_q, int c_q, int[][] obstacles)
+        {
+            Dictionary<int, int> dirs = new Dictionary<int, int>();
+            if (obstacles == null || obstacles.Length == 0 || obstacles[0] == null)
+            {
+                obstacles = new int[1][] { new int[2] { 2 * n, 2 * n } };
+            }
+            for (int dir = 0; dir < 8; dir++)
+            {
+                switch (dir)
+                {
+                    case 0:
+                        dirs[dir] = obstacles.Where(o => o[1] == c_q && o[0] > r_q).Select(oo => oo[0] - r_q - 1).Aggregate(n - r_q, Math.Min);
+                        break;
+                    case 1:
+                        dirs[dir] = obstacles.Where(o => o[0] - r_q == c_q - o[1] && o[0] > r_q).Select(oo => oo[0] - r_q - 1).Aggregate(Math.Min(n - r_q, c_q - 1), Math.Min);
+                        break;
+                    case 2:
+                        dirs[dir] = obstacles.Where(o => o[0] == r_q && o[1] < c_q).Select(oo => c_q - oo[1] - 1).Aggregate(c_q - 1, Math.Min);
+                        break;
+                    case 3:
+                        dirs[dir] = obstacles.Where(o => o[0] - r_q == o[1] - c_q && o[0] < r_q).Select(oo => r_q - oo[0] - 1).Aggregate(Math.Min(r_q - 1, c_q - 1), Math.Min);
+                        break;
+                    case 4:
+                        dirs[dir] = obstacles.Where(o => o[1] == c_q && o[0] < r_q).Select(oo => r_q - oo[0] - 1).Aggregate(r_q - 1, Math.Min);
+                        break;
+                    case 5:
+                        dirs[dir] = obstacles.Where(o => o[0] - r_q == c_q - o[1] && o[0] < r_q).Select(oo => r_q - oo[0] - 1).Aggregate(Math.Min(r_q - 1, n - c_q), Math.Min);
+                        break;
+                    case 6:
+                        dirs[dir] = obstacles.Where(o => o[0] == r_q && o[1] > c_q).Select(oo => oo[1] - c_q - 1).Aggregate(n - c_q, Math.Min);
+                        break;
+                    case 7:
+                        dirs[dir] = obstacles.Where(o => o[0] - r_q == o[1] - c_q && o[0] > r_q).Select(oo => oo[0] - r_q - 1).Aggregate(Math.Min(n - r_q, n - c_q), Math.Min);
+                        break;
+                }
+            }
+            return dirs.Select(p => p.Value).Sum();
+        }
+
+        static string organizingContainers(int[][] container)  // check if containers sortable
+        {
+            List<long> vols = new List<long>();
+            List<long> clrs = new List<long>();
+            for (int i = 0; i < container.Length; i++)
+            {
+                vols.Add(container[i].Select(el => (long)el).Sum());
+                if (i == 0)
+                    clrs = container[i].Select(e => (long)e).ToList();
+                else
+                    clrs = clrs.Select((el, idx) => el += container[i][idx]).ToList();
+            }
+            vols.Sort(); clrs.Sort();
+            return vols.SequenceEqual(clrs) ? "Possible" : "Impossible";
+        }
+
         static void Main(string[] args)
         {
             string encr = encryption("chillout");
