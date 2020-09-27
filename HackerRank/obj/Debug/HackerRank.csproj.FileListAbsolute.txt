@@ -5,3 +5,10 @@ W:\STUDY\C#\HackerRank\obj\Debug\HackerRank.csprojAssemblyReference.cache
 W:\STUDY\C#\HackerRank\obj\Debug\HackerRank.csproj.CoreCompileInputs.cache
 W:\STUDY\C#\HackerRank\obj\Debug\HackerRank.exe
 W:\STUDY\C#\HackerRank\obj\Debug\HackerRank.pdb
+C:\Users\znaik\source\repos\TEST\HackerRank\bin\Debug\HackerRank.exe.config
+C:\Users\znaik\source\repos\TEST\HackerRank\bin\Debug\HackerRank.exe
+C:\Users\znaik\source\repos\TEST\HackerRank\bin\Debug\HackerRank.pdb
+C:\Users\znaik\source\repos\TEST\HackerRank\obj\Debug\HackerRank.csprojAssemblyReference.cache
+C:\Users\znaik\source\repos\TEST\HackerRank\obj\Debug\HackerRank.csproj.CoreCompileInputs.cache
+C:\Users\znaik\source\repos\TEST\HackerRank\obj\Debug\HackerRank.exe
+C:\Users\znaik\source\repos\TEST\HackerRank\obj\Debug\HackerRank.pdb

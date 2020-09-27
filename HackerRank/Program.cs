@@ -576,17 +576,6 @@ namespace HackerRank
             return max;
         }
 
-        static string superReducedString(string s)
-        {
-            string reduced = Regex.Replace(s, "([a-z])\\1{1}", "");
-            while (reduced.Length != s.Length)
-            {
-                s = reduced;
-                reduced = Regex.Replace(s, "([a-z])\\1{1}", "");
-            }
-            return reduced.Length == 0 ? "Empty String" : reduced;
-        }
-
         static int queensAttack(int n, int k, int r_q, int c_q, int[][] obstacles)
         {
             Dictionary<int, int> dirs = new Dictionary<int, int>();
@@ -643,12 +632,62 @@ namespace HackerRank
             return vols.SequenceEqual(clrs) ? "Possible" : "Impossible";
         }
 
+        static int[][] container = new int[][]
+        {
+            new int[]{997612619, 934920795, 998879231, 999926463},
+            new int[]{ 960369681, 997828120, 999792735, 979622676 }
+            ,
+            new int[]{999013654, 998634077, 997988323, 958769423},
+            new int[]{ 997409523, 999301350 ,940952923, 993020546 }
+        };
+
+        static string superReducedString(string s)
+        {
+            string reduced = Regex.Replace(s, "([a-z])\\1{1}", "");
+            while (reduced.Length != s.Length)
+            {
+                s = reduced;
+                reduced = Regex.Replace(s, "([a-z])\\1{1}", "");
+            }
+            return reduced.Length == 0 ? "Empty String" : reduced;
+        }
+
+        static int camelcase(string s)
+        {
+            return Regex.Matches(s, "[A-Z]").Count + 1;
+        }
+
+        static string funnyString(string s) // diffs array is equal same for the reversed string
+        {
+            return (s ?? "").Length < 3 || !s.ToCharArray().Where((c, i) => i <= s.Length / 2 && Math.Abs((int)c - s[i + 1]) != Math.Abs((int)s[s.Length - 1 - i] - s[s.Length - 2 - i])).Any() ? "Funny" : "Not Funny";
+        }
+
+        static int alternatingCharacters(string s) // get min # of char to delete to avoid adjacent chars
+        {
+            return s.Length - Regex.Matches(s, "([ABab])\\1*").Count;
+        }
+
         /// <summary>
         /// //////////////////////////////////////////////
         /// </summary>
         /// <param name="args"></param>
         static void Main(string[] args)
         {
+            string funny = funnyString("abcdefghijklmnopqrstuvwxyz");
+            int countWords = camelcase("saveChangesInTheEditor");
+            string reduced = superReducedString("aaabccddd");
+            //int nonDivCount = nonDivisibleSubset(1, new List<int> { 1 });
+            //int nonDivCount = nonDivisibleSubset(4, new List<int> { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 });
+            //int nonDivCount = nonDivisibleSubset(3, new List<int> { 1, 7, 2, 4 });
+            int nonDivCount = nonDivisibleSubset(2, new List<int> { 422346306, 940894801, 696810740, 862741861, 85835055, 313720373 });
+            string strPossible = organizingContainers(container);
+            int queenCells = queensAttack(88587, 9, 20001, 20003, new int[][] { new int[] { 20001, 20002 },
+                    new int[] { 20001, 20004 }, new int[] { 20000, 20003 }, new int[] { 20002, 20003 },
+                    new int[] { 20000, 20004 }, new int[] { 20000, 20002 }, new int[] { 20002, 20004 },
+                    new int[] { 20002, 20002 } });
+            //int queenCells = queensAttack(5, 3, 4, 3, new int[][] { new int[] { 5, 5 }, new int[] { 4, 2 }, new int[] { 2, 3 } });
+            //int queenCells = queensAttack(100000, 0, 4187, 5068, null);
+            string s = biggerIsGreater("ehdegnmorgafrjxvksc");
             string encr = encryption("chillout");
             string kkn = kaprekarNumbers(1, 99999);
             string tm = timeToWords(5, 47);
