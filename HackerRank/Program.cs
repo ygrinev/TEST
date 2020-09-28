@@ -667,12 +667,19 @@ namespace HackerRank
             return s.Length - Regex.Matches(s, "([ABab])\\1*").Count;
         }
 
+        static int gemstones(string[] arr) // count common chars for all strings in array
+        {
+            int len = arr.Length;
+            return arr.Select(s => s.ToCharArray().Distinct()).SelectMany(a => a).GroupBy(c => c).Count(g => g.Count() == len);
+        }
+
         /// <summary>
         /// //////////////////////////////////////////////
         /// </summary>
         /// <param name="args"></param>
         static void Main(string[] args)
         {
+            int cntGems = gemstones(new string[] { "abcdde","baccd","eeabg" }); // ==2
             string funny = funnyString("abcdefghijklmnopqrstuvwxyz");
             int countWords = camelcase("saveChangesInTheEditor");
             string reduced = superReducedString("aaabccddd");
