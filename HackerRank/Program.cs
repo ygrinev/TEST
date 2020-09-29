@@ -673,14 +673,21 @@ namespace HackerRank
             return arr.Select(s => s.ToCharArray().Distinct()).SelectMany(a => a).GroupBy(c => c).Count(g => g.Count() == len);
         }
 
+        static int theLoveLetterMystery(string s) // count atomic iterations to convert a word to anagram
+        {
+            int len = s.Length;
+            return len < 2 ? 0 : s.ToCharArray().Select((c, i) => i < len / 2 ? Math.Abs(c - s[len - 1 - i]) : 0).Sum();
+        }
+
         /// <summary>
         /// //////////////////////////////////////////////
         /// </summary>
         /// <param name="args"></param>
         static void Main(string[] args)
         {
+            int angrmCount = theLoveLetterMystery("abcd");
             int cntGems = gemstones(new string[] { "abcdde","baccd","eeabg" }); // ==2
-            string funny = funnyString("abcdefghijklmnopqrstuvwxyz");
+            string funny = funnyString("abcdefghijklmnopqrstuvwxyz"); // "Funny"
             int countWords = camelcase("saveChangesInTheEditor");
             string reduced = superReducedString("aaabccddd");
             //int nonDivCount = nonDivisibleSubset(1, new List<int> { 1 });
