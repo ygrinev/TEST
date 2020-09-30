@@ -679,17 +679,28 @@ namespace HackerRank
             return len < 2 ? 0 : s.ToCharArray().Select((c, i) => i < len / 2 ? Math.Abs(c - s[len - 1 - i]) : 0).Sum();
         }
 
+        static int beautifulBinaryString(string b) // min steps to eiminate "010"
+        {
+            int count = 0;
+            for (int i = b.IndexOf("010"); i > -1 && i < b.Length - 2; i = b.IndexOf("010", i + 3))
+            {
+                count++;
+            }
+            return count;
+        }
+
         /// <summary>
         /// //////////////////////////////////////////////
         /// </summary>
         /// <param name="args"></param>
         static void Main(string[] args)
         {
-            int angrmCount = theLoveLetterMystery("abcd");
-            int cntGems = gemstones(new string[] { "abcdde","baccd","eeabg" }); // ==2
+            int stepsToKill010 = beautifulBinaryString("0101010"); // 2
+            int angrmCount = theLoveLetterMystery("abcd"); // 4
+            int cntGems = gemstones(new string[] { "abcdde","baccd","eeabg" }); // 2
             string funny = funnyString("abcdefghijklmnopqrstuvwxyz"); // "Funny"
-            int countWords = camelcase("saveChangesInTheEditor");
-            string reduced = superReducedString("aaabccddd");
+            int countWords = camelcase("saveChangesInTheEditor"); // 5
+            string reduced = superReducedString("aaabccddd"); // "abd"
             //int nonDivCount = nonDivisibleSubset(1, new List<int> { 1 });
             //int nonDivCount = nonDivisibleSubset(4, new List<int> { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 });
             //int nonDivCount = nonDivisibleSubset(3, new List<int> { 1, 7, 2, 4 });
