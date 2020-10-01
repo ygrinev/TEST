@@ -695,34 +695,34 @@ namespace HackerRank
         /// <param name="args"></param>
         static void Main(string[] args)
         {
-            int stepsToKill010 = beautifulBinaryString("0101010"); // 2
-            int angrmCount = theLoveLetterMystery("abcd"); // 4
-            int cntGems = gemstones(new string[] { "abcdde","baccd","eeabg" }); // 2
-            string funny = funnyString("abcdefghijklmnopqrstuvwxyz"); // "Funny"
-            int countWords = camelcase("saveChangesInTheEditor"); // 5
-            string reduced = superReducedString("aaabccddd"); // "abd"
+            //int stepsToKill010 = beautifulBinaryString("0101010"); // 2
+            //int angrmCount = theLoveLetterMystery("abcd"); // 4
+            //int cntGems = gemstones(new string[] { "abcdde","baccd","eeabg" }); // 2
+            //string funny = funnyString("abcdefghijklmnopqrstuvwxyz"); // "Funny"
+            //int countWords = camelcase("saveChangesInTheEditor"); // 5
+            //string reduced = superReducedString("aaabccddd"); // "abd"
             //int nonDivCount = nonDivisibleSubset(1, new List<int> { 1 });
             //int nonDivCount = nonDivisibleSubset(4, new List<int> { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 });
             //int nonDivCount = nonDivisibleSubset(3, new List<int> { 1, 7, 2, 4 });
-            int nonDivCount = nonDivisibleSubset(2, new List<int> { 422346306, 940894801, 696810740, 862741861, 85835055, 313720373 });
-            string strPossible = organizingContainers(container);
-            int queenCells = queensAttack(88587, 9, 20001, 20003, new int[][] { new int[] { 20001, 20002 },
-                    new int[] { 20001, 20004 }, new int[] { 20000, 20003 }, new int[] { 20002, 20003 },
-                    new int[] { 20000, 20004 }, new int[] { 20000, 20002 }, new int[] { 20002, 20004 },
-                    new int[] { 20002, 20002 } });
+            //int nonDivCount = nonDivisibleSubset(2, new List<int> { 422346306, 940894801, 696810740, 862741861, 85835055, 313720373 });
+            //string strPossible = organizingContainers(container);
+            //int queenCells = queensAttack(88587, 9, 20001, 20003, new int[][] { new int[] { 20001, 20002 },
+            //        new int[] { 20001, 20004 }, new int[] { 20000, 20003 }, new int[] { 20002, 20003 },
+            //        new int[] { 20000, 20004 }, new int[] { 20000, 20002 }, new int[] { 20002, 20004 },
+            //        new int[] { 20002, 20002 } });
             //int queenCells = queensAttack(5, 3, 4, 3, new int[][] { new int[] { 5, 5 }, new int[] { 4, 2 }, new int[] { 2, 3 } });
             //int queenCells = queensAttack(100000, 0, 4187, 5068, null);
-            string s = biggerIsGreater("ehdegnmorgafrjxvksc");
-            string encr = encryption("chillout");
-            string kkn = kaprekarNumbers(1, 99999);
-            string tm = timeToWords(5, 47);
-            int mx = flatlandSpaceStations(20, new int[] { 13, 1, 11, 10, 6 });
-            int n = workbook(5, 3, new int[] { 4, 2, 6, 1, 10 });
-            string progrDay = dayOfProgrammer(1916);
+            //string s = biggerIsGreater("ehdegnmorgafrjxvksc");
+            //string encr = encryption("chillout");
+            //string kkn = kaprekarNumbers(1, 99999);
+            //string tm = timeToWords(5, 47);
+            //int mx = flatlandSpaceStations(20, new int[] { 13, 1, 11, 10, 6 });
+            //int n = workbook(5, 3, new int[] { 4, 2, 6, 1, 10 });
+            //string progrDay = dayOfProgrammer(1916);
 
-            int fee = GetFeeOnReturn(new DateTime(2015, 6, 6), new DateTime(2015, 6, 9));
+            //int fee = GetFeeOnReturn(new DateTime(2015, 6, 6), new DateTime(2015, 6, 9));
 
-            int sum = divisorSum(6);
+            //int sum = divisorSum(6);
             //var c = new Car().GetHorsepower();
             //Console.WriteLine(((int)Math.Round(12.00 * (1 + (8 + 20) / 100.00))).ToString());
             //string ex = 8.345.ToString("F1");
@@ -772,16 +772,9 @@ namespace HackerRank
             new int[] {8, 39, 483},
             new int[] {8, 11, 194},
             new int[] {12, 37, 502}
-                        };
+            };
             int len = 40;
-            //int[][] queries = new int[][] {
-            //new int[]{ 1, 2, 100 },
-            //new int[]{ 2, 5, 100 },
-            //new int[]{ 3, 4, 100 }
-            //            };
-            //int len = 10;     
-            //long res = arrayManipulation(40, queries); // res = 10 !!!
-            long res = arrayManipulation(len, queries); // res = 10 !!!
+            long res = arrayManipulation(len, queries); // 8628
             Console.WriteLine(res);
             Console.ReadKey();
 
@@ -869,92 +862,9 @@ namespace HackerRank
         }
         static long arrayManipulation(int n, int[][] queries)
         {
-            int[,] arr = new int[queries.Length * 2, 2]; // [][idx, val]
-            for (int i = 0; i < queries.Length; i++) // find max and min idx
-            {
-                int min = n + 1, minVal = 0, max = -1, maxVal = 0, qMin = n+1, qMax = -1;
-                bool isMinRight = false, isMaxRight = false;
-                for (int j = 0; j < queries.Length; j++)
-                {
-                    for (int k = 0; k < 2; k++)
-                    {
-                        int qIdx = queries[j][k];
-                        if (qIdx < 0)
-                            continue;
-                        if (k == 1)
-                            qIdx++;
-                        int val = queries[j][2] * (k == 0 ? 1 : -1);
-                        if (qMin > qIdx)
-                        {
-                            qMin = qIdx;
-                            min = j;
-                            minVal = val;
-                            isMinRight = k == 1;
-                        }
-                        if (qMax < qIdx)
-                        {
-                            qMax = qIdx;
-                            max = j;
-                            maxVal = val;
-                            isMaxRight = k == 1;
-                        }
-                        if(qMin == qIdx && val < minVal)
-                        {
-                            min = j;
-                            minVal = val;
-                            isMinRight = k == 1;
-                        }
-                        if (qMax == qIdx && val > minVal)
-                        {
-                            max = j;
-                            maxVal = val;
-                            isMaxRight = k == 1;
-                        }
-                    }
-                }
-                // put i<-[min, minValue]
-                int kIdx = isMinRight ? 1 : 0;
-                arr[i, 0] = queries[min][kIdx] + kIdx;
-                queries[min][kIdx] = -1;
-                arr[i, 1] = minVal;
-                int iLeft = i;
-                while (iLeft - 1 >= 0
-                && arr[i, 0] == arr[iLeft - 1, 0]
-                && arr[i, 1] < 0 && arr[iLeft - 1, 1] >= 0)
-                    iLeft--;
-                if (iLeft < i)
-                {
-                    int tmp = arr[i, 1];
-                    arr[i, 1] = arr[iLeft, 1];
-                    arr[iLeft, 1] = tmp;
-                }
-
-                // put queries.Length - i<-[max, maxValue]
-                kIdx = isMaxRight ? 1 : 0;
-                int im = 2*queries.Length - i - 1;
-                arr[im, 0] = queries[max][kIdx] + kIdx;
-                queries[max][kIdx] = -1;
-                arr[im, 1] = maxVal;
-                int iRight = im;
-                while (iRight + 1 < 2 * queries.Length
-                && arr[im, 0] == arr[iRight + 1, 0]
-                && arr[im, 1] >= 0 && arr[iRight + 1, 1] < 0)
-                    iRight++;
-                if (iRight > im)
-                {
-                    int tmp = arr[i, 1];
-                    arr[i, 1] = arr[iRight, 1];
-                    arr[iRight, 1] = tmp;
-                }
-            }
-            long totMax = long.MinValue, total = 0;
-            for (int i = 0; i < arr.Length/2; i++)
-            {
-                total += arr[i, 1];
-                if (totMax < total)
-                    totMax = total;
-            }
-            return totMax;
+            long max = 0;
+            queries.Select(q => new int[2][] { new int[] { q[0], q[2] }, new int[] { q[1]+1, -q[2] } }).SelectMany(e => e).GroupBy(e=>e[0]).OrderBy(g=>g.ElementAt(0)[0]).Aggregate(0L, func: (sum, item) => { long res = sum + item.Sum(e=>e[1]); if (res > max) max = res; return res; });
+            return max;
         }
     }
 
