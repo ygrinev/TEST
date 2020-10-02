@@ -689,12 +689,55 @@ namespace HackerRank
             return count;
         }
 
+        static void stackManipulation(string[] queries) // optimized printing MAX element
+        {
+            Stack<long> st = new Stack<long>();
+            long max = long.MinValue;
+            int idx = -1;
+            foreach (string q in queries)
+            {
+                long[] cmd = q.Split(' ').Select(s => long.Parse(s)).ToArray();
+                switch (cmd[0])
+                {
+                    case 1: // Push
+                        st.Push(cmd[1]);
+                        if (cmd[1] > max)
+                        {
+                            idx = 0;
+                            max = cmd[1];
+                        }
+                        else
+                            idx++;
+                        break;
+                    case 2: // Pop
+                        st.Pop();
+                        if (idx == 0)
+                        {
+                            max = long.MinValue;
+                            for (int i = 0; i < st.Count(); i++)
+                            {
+                                long el = st.ElementAt(i);
+                                if (el > max)
+                                    max = el;
+                            }
+                        }
+                        else
+                            idx--;
+                        break;
+                    case 3: // print MAX element
+                        Console.WriteLine(max);
+                        break;
+                }
+            }
+        }
+
         /// <summary>
         /// //////////////////////////////////////////////
         /// </summary>
         /// <param name="args"></param>
         static void Main(string[] args)
         {
+            stackManipulation(new string[] { "1 97","2","1 20","2","1 26","1 20","2","3","1 91","3" }); // 26 91
             //int stepsToKill010 = beautifulBinaryString("0101010"); // 2
             //int angrmCount = theLoveLetterMystery("abcd"); // 4
             //int cntGems = gemstones(new string[] { "abcdde","baccd","eeabg" }); // 2
