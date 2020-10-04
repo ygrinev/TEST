@@ -731,12 +731,35 @@ namespace HackerRank
             }
         }
 
+        static string isBalanced(string s)
+        {
+            string opnBrkts = "[({";
+            Dictionary<char, char> pairs = new Dictionary<char, char> { { ']', '[' }, { ')', '(' }, { '}', '{' } };
+            Stack<char> st = new Stack<char>();
+            foreach (char c in s)
+            {
+                if (opnBrkts.IndexOf(c) > -1)
+                {
+                    st.Push(c);
+                }
+                else
+                {
+                    char clsBracket = st.Count() > 0 ? st.Pop() : '\0';
+                    if (pairs[c] != clsBracket)
+                        return "NO";
+                }
+            }
+            return st.Count() > 0 ? "NO" : "YES";
+        }
+
         /// <summary>
         /// //////////////////////////////////////////////
         /// </summary>
         /// <param name="args"></param>
         static void Main(string[] args)
         {
+            string bal = isBalanced("{{}("); // "YES"
+            //string bal = isBalanced("{[(])}"); // "NO"
             stackManipulation(new string[] { "1 97","2","1 20","2","1 26","1 20","2","3","1 91","3" }); // 26 91
             //int stepsToKill010 = beautifulBinaryString("0101010"); // 2
             //int angrmCount = theLoveLetterMystery("abcd"); // 4
@@ -820,7 +843,6 @@ namespace HackerRank
             long res = arrayManipulation(len, queries); // 8628
             Console.WriteLine(res);
             Console.ReadKey();
-
         }
         // Complete the hourglassSum function below.
         //static int hourglassSum(int[][] arr)
