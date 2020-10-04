@@ -738,16 +738,10 @@ namespace HackerRank
             Stack<char> st = new Stack<char>();
             foreach (char c in s)
             {
-                if (opnBrkts.IndexOf(c) > -1)
-                {
+                if (opnBrkts.Contains(c))
                     st.Push(c);
-                }
-                else
-                {
-                    char clsBracket = st.Count() > 0 ? st.Pop() : '\0';
-                    if (pairs[c] != clsBracket)
-                        return "NO";
-                }
+                else if (st.Count() == 0 || pairs[c] != st.Pop())
+                    return "NO";
             }
             return st.Count() > 0 ? "NO" : "YES";
         }
