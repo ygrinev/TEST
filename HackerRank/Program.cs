@@ -746,6 +746,21 @@ namespace HackerRank
             return st.Count() > 0 ? "NO" : "YES";
         }
 
+        public static int equalStacks(List<int> h1, List<int> h2, List<int> h3) // remove min blocks from 3 columns to equalize
+        {
+            int hh1 = h1.Sum(), hh2 = h2.Sum(), hh3 = h3.Sum();
+            int i1 = 0, i2 = 0, i3 = 0, len1 = h1.Count(), len2 = h2.Count(), len3 = h3.Count();
+            while (i1 < len1 || i2 < len2 || i3 < len3)
+            {
+                while (hh2 > hh1 && i2 < len2) hh2 -= h2.ElementAt(i2++);
+                while (hh3 > hh1 && i3 < len3) hh3 -= h3.ElementAt(i3++);
+                int min = Math.Min(hh2, hh3);
+                if (hh1 == min) return min;
+                while (hh1 > min && i1 < len1) hh1 -= h1.ElementAt(i1++);
+            }
+            return 0;
+        }
+
         /// <summary>
         /// //////////////////////////////////////////////
         /// </summary>
