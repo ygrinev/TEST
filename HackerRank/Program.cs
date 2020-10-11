@@ -761,12 +761,239 @@ namespace HackerRank
             return 0;
         }
 
+        public class EditItem
+        {
+            public int startIdx;
+            public int delta;
+            public string addStr;
+        }
+
+        public static void editAttribute()
+        {
+            //int nCmds = int.Parse(Console.ReadLine());
+            //int rmv = 0;
+            //Stack<int> lens = new Stack<int>(); lens.Push(0);// lenghts history
+            //Stack<string> adds = new Stack<string>(); // rmv history to append later upon undo
+            //StringBuilder sb = new StringBuilder(); // current string
+            int curLen = 0;
+            Stack<EditItem> st = new Stack<EditItem>();
+            //for (int i = 0; i < nCmds; i++)
+            foreach (string s in new string[] {
+"1 zsfncpxdzl",
+"3 4",
+"3 6",
+"2 1",
+"3 7",
+"3 2",
+"4",
+"2 4",
+"2 6",
+"4",
+"4",
+"1 l",
+"1 hpe",
+"3 6",
+"2 7",
+"4",
+"3 6",
+"4",
+"3 6",
+"1 zipsqagri",
+"1 vuqxstnj",
+"4",
+"3 13",
+"4",
+"3 10",
+"3 6",
+"1 uzdpy",
+"1 bupqp",
+"1 kn",
+"2 6",
+"3 8",
+"1 iiuvfbn",
+"4",
+"2 1",
+"2 12",
+"4",
+"3 7",
+"4",
+"2 9",
+"3 1",
+"1 axbhx",
+"1 wovbfyvt",
+"3 11",
+"3 7",
+"3 2",
+"4",
+"1 tjmqp",
+"4",
+"2 6",
+"3 4"
+            }) // 
+            // foreach (string s in new string[] { "1 lchbfcjtfpsmjrqsdgci", "3 19", "1 cpcvixlm", "1 apdjgjydvpbpvyiy", "2 29", "4","4","3 9", "4","4"}) // c f
+            {
+                switch (s[0])
+                {
+                    case '1':
+                        st.Push(new EditItem { startIdx = curLen, delta = s.Length - 2, addStr = s.Substring(2) });
+                        curLen += st.Peek().delta;
+                        break;
+                    case '2':
+                        st.Push(new EditItem { startIdx = curLen, delta = int.Parse(s.Substring(2)) });
+                        curLen -= st.Peek().delta;
+                        break;
+                    case '3':
+                        int idx = int.Parse(s.Substring(2)) - 1;
+                        EditItem item = st.First(it => it.addStr != null && it.startIdx <= idx && it.startIdx + it.delta >= idx);
+                        Console.WriteLine(item.addStr[idx - item.startIdx]);
+                        break;
+                    case '4':
+                        if(st.Count > 0)
+                        {
+                            EditItem it = st.Pop();
+                            curLen += it.addStr == null ? it.delta : -it.delta;
+                        }
+                        break;
+                }
+                //string[] pair = s.Split(' ');
+                //string[] pair = Console.ReadLine().Split(' ');
+
+                //    switch (pair[0])
+                //    {
+                //        case "1":
+                //            if (rmv > 0)
+                //            {
+                //                sb.Remove(sb.Length - rmv, rmv);
+                //                rmv = 0;
+                //            }
+                //            sb.Append(pair[1]);
+                //            lens.Push(curLen = sb.Length);
+                //            break;
+                //        case "2":
+                //            int rmvDelta = int.Parse(pair[1]);
+                //            curLen -= rmvDelta;
+                //            rmv += rmvDelta;
+                //            lens.Push(curLen); // after removal
+                //            adds.Push(sb.ToString(curLen, rmvDelta));
+                //            break;
+                //        case "3":
+                //            Console.WriteLine(sb[int.Parse(pair[1]) - 1]);
+                //            break;
+                //        case "4":
+                //            int newLen = lens.Pop();
+                //            while (curLen == newLen) newLen = lens.Pop();
+                //            if(newLen > curLen)
+                //            {
+                //                if (rmv > 0)
+                //                {
+                //                    sb.Remove(sb.Length - rmv, rmv);
+                //                    rmv = 0;
+                //                }
+                //                sb.Append(adds.Pop());
+                //            }
+                //            else
+                //            {
+                //                rmv += curLen - newLen;
+                //            }
+                //            lens.Push(curLen = newLen);
+                //            break;
+                //    }
+            }
+        }
+
+        static void simpleTextEditor() // to improve speed - use TextWriter for output
+        {
+            int nCmds = int.Parse(Console.ReadLine()), curLen = 0;
+            Stack<EditItem> st = new Stack<EditItem>();
+            for (int i = 0; i < nCmds; i++)
+            {
+                string s = Console.ReadLine();
+
+                switch (s[0])
+                {
+                    case '1':
+                        st.Push(new EditItem { startIdx = curLen, delta = s.Length - 2, addStr = s.Substring(2) });
+                        curLen += st.Peek().delta;
+                        break;
+                    case '2':
+                        st.Push(new EditItem { startIdx = curLen, delta = int.Parse(s.Substring(2)) });
+                        curLen -= st.Peek().delta;
+                        break;
+                    case '3':
+                        int idx = int.Parse(s.Substring(2)) - 1;
+                        EditItem item = st.First(it => it.addStr != null && it.startIdx <= idx && it.startIdx + it.delta >= idx);
+                        Console.WriteLine(item.addStr[idx - item.startIdx]);
+                        break;
+                    case '4':
+                        if (st.Count > 0)
+                        {
+                            EditItem it = st.Pop();
+                            curLen += it.addStr == null ? it.delta : -it.delta;
+                        }
+                        break;
+                }
+            }
+        }
+
+        private static int getNextPrime(int prime)
+        {
+            bool status = false;
+            while(!status)
+            {
+                prime++;
+                status = true;
+                int topDiv = (int)Math.Floor(Math.Sqrt(prime));
+                for (int i = 2; status && i <= topDiv; i++)
+                {
+                    if (prime % i == 0)
+                        status = false;
+                }
+            }
+            return prime;
+        }
+
+        static int[] waiter(int[] number, int q) // using q conceq primes move plates from init pile to B1, B2, ...Bq piles and Aq leftover pile
+        {
+            int prime = 2; // the very 1st prime
+            List<int> src = number.ToList();
+            List<List<int>> dest = new List<List<int>>();
+            List<int> trgA = new List<int>();
+            while( q-- > 0 && src.Count > 0)
+            {
+                src.Reverse();
+                List<int> trgB = new List<int>();
+                foreach(int i in src)
+                {
+                    (i % prime == 0 ? trgB : trgA).Add(i);
+                }
+                if (trgB.Count > 0)
+                {
+                    trgB.Reverse();
+                    dest.Add(trgB);
+                }
+                src.Clear();
+                src.AddRange(trgA);
+                trgA.Clear();
+                prime = getNextPrime(prime);
+            }
+            if (src.Count > 0)
+            {
+                src.Reverse();
+                dest.Add(src);
+            }
+            return dest.SelectMany(el=>el).ToArray();
+        }
+
+
         /// <summary>
         /// //////////////////////////////////////////////
         /// </summary>
         /// <param name="args"></param>
         static void Main(string[] args)
         {
+            int[] waiterPlates = waiter(new int[] { 3,4,7,6,5}, 1); // 4 6 3 7 5
+            //int[] waiterPlates = waiter(new int[] { 3,3,4,4,9}, 2); // 4 4 9 3 3
+            editAttribute();
             string bal = isBalanced("{{}("); // "YES"
             //string bal = isBalanced("{[(])}"); // "NO"
             stackManipulation(new string[] { "1 97","2","1 20","2","1 26","1 20","2","3","1 91","3" }); // 26 91
