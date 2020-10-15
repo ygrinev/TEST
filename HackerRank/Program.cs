@@ -985,12 +985,74 @@ namespace HackerRank
         }
 
 
+        static int truckTour(int[][] petrolpumps)
+        {
+            int n = petrolpumps.Length;
+            for (int i = 0; i < n; i++)
+            {
+                if (petrolpumps[i][0] - petrolpumps[i][1] < 0) continue;
+                long fuel = 0;
+                for (int j = i; j - i < n && fuel >= 0; j++)
+                {
+                    int k = j % n;
+                    fuel += (long)petrolpumps[k][0] - (long)petrolpumps[k][1];
+                }
+                if (fuel >= 0) return i;
+            }
+            return -1;
+        }
+
+        static int GetMinOfMax(int[] a, int d)
+        {
+            IEnumerable<int> segm1 = a.Take(d);
+            int min = segm1.Max();
+            int idx = segm1.Select((e,i)=>new int[] { e,i} ).Last(el=>el[0] == min)[1], idxNext = 0;
+            for (int i = idx+1; i <= a.Length - d; i++)
+            {
+                int max = a[i];
+                idx = idxNext = i;
+                // find max for the next d-interval
+                for (int j = i + 1; j < i + d; j++)
+                {
+                    if (a[j] >= max)
+                    {
+                        idx = j;
+                        max = a[j];
+                    }
+                    if (a[j] >= min)
+                    {
+                        idxNext = j;
+                    }
+                }
+                if (min > max)
+                {
+                    min = max;
+                    i = idx;
+                }
+                else
+                {
+                    i = idxNext;
+                }
+            }
+            return min;
+        }
+
+        static int[] solveMinOfMax(int[] arr, int[] queries)
+        {
+            // return queries.Select(d=>arr.Select((e,i) => {return i <= arr.Length - d ? arr.Skip(i).Take(d).Max() : int.MaxValue;}).Min()).ToArray();
+            return queries.Select(q => GetMinOfMax(arr, q)).ToArray();
+        }
+
         /// <summary>
         /// //////////////////////////////////////////////
         /// </summary>
         /// <param name="args"></param>
         static void Main(string[] args)
         {
+            int[] minMax = solveMinOfMax(MinMaxData.arr, MinMaxData.segm);
+            //int[] minMax = solveMinOfMax(new int[] { 33, 11, 44, 11, 55 }, new int[] { 1, 2, 3, 4, 5 }); // 11 33 44 44 55
+            int pumpIdx = truckTour(PumpData.Data); // 573
+            //int pumpIdx = truckTour(new int[][] { new int[] { 1, 5 }, new int[] { 10, 3 }, new int[] { 3, 4 } }); // 1
             int[] waiterPlates = waiter(new int[] { 3,4,7,6,5}, 1); // 4 6 3 7 5
             //int[] waiterPlates = waiter(new int[] { 3,3,4,4,9}, 2); // 4 4 9 3 3
             editAttribute();
