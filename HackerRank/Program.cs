@@ -1043,12 +1043,44 @@ namespace HackerRank
             return queries.Select(q => GetMinOfMax(arr, q)).ToArray();
         }
 
+        static int ProcessHeapOp(string s, ref int min, ref List<int> src, ref List<int> res)
+        {
+            switch(s[0])
+            {
+                case '1':
+                    int n = int.Parse(s.Split(' ')[1]);
+                    src.Add(n);
+                    if (n < min) min = n;
+                    break;
+                case '2':
+                    int d = int.Parse(s.Split(' ')[1]);
+                    src.Remove(d);
+                    if (d <= min) min = src.Count < 1 ? int.MaxValue : src.Min();
+                    break;
+                case '3':
+                    res.Add(min);
+                    break;
+            }
+            return min;
+        }
+
+        static int[] HeapManipulation(string[] queries)
+        {
+            int min = int.MaxValue;
+            List<int> src = new List<int>();
+            List<int> res = new List<int>();
+            Array.ForEach(queries, q => ProcessHeapOp(q, ref min, ref src, ref res));
+            return res.ToArray();
+        }
+
         /// <summary>
         /// //////////////////////////////////////////////
         /// </summary>
         /// <param name="args"></param>
         static void Main(string[] args)
         {
+            int[] heapRes = HeapManipulation(new string[] {"1 3","1 65","2 65","3","2 3","1 7","3","1 -1","3","2 -1","3","2 7"}); // 3 7 -1 7
+            //int[] heapRes = HeapManipulation(new string[] {"1 4","1 9","3","2 4","3"}); // 4 9
             int[] minMax = solveMinOfMax(MinMaxData.arr, MinMaxData.segm);
             //int[] minMax = solveMinOfMax(new int[] { 33, 11, 44, 11, 55 }, new int[] { 1, 2, 3, 4, 5 }); // 11 33 44 44 55
             int pumpIdx = truckTour(PumpData.Data); // 573
