@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -58,9 +59,8 @@ namespace HackerRank
 
         static void minimumBribes(int[] q)
         {
-            long v = long.MinValue;
-         int n = q.Length;
-           Dictionary<int, Dictionary<int, long>> segs = new Dictionary<int, Dictionary<int, long>>{ { 0, new Dictionary<int, long>{ { n, 0L } } }};
+            int n = q.Length;
+            Dictionary<int, Dictionary<int, long>> segs = new Dictionary<int, Dictionary<int, long>>{ { 0, new Dictionary<int, long>{ { n, 0L } } }};
             var idx = segs.ElementAt(0);
             if (n < 2) return;
             Dictionary<int, int> cntr = new Dictionary<int, int>();
@@ -1073,12 +1073,81 @@ namespace HackerRank
             return res.ToArray();
         }
 
+        private static int Sweeten(ref bool finished, int k, ref int prev, int cur, int next, ref int count, ref Queue<int> ins)
+        {
+            if (finished || prev >= k)
+            {
+                finished = true;
+                return next;
+            }
+            count++;
+            // fill out prev [newCur, lastQ] and cur [next, lastQ]
+            int newCur = prev + 2 * cur;
+            int lastQ = ins.Count > 0 ? ins.Peek() : int.MaxValue;
+            cur = lastQ <= next ? ins.Dequeue() : next;
+            if (newCur > next) ins.Enqueue(newCur);
+            return cur;
+        }
+
+    static int cookies(int k, int[] A) // 
+    {
+        bool psbl = A.Any(n=>n>k);
+        int count = 0;
+        int[] a = A.Where(j=>j<k).OrderBy(n => n).ToArray();
+        if (a.Count() == 0) return 0;
+        if (a.Count() == 1) return a.First() >= k ? 0 : psbl ? count + 1 : -1;
+        Queue<int> q = new Queue<int>();
+
+        for(int i = 1; i < a.Length + 1; i++)
+        {
+            if (a[i - 1] < k)
+            {
+                count++;
+                bool isQMin = i > a.Length -1 ||q.Count > 0 && q.Peek() <= a[i];
+                int sum = a[i - 1] + (isQMin ? q.Dequeue() : a[i]) * 2; // new created element instead of 2 old
+                if (!psbl && sum >= k) psbl = true;
+                if(i >= a.Length || sum >= a[i-(isQMin ? 1 : 0)])
+                {
+                    q.Enqueue(sum);
+                    if (i < a.Length && !isQMin) i++;
+                }
+                else if(i < a.Length)
+                {
+                    if(sum >= k) return count;
+                    int delta = isQMin ? 1 : 0;
+                    a[i - delta] = sum;
+                    i -= delta;
+                }
+                if(i >= a.Length)
+                {
+                    if (q.Count < 1) return psbl ? count : -1;
+                    while(q.Count > 1)
+                    {
+                        int minEl = q.Dequeue();
+                        if(minEl >= k) return count;
+                        q.Enqueue(minEl + 2 * q.Dequeue());
+                        count++;
+                    }
+                    return q.Peek() >= k ? count : psbl ? count + 1 : -1;
+                }
+            }
+            else
+                return count;
+        }
+        return -1;
+    }
+
         /// <summary>
         /// //////////////////////////////////////////////
         /// </summary>
         /// <param name="args"></param>
         static void Main(string[] args)
         {
+            int cntSweets = cookies(105823341, Enumerable.Repeat(1, 100000).ToArray()); // 99999
+            //int cntSweets = cookies(1000, new int[] { 52, 96, 13, 37 }); // -1
+            //int cntSweets = cookies(7, new int[] { 1, 2, 3, 9, 10, 12 }); // 2
+            //int cntSweets = cookies(47245, new int[] { 3554, 2227, 8866, 9890, 212, 8669, 2423, 7651, 3878, 3379, 1419, 6134, 5767, 859, 
+            //                                           2848, 9309, 1449, 8408, 8041, 3367, 6676, 6382, 4136, 4871 }); // 20
             int[] heapRes = HeapManipulation(new string[] {"1 3","1 65","2 65","3","2 3","1 7","3","1 -1","3","2 -1","3","2 7"}); // 3 7 -1 7
             //int[] heapRes = HeapManipulation(new string[] {"1 4","1 9","3","2 4","3"}); // 4 9
             int[] minMax = solveMinOfMax(MinMaxData.arr, MinMaxData.segm);
