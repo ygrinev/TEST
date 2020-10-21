@@ -1089,53 +1089,104 @@ namespace HackerRank
             return cur;
         }
 
-    static int cookies(int k, int[] A) // 
-    {
-        bool psbl = A.Any(n=>n>k);
-        int count = 0;
-        int[] a = A.Where(j=>j<k).OrderBy(n => n).ToArray();
-        if (a.Count() == 0) return 0;
-        if (a.Count() == 1) return a.First() >= k ? 0 : psbl ? count + 1 : -1;
-        Queue<int> q = new Queue<int>();
-
-        for(int i = 1; i < a.Length + 1; i++)
+        static int cookies(int k, int[] A) // 
         {
-            if (a[i - 1] < k)
+            bool psbl = A.Any(n=>n>k);
+            int count = 0;
+            int[] a = A.Where(j=>j<k).OrderBy(n => n).ToArray();
+            if (a.Count() == 0) return 0;
+            if (a.Count() == 1) return a.First() >= k ? 0 : psbl ? count + 1 : -1;
+            Queue<int> q = new Queue<int>();
+
+            for(int i = 1; i < a.Length + 1; i++)
             {
-                count++;
-                bool isQMin = i > a.Length -1 ||q.Count > 0 && q.Peek() <= a[i];
-                int sum = a[i - 1] + (isQMin ? q.Dequeue() : a[i]) * 2; // new created element instead of 2 old
-                if (!psbl && sum >= k) psbl = true;
-                if(i >= a.Length || sum >= a[i-(isQMin ? 1 : 0)])
+                if (a[i - 1] < k)
                 {
-                    q.Enqueue(sum);
-                    if (i < a.Length && !isQMin) i++;
-                }
-                else if(i < a.Length)
-                {
-                    if(sum >= k) return count;
-                    int delta = isQMin ? 1 : 0;
-                    a[i - delta] = sum;
-                    i -= delta;
-                }
-                if(i >= a.Length)
-                {
-                    if (q.Count < 1) return psbl ? count : -1;
-                    while(q.Count > 1)
+                    count++;
+                    bool isQMin = i > a.Length -1 ||q.Count > 0 && q.Peek() <= a[i];
+                    int sum = a[i - 1] + (isQMin ? q.Dequeue() : a[i]) * 2; // new created element instead of 2 old
+                    if (!psbl && sum >= k) psbl = true;
+                    if(i >= a.Length || sum >= a[i-(isQMin ? 1 : 0)])
                     {
-                        int minEl = q.Dequeue();
-                        if(minEl >= k) return count;
-                        q.Enqueue(minEl + 2 * q.Dequeue());
-                        count++;
+                        q.Enqueue(sum);
+                        if (i < a.Length && !isQMin) i++;
                     }
-                    return q.Peek() >= k ? count : psbl ? count + 1 : -1;
+                    else if(i < a.Length)
+                    {
+                        if(sum >= k) return count;
+                        int delta = isQMin ? 1 : 0;
+                        a[i - delta] = sum;
+                        i -= delta;
+                    }
+                    if(i >= a.Length)
+                    {
+                        if (q.Count < 1) return psbl ? count : -1;
+                        while(q.Count > 1)
+                        {
+                            int minEl = q.Dequeue();
+                            if(minEl >= k) return count;
+                            q.Enqueue(minEl + 2 * q.Dequeue());
+                            count++;
+                        }
+                        return q.Peek() >= k ? count : psbl ? count + 1 : -1;
+                    }
                 }
+                else
+                    return count;
             }
-            else
-                return count;
+            return -1;
         }
-        return -1;
-    }
+
+        static int[] runningMedian(int[] a)
+        {
+            List<int> res = new List<int>();
+            //******************    OPTIMIZED WITH HEAPS    *****************
+            MinHeap<int> maxs = new MinHeap<int>();
+            MaxHeap<int> mins = new MaxHeap<int>();
+            for (int i = 0; i < a.Length; i++)
+            {
+                int k = a[i];
+                if (k > mins.GetMax())
+                {
+                    maxs.Add(k);
+                    if(maxs.GetSize() - mins.GetSize() > 1)
+                    {
+                        mins.Add(maxs.PopMin());
+                    }
+                }
+                else
+                {
+                    mins.Add(k);
+                    if(mins.GetSize() - maxs.GetSize() > 1)
+                    {
+                        maxs.Add(mins.PopMax());
+                    }
+                }
+                int minSz = mins.GetSize(), maxSz = maxs.GetSize();
+                int loMid = mins.GetMax(), hiMid = maxs.GetMin();
+                bool even = (loMid + hiMid) % 2 == 0;
+                res.Add(minSz > maxSz ? loMid : minSz < maxSz ? hiMid : (loMid + hiMid) /(even ? 2 : -2));
+            }
+
+            //******************  NOT OPTIMIZED BUT SHORT *******************
+            //List<int> sorted = new List<int>();
+            //int midIdx = 0;
+            //for (int i = 0; i < a.Length; i++)
+            //{
+            //    int k = a[i], mid = midIdx < 0 ? k : a[midIdx], len = i;
+            //    int insIdx = sorted.Where(n => n < k).Count();
+            //    if(insIdx < len) sorted.Insert(insIdx, k);
+            //    else sorted.Add(k);
+            //    if (len % 2 != 0) midIdx++;
+
+            //    mid = sorted[midIdx];
+            //    int mid_1 = midIdx < 1 ? mid : sorted[midIdx - 1];
+            //    bool even = midIdx > 0 && (mid + mid_1) % 2 == 0;
+            //    mid = (len + 1) % 2 != 0 ? mid : (mid + mid_1) / (even ? 2 : -2);
+            //    res.Add(mid);
+            //}
+            return res.ToArray();
+        }
 
         /// <summary>
         /// //////////////////////////////////////////////
@@ -1143,6 +1194,7 @@ namespace HackerRank
         /// <param name="args"></param>
         static void Main(string[] args)
         {
+            int[] med = runningMedian(new int[] { 12, 4, 5, 3, 8, 7 });
             int cntSweets = cookies(105823341, Enumerable.Repeat(1, 100000).ToArray()); // 99999
             //int cntSweets = cookies(1000, new int[] { 52, 96, 13, 37 }); // -1
             //int cntSweets = cookies(7, new int[] { 1, 2, 3, 9, 10, 12 }); // 2
