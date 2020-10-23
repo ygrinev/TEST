@@ -1188,12 +1188,34 @@ namespace HackerRank
             return res.ToArray();
         }
 
+        static int[] contacts(string[][] queries)
+        {
+            List<int> res = new List<int>();
+            SNode root = new SNode();
+            foreach(string[] cmd in queries)
+            {
+                switch(cmd[0])
+                {
+                    case "add":
+                        root.Add(cmd[1]);
+                        break;
+                    case "find":
+                        res.Add(root.FindNumOf(cmd[1]));
+                        break;
+                }
+            }
+            return res.ToArray();
+        }
+
         /// <summary>
         /// //////////////////////////////////////////////
         /// </summary>
         /// <param name="args"></param>
         static void Main(string[] args)
         {
+            int[] cntNames = contacts(new string[][] { new string[] { "add", "s" }, new string[] { "add", "ss" }, new string[] { "add", "sss" }, new string[] { "add", "ssss" }, new string[] { "add", "sssss" },
+                                        new string[] { "find", "s" }, new string[] { "find", "ss" }, new string[] { "find", "sss" }, new string[] { "find", "ssss" }, new string[] { "find", "sssss" }, new string[] { "find", "ssssss" } });
+            //int[] cntNames = contacts(new string[][] { new string[] { "add", "hack" }, new string[] { "add", "hackerrank" }, new string[] { "find", "hac" }, new string[] { "find", "hak" } });
             int[] med = runningMedian(new int[] { 12, 4, 5, 3, 8, 7 });
             int cntSweets = cookies(105823341, Enumerable.Repeat(1, 100000).ToArray()); // 99999
             //int cntSweets = cookies(1000, new int[] { 52, 96, 13, 37 }); // -1
