@@ -18,7 +18,7 @@ namespace HackerRank
             SNode node = children.FirstOrDefault(ch => ch.key[idx] == pattern[idx]);
             return node == null ? 0 : idx == pattern.Length - 1 ? node.size : node.FindNumOf(pattern);
         }
-        public bool Add(string newKey)
+        public bool Add(string newKey, ref bool hasPrefix)
         {
             size++;
             int idx = key.Length;
@@ -26,13 +26,14 @@ namespace HackerRank
             SNode child = children.FirstOrDefault(ch => ch.key[idx] == newKey[idx]);
             if(child != null)
             {
-                return isLevel ? false : child.Add(newKey);
+                if (child.children.Count() < 1) hasPrefix = true;
+                return isLevel ? !(hasPrefix = true) : child.Add(newKey, ref hasPrefix);
             }
             else
             {
                 SNode newNode = new SNode { key = newKey.Substring(0, idx + 1) };
                 children.Add(newNode);
-                return isLevel ? newNode.size++ == 0 : newNode.Add(newKey);
+                return isLevel ? newNode.size++ == 0 : newNode.Add(newKey, ref hasPrefix);
             }
         }
     }

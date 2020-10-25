@@ -1192,12 +1192,13 @@ namespace HackerRank
         {
             List<int> res = new List<int>();
             SNode root = new SNode();
+            bool pfx = false;
             foreach(string[] cmd in queries)
             {
                 switch(cmd[0])
                 {
                     case "add":
-                        root.Add(cmd[1]);
+                        root.Add(cmd[1], ref pfx);
                         break;
                     case "find":
                         res.Add(root.FindNumOf(cmd[1]));
@@ -1207,12 +1208,33 @@ namespace HackerRank
             return res.ToArray();
         }
 
+        static SNode noPfxSet;
+
+        static string NoSamePrefixSet(string[] a)
+        {
+            int count = 0;
+            foreach(string s in a)
+            {
+                string badStr = NoSamePrefixSetAdd(s, count++ == 0);
+                if (!string.IsNullOrEmpty(badStr))
+                    return badStr;
+            }
+            return "";
+        }
+        static string NoSamePrefixSetAdd(string s, bool start)
+        {
+            if (start) noPfxSet = new SNode();
+            bool hasPrefix = false;
+            return noPfxSet.Add(s, ref hasPrefix) && !hasPrefix ? "" : s;
+        }
+
         /// <summary>
         /// //////////////////////////////////////////////
         /// </summary>
         /// <param name="args"></param>
         static void Main(string[] args)
         {
+            string badSet = NoSamePrefixSet(new string[] { "aab", "defgab", "abcde", "aabcde", "cedaaa", "bbbbbbbbbb" , "jabjjjad" });
             int[] cntNames = contacts(new string[][] { new string[] { "add", "s" }, new string[] { "add", "ss" }, new string[] { "add", "sss" }, new string[] { "add", "ssss" }, new string[] { "add", "sssss" },
                                         new string[] { "find", "s" }, new string[] { "find", "ss" }, new string[] { "find", "sss" }, new string[] { "find", "ssss" }, new string[] { "find", "sssss" }, new string[] { "find", "ssssss" } });
             //int[] cntNames = contacts(new string[][] { new string[] { "add", "hack" }, new string[] { "add", "hackerrank" }, new string[] { "find", "hac" }, new string[] { "find", "hak" } });
