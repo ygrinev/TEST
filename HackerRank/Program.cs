@@ -1228,15 +1228,38 @@ namespace HackerRank
             return noPfxSet.Add(s, ref hasPrefix) && !hasPrefix ? "" : s;
         }
 
+    private static int[] getCommunitySizes(int n, string[] queries)
+    {
+        List<int> res = new List<int>();
+        PNode[] a = new PNode[n];
+        foreach (string q in queries)
+        {
+            switch (q[0])
+            {
+                case 'M':
+                    int[] pair = Array.ConvertAll(q.Substring(2).Split(' '), e => int.Parse(e));
+                    PNode.merge(pair[0] - 1, pair[1] - 1, a);
+                    break;
+                case 'Q':
+                    res.Add(a[int.Parse(q.Substring(2)) - 1]?.getTopParent()?.count ?? 1);
+                    break;
+            }
+        }
+        return res.ToArray();
+    }
+
         /// <summary>
         /// //////////////////////////////////////////////
         /// </summary>
         /// <param name="args"></param>
         static void Main(string[] args)
         {
-            string badSet = NoSamePrefixSet(new string[] { "aab", "defgab", "abcde", "aabcde", "cedaaa", "bbbbbbbbbb" , "jabjjjad" });
+            int[] szCmnty = getCommunitySizes(3, new string[] { "Q 696","M 308 23","M 737 895","Q 928","Q 951","M 724 263",
+                "Q 173","Q 425","M 491 13","Q 377","M 820 946","M 911 25","M 606 950","Q 324","Q 914","M 561 2","M 863 242","Q 504"}); // 1 1 1 1 1 1 1 1 1
+            //int[] szCmnty = getCommunitySizes(3, new string[] { "Q 1","M 1 2","Q 2","M 2 3","Q 3","Q 2"}); // 1 2 3 3
+            string badSet = NoSamePrefixSet(new string[] { "aab", "defgab", "abcde", "aabcde", "cedaaa", "bbbbbbbbbb" , "jabjjjad" }); // aabcde
             int[] cntNames = contacts(new string[][] { new string[] { "add", "s" }, new string[] { "add", "ss" }, new string[] { "add", "sss" }, new string[] { "add", "ssss" }, new string[] { "add", "sssss" },
-                                        new string[] { "find", "s" }, new string[] { "find", "ss" }, new string[] { "find", "sss" }, new string[] { "find", "ssss" }, new string[] { "find", "sssss" }, new string[] { "find", "ssssss" } });
+                                        new string[] { "find", "s" }, new string[] { "find", "ss" }, new string[] { "find", "sss" }, new string[] { "find", "ssss" }, new string[] { "find", "sssss" }, new string[] { "find", "ssssss" } }); // 1 2 3 4 5 0
             //int[] cntNames = contacts(new string[][] { new string[] { "add", "hack" }, new string[] { "add", "hackerrank" }, new string[] { "find", "hac" }, new string[] { "find", "hak" } });
             int[] med = runningMedian(new int[] { 12, 4, 5, 3, 8, 7 });
             int cntSweets = cookies(105823341, Enumerable.Repeat(1, 100000).ToArray()); // 99999
@@ -1353,24 +1376,21 @@ namespace HackerRank
 
             int q = Convert.ToInt32(nq[1]);
 
-            int[] arr = Array.ConvertAll(Console.ReadLine().Split(' '), arrTemp => Convert.ToInt32(arrTemp))
-            ;
-
-            int[] queries = new int[q];
+            string[] queries = new string[q];
 
             for (int queriesItr = 0; queriesItr < q; queriesItr++)
             {
-                int queriesItem = Convert.ToInt32(Console.ReadLine());
-                queries[queriesItr] = queriesItem;
+                queries[queriesItr] = Console.ReadLine();
             }
 
-            int[] result = new int[] { }; // solve(arr, queries);
+            int[] result = getCommunitySizes(n, queries); // new int[] { }; // solve(arr, queries);
 
             textWriter.WriteLine(string.Join("\n", result));
 
             textWriter.Flush();
             textWriter.Close();
         }
+
         // ********************************************************************************************************
         // ********************************************************************************************************
         // ********************************************************************************************************
@@ -1486,7 +1506,7 @@ namespace HackerRank
     class Student : Person
     {
         readonly char[] symbols = "OEAPDT".ToCharArray();
-        private int[] testScores;
+        private int[] testScores = new int[0];
         readonly int[,] rules = new int[,] {
             { 90, 101},
             { 80, 90},
@@ -1503,9 +1523,6 @@ namespace HackerRank
     }
     class Difference
     {
-        private int[] elements;
-        public int maximumDifference;
-
         public int computeDifference(int[] a)
         {
             return a.Max() - a.Min();
