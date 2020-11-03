@@ -22,25 +22,57 @@ namespace HackerRank
         public static PNode merge(int i, int j, TNode<PNode> a)
         {
             if (i == j) return null;
-            if(i > j) // order: i < j
+            if (i > j) // order: i < j
             {
                 int tmp = i; i = j; j = tmp;
             }
 
-            bool hasi = false, hasj = false;
-            foreach(int k in new int[] { i, j }) // evaluate
+            bool hask = false;
+            foreach (int k in new int[] { i, j }) // evaluate
             {
                 TNode<PNode> akT = a[k];
                 PNode ak = akT?.data;
                 if (akT == null)
                 {
-                    a.AddTNode(k, ref hasi).data = new PNode() { key = k };
+                    a.AddTNode(k, ref hask).data = new PNode() { key = k };
                 }
-                else if (ak.key == 0) 
+                else if (ak.key == 0)
                     ak.key = k;
             }
             PNode top1 = a[i].data.getTopParent(),
                   top2 = a[j].data.getTopParent();
+            if (!top1.Equals(top2))
+            {
+                //*******************************************************************
+                if (top2.level > top1.level)
+                {
+                    PNode tmp = top2;
+                    top2 = top1;
+                    top1 = tmp;
+                }
+                top2.parent = top1;
+                top1.key = Math.Min(top1.key, top2.key);
+                top1.count += top2.count;
+                if (top1.level == top2.level) top1.level++;
+                return top1;
+            }
+            return null;
+        }
+
+        public static PNode merge(int i, int j, PNode[] a)
+        {
+            if (i == j) return null;
+            if (i > j) // order: i < j
+            {
+                int tmp = i; i = j; j = tmp;
+            }
+
+            foreach (int k in new int[] { i, j }) // evaluate
+            {
+                PNode ak = a[k]??(a[k] = new PNode() { key = k });
+            }
+            PNode top1 = a[i].getTopParent(),
+                  top2 = a[j].getTopParent();
             if (!top1.Equals(top2))
             {
                 //*******************************************************************

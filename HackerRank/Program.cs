@@ -1228,7 +1228,53 @@ namespace HackerRank
             return noPfxSet.Add(s, ref hasPrefix) && !hasPrefix ? "" : s;
         }
 
+        private static int getRoot(int kk, int[] root, out int count)
+        {
+            count = 0;
+            while (root[kk] != 0 && count++ < root.Count())
+            {
+                kk = root[kk];
+            }
+            return count <= root.Count() ? kk : -1;
+        }
+
         private static int[] getCommunitySizes(int n, string[] queries)
+        {
+            List<int> res = new List<int>();
+            int[] root = new int[n + 1];
+            int[] count = new int[n + 1];
+            foreach (string q in queries)
+            {
+                switch (q[0])
+                {
+                    case 'M':
+                        string[] s = q.Substring(2).Split(' ');
+                        int b = int.Parse(s[0]), g = int.Parse(s[1]);
+                        if (b == g) continue;
+                        int c1, c2, rb = getRoot(b, root, out c1), rg = getRoot(g, root, out c2);
+                        if (rb == rg) continue;
+                        if (rb > rg)
+                        {
+                            int tmp = rb;
+                            rb = rg;
+                            rg = tmp;
+                        }
+                        root[rb] = rg;
+                        if (count[rb] == 0) count[rb] = 1;
+                        if (count[rg] == 0) count[rg] = 1;
+                        count[rg] += count[rb];
+                        count[rb] = -1;
+                        break;
+                    case 'Q':
+                        int c3, cnt = count[getRoot(int.Parse(q.Substring(2)), root, out c3)];
+                        res.Add(cnt == 0 ? 1 : cnt);
+                        break;
+                }
+            }
+            return res.ToArray();
+        }
+
+        private static int[] getCommunitySizesOld(int n, string[] queries)
         {
             List<int> res = new List<int>();
             TNode<PNode> a = new TNode<PNode>();
@@ -1250,13 +1296,49 @@ namespace HackerRank
 
         private static int[] minMaxSubGraph(int[][] p)
         {
-            TNode<PNode> a = new TNode<PNode>();
+            int n = p.Count() * 2 + 1;
+            int[] root = new int[n];
+            int[] count = new int[n];
+            for (int i = 1; i < n; i++)
+            {
+                root[i] = i;
+                count[i] = 1;
+            }
+
+            foreach (int[] cmd in p)
+            {
+                int b = cmd[0], g = cmd[1], rb = b, rg = g, cnt = 0;
+                if (b == g) continue;
+                foreach(int k in new int[] { rb, rg })
+                {
+                    int kk = k;
+                    while (root[kk] != kk)
+                    {
+                        kk = root[kk];
+                    }
+                    if (cnt == 0) rb = kk;
+                    else rg = kk;
+                    cnt++;
+                }
+                if (rg == rb) continue;
+                root[rb] = rg;
+                count[rg] += count[rb];
+                count[rb] = 0;
+            }
+
+            return new int[2] { count.Where(e => e > 1).Min(), count.Max() };
+        }
+
+        private static int[] minMaxSubGraphOld(int[][] p)
+        {
+            PNode[] a = new PNode[p.Count() * 2 + 2];
+            //TNode<PNode> a = new TNode<PNode>();
             MinHeap<PNode> mins = new MinHeap<PNode>();
             int max = int.MinValue;
-           
-            foreach(int[]cmd in p)
+
+            foreach (int[] cmd in p)
             {
-                int a0 = a[cmd[0]]?.data?.getTopParent()?.count??1, a1 = a[cmd[1]]?.data.getTopParent()?.count??1; // level ?
+                        int a0 = a[cmd[0]]?.getTopParent()?.count??1, a1 = a[cmd[1]]?.getTopParent()?.count??1; // level ?
                 PNode   p0 = a0 < 2 || !mins.Find(new PNode { count = a0 }, out p0) ? null : p0, 
                         p1 = a0 == a1 ? p0 : a1 < 2 || !mins.Find(new PNode { count = a1 }, out p1) ? null : p1;
                 PNode merged = PNode.merge(cmd[0], cmd[1], a);
@@ -1289,8 +1371,9 @@ namespace HackerRank
         /// <param name="args"></param>
         static void Main(string[] args)
         {
-            int[] minMaxPair = minMaxSubGraph(GraphData.data);
-            //int[] minMaxPair = minMaxSubGraph(new int[][] { new int[] { 1, 6 }, new int[] { 2, 7 }, new int[] { 3, 8 }, new int[] { 4, 9 }, new int[] { 2, 6 } });
+            int[] minMaxPair = minMaxSubGraph(GraphData.data); // 11 25
+            //int[] minMaxPair = minMaxSubGraph(new int[][] { new int[] { 1, 6 }, new int[] { 2, 7 }, new int[] { 3, 8 }, new int[] { 4, 9 }, new int[] { 2, 6 } }); // 2 4
+            //int[] minMaxPair = minMaxSubGraph(new int[][] { new int[] { 1, 17 }, new int[] { 5, 13 }, new int[] { 7, 12 }, new int[] { 5, 17 }, new int[] { 5, 12 }, new int[] { 2, 17 }, new int[] { 1, 18 }, new int[] { 8, 13 }, new int[] { 2, 15 }, new int[] { 5, 20 } }); // 11 11
             int[] szCmnty = getCommunitySizes(3, new string[] { "Q 696","M 308 23","M 737 895","Q 928","Q 951","M 724 263",
                 "Q 173","Q 425","M 491 13","Q 377","M 820 946","M 911 25","M 606 950","Q 324","Q 914","M 561 2","M 863 242","Q 504"}); // 1 1 1 1 1 1 1 1 1
             //int[] szCmnty = getCommunitySizes(3, new string[] { "Q 1","M 1 2","Q 2","M 2 3","Q 3","Q 2"}); // 1 2 3 3
@@ -1406,6 +1489,7 @@ namespace HackerRank
         static void TextWriterCode(string[] args)
         {
             TextWriter textWriter = new StreamWriter(@System.Environment.GetEnvironmentVariable("OUTPUT_PATH"), true);
+            TextReader textReader = Console.In;
 
             string[] nq = Console.ReadLine().Split(' ');
 
@@ -1413,14 +1497,9 @@ namespace HackerRank
 
             int q = Convert.ToInt32(nq[1]);
 
-            string[] queries = new string[q];
+            string[] queries = textReader.ReadToEnd().Split('\n');
 
-            for (int queriesItr = 0; queriesItr < q; queriesItr++)
-            {
-                queries[queriesItr] = Console.ReadLine();
-            }
-
-            int[] result = getCommunitySizes(n, queries); // new int[] { }; // solve(arr, queries);
+            int[] result = getCommunitySizes(n, queries); //new int[] { }; // solve(arr, queries);
 
             textWriter.WriteLine(string.Join("\n", result));
 
