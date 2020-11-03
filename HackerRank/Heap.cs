@@ -20,6 +20,31 @@ namespace HackerRank
             return elements.Count > 0 ? elements[0] : default(T);
         }
 
+        public bool Find(T t, out T res, int index = 0)
+        {
+            res = default;
+            if (index < 0 || index > elements.Count() - 1) return false;
+            T found = elements[index];
+            if (t.CompareTo(found) == 0)
+            {
+                res = found;
+                return true;
+            }
+            var left = GetLeft(index);
+            var right = GetRight(index);
+
+            if (left >= GetSize() || elements[left].CompareTo(t) > 0)
+            {
+                left = -1;
+            }
+
+            if (right >= GetSize() || elements[right].CompareTo(t) > 0)
+            {
+                right = -1;
+            }
+            return Find(t, out res, left) ? true : Find(t, out res, right);
+        }
+
         public void Add(T item)
         {
             elements.Add(item);

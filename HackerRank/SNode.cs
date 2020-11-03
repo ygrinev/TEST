@@ -18,6 +18,13 @@ namespace HackerRank
             SNode node = children.FirstOrDefault(ch => ch.key[idx] == pattern[idx]);
             return node == null ? 0 : idx == pattern.Length - 1 ? node.size : node.FindNumOf(pattern);
         }
+        protected virtual SNode getAt(string s)
+        {
+            int idx = key.Length;
+            if (children.Count < 1) return null;
+            SNode node = children.FirstOrDefault(ch => ch.key[idx] == s[idx]);
+            return node == null ? null : idx == s.Length - 1 ? node : node.getAt(s);
+        }
         public bool Add(string newKey, ref bool hasPrefix)
         {
             size++;

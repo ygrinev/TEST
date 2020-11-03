@@ -1228,25 +1228,60 @@ namespace HackerRank
             return noPfxSet.Add(s, ref hasPrefix) && !hasPrefix ? "" : s;
         }
 
-    private static int[] getCommunitySizes(int n, string[] queries)
-    {
-        List<int> res = new List<int>();
-        PNode[] a = new PNode[n];
-        foreach (string q in queries)
+        private static int[] getCommunitySizes(int n, string[] queries)
         {
-            switch (q[0])
+            List<int> res = new List<int>();
+            TNode<PNode> a = new TNode<PNode>();
+            foreach (string q in queries)
             {
-                case 'M':
-                    int[] pair = Array.ConvertAll(q.Substring(2).Split(' '), e => int.Parse(e));
-                    PNode.merge(pair[0] - 1, pair[1] - 1, a);
-                    break;
-                case 'Q':
-                    res.Add(a[int.Parse(q.Substring(2)) - 1]?.getTopParent()?.count ?? 1);
-                    break;
+                switch (q[0])
+                {
+                    case 'M':
+                        int[] pair = Array.ConvertAll(q.Substring(2).Split(' '), e => int.Parse(e));
+                        PNode.merge(pair[0] - 1, pair[1] - 1, a);
+                        break;
+                    case 'Q':
+                        res.Add(a[int.Parse(q.Substring(2)) - 1]?.data.getTopParent()?.count ?? 1);
+                        break;
+                }
             }
+            return res.ToArray();
         }
-        return res.ToArray();
-    }
+
+        private static int[] minMaxSubGraph(int[][] p)
+        {
+            TNode<PNode> a = new TNode<PNode>();
+            MinHeap<PNode> mins = new MinHeap<PNode>();
+            int max = int.MinValue;
+           
+            foreach(int[]cmd in p)
+            {
+                int a0 = a[cmd[0]]?.data?.getTopParent()?.count??1, a1 = a[cmd[1]]?.data.getTopParent()?.count??1; // level ?
+                PNode   p0 = a0 < 2 || !mins.Find(new PNode { count = a0 }, out p0) ? null : p0, 
+                        p1 = a0 == a1 ? p0 : a1 < 2 || !mins.Find(new PNode { count = a1 }, out p1) ? null : p1;
+                PNode merged = PNode.merge(cmd[0], cmd[1], a);
+                if (merged == null)
+                    continue;
+                if (merged.count > max) max = merged.count; // max
+                PNode found = mins.Find(merged, out found) ? found : null;
+
+                if(p0 != null)
+                {
+                    p0.level = Math.Max(p0.level - 1, 0);
+                }
+                if(p1 != null)
+                {
+                    p1.level = Math.Max(p1.level - 1, 0);
+                }
+                if (found == null)
+                    mins.Add(new PNode { count = merged.count, level = 1 });
+                else
+                    found.level++;
+            }
+            while (mins.GetMin().level < 1)
+                mins.PopMin();
+            return new int[] { mins.GetMin().count, max };
+        }
 
         /// <summary>
         /// //////////////////////////////////////////////
@@ -1254,6 +1289,8 @@ namespace HackerRank
         /// <param name="args"></param>
         static void Main(string[] args)
         {
+            int[] minMaxPair = minMaxSubGraph(GraphData.data);
+            //int[] minMaxPair = minMaxSubGraph(new int[][] { new int[] { 1, 6 }, new int[] { 2, 7 }, new int[] { 3, 8 }, new int[] { 4, 9 }, new int[] { 2, 6 } });
             int[] szCmnty = getCommunitySizes(3, new string[] { "Q 696","M 308 23","M 737 895","Q 928","Q 951","M 724 263",
                 "Q 173","Q 425","M 491 13","Q 377","M 820 946","M 911 25","M 606 950","Q 324","Q 914","M 561 2","M 863 242","Q 504"}); // 1 1 1 1 1 1 1 1 1
             //int[] szCmnty = getCommunitySizes(3, new string[] { "Q 1","M 1 2","Q 2","M 2 3","Q 3","Q 2"}); // 1 2 3 3

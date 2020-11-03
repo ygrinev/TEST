@@ -6,61 +6,73 @@ using System.Threading.Tasks;
 
 namespace HackerRank
 {
-    public class PNode
+    public class PNode : IComparable
     {
-    public PNode parent;
-    public int count = 1;
-    int key = 0;
-    int level = 0;
-    public PNode getTopParent()
-    {
-        PNode tmp = this.parent;
-        while (tmp?.parent != null)
-            tmp = tmp.parent;
-        return tmp;  
-    }
-    public static void merge(int i, int j, PNode[] a)
-    {
-        if (i == j) return;
-        PNode top1 = (a[i] ?? (a[i] = new PNode() { key = i})).getTopParent(), 
-                top2 = (a[j] ?? (a[j] = new PNode() { key = j})).getTopParent();
-        if (top1 == null && top2 == null)
+        public PNode parent;
+        public int count = 1;
+        int key;
+        public int level = 0;
+        public virtual PNode getTopParent()
         {
-            int i1 = Math.Min(i, j);
-            int i2 = i > i1 ? i : j;
-            a[i1].count = 2;
-            a[i1].level = 1;
-            a[i2].parent = a[i1];
+            PNode tmp = this;
+            while (tmp.parent != null)
+                tmp = tmp.parent;
+            return tmp;  
         }
-        else if (top1 == null || top2 == null)
+        public static PNode merge(int i, int j, TNode<PNode> a)
         {
-            (top1 ?? top2).count++;
-            (top1 ?? top2).key = top1 == null ? Math.Min(i, top2.key) : Math.Min(j, top1.key);
-            a[top1 == null ? i : j].parent = top1??top2;
-        }
-        else if (!top1.Equals(top2))
-        {
-            //*******************************************************************
-            if(top2.level > top1.level)
+            if (i == j) return null;
+            if(i > j) // order: i < j
             {
-                PNode tmp = top2;
-                top2 = top1;
-                top1 = tmp;
+                int tmp = i; i = j; j = tmp;
             }
-            top2.parent = top1;
-            top1.key = Math.Min(top1.key, top2.key);
-            top1.count += top2.count;
-            if (top1.level == top2.level) top1.level++;
-        }
-    }
-    public override bool Equals(object obj)
-    {
-        return key == ((PNode)obj).key;
-    }
 
-    public override int GetHashCode()
-    {
-        return 0;
-    }
+            bool hasi = false, hasj = false;
+            foreach(int k in new int[] { i, j }) // evaluate
+            {
+                TNode<PNode> akT = a[k];
+                PNode ak = akT?.data;
+                if (akT == null)
+                {
+                    a.AddTNode(k, ref hasi).data = new PNode() { key = k };
+                }
+                else if (ak.key == 0) 
+                    ak.key = k;
+            }
+            PNode top1 = a[i].data.getTopParent(),
+                  top2 = a[j].data.getTopParent();
+            if (!top1.Equals(top2))
+            {
+                //*******************************************************************
+                if (top2.level > top1.level)
+                {
+                    PNode tmp = top2;
+                    top2 = top1;
+                    top1 = tmp;
+                }
+                top2.parent = top1;
+                top1.key = Math.Min(top1.key, top2.key);
+                top1.count += top2.count;
+                if (top1.level == top2.level) top1.level++;
+                return top1;
+            }
+            return null;
+        }
+
+        public override bool Equals(object obj)
+        {
+            return key == ((PNode)obj).key;
+        }
+
+        public override int GetHashCode()
+        {
+            return 0;
+        }
+
+        public int CompareTo(object obj)
+        {
+            int count2 = ((PNode)obj)?.count??1;
+            return count > count2 ? 1 : count < count2 ? -1 : 0;
+        }
     }
 }
