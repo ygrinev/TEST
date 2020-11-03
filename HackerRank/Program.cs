@@ -1228,14 +1228,13 @@ namespace HackerRank
             return noPfxSet.Add(s, ref hasPrefix) && !hasPrefix ? "" : s;
         }
 
-        private static int getRoot(int kk, int[] root, out int count)
+        private static int getRoot(int kk, int[] root)
         {
-            count = 0;
-            while (root[kk] != 0 && count++ < root.Count())
+            while (root[kk] != 0)
             {
                 kk = root[kk];
             }
-            return count <= root.Count() ? kk : -1;
+            return kk;
         }
 
         private static int[] getCommunitySizes(int n, string[] queries)
@@ -1251,7 +1250,7 @@ namespace HackerRank
                         string[] s = q.Substring(2).Split(' ');
                         int b = int.Parse(s[0]), g = int.Parse(s[1]);
                         if (b == g) continue;
-                        int c1, c2, rb = getRoot(b, root, out c1), rg = getRoot(g, root, out c2);
+                        int rb = getRoot(b, root), rg = getRoot(g, root);
                         if (rb == rg) continue;
                         if (rb > rg)
                         {
@@ -1266,7 +1265,7 @@ namespace HackerRank
                         count[rb] = -1;
                         break;
                     case 'Q':
-                        int c3, cnt = count[getRoot(int.Parse(q.Substring(2)), root, out c3)];
+                        int cnt = count[getRoot(int.Parse(q.Substring(2)), root)];
                         res.Add(cnt == 0 ? 1 : cnt);
                         break;
                 }
