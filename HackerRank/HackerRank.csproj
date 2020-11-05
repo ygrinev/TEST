@@ -52,8 +52,11 @@
     <Compile Include="PumpData.cs" />
     <Compile Include="SNode.cs" />
     <Compile Include="TNode.cs" />
+    <Compile Include="TripletData.cs" />
+    <Compile Include="TripletHelper.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include=".editorconfig" />
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>

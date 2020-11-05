@@ -21,6 +21,7 @@ namespace HackerRank
     using System.Text;
     using System;
     using System.CodeDom;
+    using System.Runtime.InteropServices;
 
     class Node
     {
@@ -1364,12 +1365,28 @@ namespace HackerRank
             return new int[] { mins.GetMin().count, max };
         }
 
+        private static long CountRedTriplets(string[] queries) // for linear sets
+        {
+                int n = queries.Count() + 1;
+            int[] vrtx = new int[n];
+            List<long> rdx = new List<long>();
+            int lastCnt = queries.Aggregate(1, (cnt, next) => { if (next[next.Length - 1] == 'b') return cnt + 1; else if (cnt > 1) { vrtx[cnt]++; cnt = 1; } return cnt; } );
+            if (lastCnt > 1) vrtx[lastCnt]++;
+            long res = (long)n * (n - 1) * (n - 2) / 6;
+            int i = 0;
+            return vrtx.Aggregate(res, (cur, next) => { if (next > 0) { res -= ((long)i * (i - 1) / 2 * (n - i) + (i < 3 ? 0L : (long)i * (i - 1) * (i - 2) / 6))*next; } i++; return res; }) % 1000000007;
+        }
+
         /// <summary>
         /// //////////////////////////////////////////////
         /// </summary>
         /// <param name="args"></param>
         static void Main(string[] args)
         {
+            long countRedTriplets = TripletHelper.CountRedTriplets(TripletData.data1(100000)); // 832766690
+            //long countRedTriplets = TripletHelper.CountRedTriplets(TripletData.data0(100000)); // 665533373
+            //long countRedTriplets = CountRedTriplets(TripletData.data); // 13372
+            //long countRedTriplets = CountRedTriplets(new string[] { "1 2 b","2 3 r","3 4 r","4 5 b" });
             int[] minMaxPair = minMaxSubGraph(GraphData.data); // 11 25
             //int[] minMaxPair = minMaxSubGraph(new int[][] { new int[] { 1, 6 }, new int[] { 2, 7 }, new int[] { 3, 8 }, new int[] { 4, 9 }, new int[] { 2, 6 } }); // 2 4
             //int[] minMaxPair = minMaxSubGraph(new int[][] { new int[] { 1, 17 }, new int[] { 5, 13 }, new int[] { 7, 12 }, new int[] { 5, 17 }, new int[] { 5, 12 }, new int[] { 2, 17 }, new int[] { 1, 18 }, new int[] { 8, 13 }, new int[] { 2, 15 }, new int[] { 5, 20 } }); // 11 11
@@ -1498,7 +1515,7 @@ namespace HackerRank
 
             string[] queries = textReader.ReadToEnd().Split('\n');
 
-            int[] result = getCommunitySizes(n, queries); //new int[] { }; // solve(arr, queries);
+            int[] result = getCommunitySizes(n, queries); //new int[] { };
 
             textWriter.WriteLine(string.Join("\n", result));
 
