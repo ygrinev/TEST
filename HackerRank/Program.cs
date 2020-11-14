@@ -1367,6 +1367,7 @@
         /// <param name="args"></param>
         static void Main(string[] args)
         {
+            long[] countMaxCost = MaxCostHelper.MaxCostCount(MaxCostData.tree0, MaxCostData.queries0);
             long countRedTriplets = TripletHelper.CountRedTriplets(TripletData.data1(100000)); // 832766690
             //long countRedTriplets = TripletHelper.CountRedTriplets(TripletData.data0(100000)); // 665533373
             //long countRedTriplets = CountRedTriplets(TripletData.data); // 13372
