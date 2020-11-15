@@ -29,38 +29,47 @@ namespace HackerRank
             return node;
         }
 
-        static int lower_bound(int target, IOrderedEnumerable<IGrouping<int,int[]>> sorted)
+        static int lower_bound(int target, int[][] dp)
         {
-            return sorted.LastOrDefault(g=>g.Key <= target)?.Key??0;
+            int left = 0;
+            int right = dp.Length - 1;
+            while (left <= right)
+            {
+                int middle = (left + right) >> 1;
+                if (dp[middle][2] == target) return dp[middle][2];
+                else if (dp[middle][2] > target) right = middle - 1;
+                else left = middle + 1;
+            }
+            return dp[right][2];
         }
+
+        //static int lower_bound(int target, IOrderedEnumerable<IGrouping<int,int[]>> sorted)
+        //{
+        //    return sorted.LastOrDefault(g=>g.Key <= target)?.Key??0;
+        //}
 
         public static long[] MaxCostCount(int[][] tree, int[][] queries)
         {
             // cost value from low to high
-            var sorted = tree.GroupBy(el => el[2]).OrderBy(g => g.First()[2]);
+            //var sorted = tree.GroupBy(el => el[2]).OrderBy(g => g.First()[2]);
+            int[][] sorted = tree.OrderBy(g => g[2]).ToArray();
 
             Dictionary<int, long> map = new Dictionary<int, long>();
             int[] parent = Enumerable.Repeat(-1, tree.Count() + 2).ToArray();
             long total = 0;
             foreach (var g in sorted)
             {
-                map[g.Key] = total;
-                foreach (int[] a in g)
-                {
-                    int u = find(a[0], parent);
-                    int v = find(a[1], parent);
-                    long number1 = -parent[u];
-                    long number2 = -parent[v];
-                    if (parent[u] > parent[v]) { int tmp = v; v = u; u = tmp; } // attach small to big
-                    parent[u] += parent[v];
-                    parent[v] = u;
-                    map[g.Key] += number1 * number2;
-                }
-                total = map[g.Key];
+                int key = g[2];
+                int u = find(g[0], parent), v = find(g[1], parent);
+                long number1 = -parent[u], number2 = -parent[v];
+                if (parent[u] > parent[v]) { int tmp = v; v = u; u = tmp; } // attach small to big
+                parent[u] += parent[v];
+                parent[v] = u;
+                total = map[key] = (map.ContainsKey(key) ? map[key] : total) + number1 * number2;
             }
 
             List<long> result = new List<long>();
-            int max = sorted.Last().Key, min = sorted.First().Key;
+            int max = sorted.Last()[2], min = sorted.First()[2];
             foreach (var q in queries)
             {
                 if (q[0] > max || q[1] < min) result.Add(0L);
