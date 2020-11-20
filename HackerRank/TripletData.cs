@@ -12,6 +12,13 @@ namespace HackerRank
         {
             return new string[n - 1].Select((e, i) => $"1 {i + 2} {(i%2 == 0 ? "r" : "b")}").ToArray();
         }
+        public static string[] kruskalData = new string[] {            "1 2 5",
+            "1 3 3",
+            "4 1 6",
+            "2 4 7",
+            "3 2 4",
+            "3 4 5"
+        };
         public static string[] data = new string[] {
             "37 26 r",
             "26 16 b",

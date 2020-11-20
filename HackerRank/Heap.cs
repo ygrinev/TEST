@@ -20,13 +20,14 @@ namespace HackerRank
 
         public bool Find(T t, out T res, int index = 0)
         {
-            res = default;
+            res = default(T);
             if (index < 0 || index > elements.Count() - 1) return false;
             T found = elements[index];
-            if (t.CompareTo(found) == 0)
+            int cmp = t.CompareTo(found);
+            if (cmp <= 0)
             {
                 res = found;
-                return true;
+                if(cmp == 0) return true;
             }
             var left = GetLeft(index);
             var right = GetRight(index);

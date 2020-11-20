@@ -46,6 +46,8 @@
     <Compile Include="BNode.cs" />
     <Compile Include="GraphData.cs" />
     <Compile Include="Heap.cs" />
+    <Compile Include="JourneyToTheMoon.cs" />
+    <Compile Include="KruskalHelper.cs" />
     <Compile Include="MaxCostData.cs" />
     <Compile Include="MaxCostHelper.cs" />
     <Compile Include="MinMaxData.cs" />
@@ -55,6 +57,7 @@
     <Compile Include="PumpData.cs" />
     <Compile Include="SNode.cs" />
     <Compile Include="TNode.cs" />
+    <Compile Include="TreeHelper.cs" />
     <Compile Include="TripletData.cs" />
     <Compile Include="TripletHelper.cs" />
   </ItemGroup>
