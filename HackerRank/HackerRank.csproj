@@ -44,12 +44,15 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BNode.cs" />
+    <Compile Include="CubeWeghtHelper.cs" />
     <Compile Include="GraphData.cs" />
     <Compile Include="Heap.cs" />
     <Compile Include="JourneyToTheMoon.cs" />
     <Compile Include="KruskalHelper.cs" />
     <Compile Include="MaxCostData.cs" />
     <Compile Include="MaxCostHelper.cs" />
+    <Compile Include="MinAvgWaitTimeData.cs" />
+    <Compile Include="MinAvgWaitTimeHelper.cs" />
     <Compile Include="MinMaxData.cs" />
     <Compile Include="PNode.cs" />
     <Compile Include="Program.cs" />

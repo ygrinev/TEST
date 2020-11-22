@@ -27,9 +27,9 @@ namespace HackerRank
 
         private BNode<T> Find(BNode<T> node)
         {
-            if (key == node.key || (left == default || left.key > node.key) && (right == default || right.key < node.key))
+            if (key == node.key || (left == default(T) || left.key > node.key) && (right == default(T) || right.key < node.key))
                 return this;
-            return left != default ? left.Find(node) : right.Find(node);
+            return left != default(T) ? left.Find(node) : right.Find(node);
         }
     }
 }

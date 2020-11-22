@@ -1367,6 +1367,11 @@
         /// <param name="args"></param>
         static void Main(string[] args)
         {
+            //long avgWaitTime = MinAvgWaitTimeHelper.MinWaitTime(new string[] { "0 3","1 9","2 5" }); // 8
+            //long avgWaitTime = MinAvgWaitTimeHelper.MinWaitTime(new string[] { "0 3","1 9","2 6" }); // 9
+            //long avgWaitTime = MinAvgWaitTimeHelper.MinWaitTime(new string[] { "961148050 385599125", "951133776 376367013", "283280121 782916802", "317664929 898415172", "980913391 847912645" });
+            //long avgWaitTime = MinAvgWaitTimeHelper.MinWaitTime(new string[] { "0 9","10 4" }); // 6
+            long avgWaitTime = MinAvgWaitTimeHelper.MinWaitTime(MinAvgWaitTimeData.data); // 8485548331, actual: 8412554951
             long w = KruskalHelper.getMSTWeight(TripletData.kruskalData.Length, TripletData.kruskalData);
             long[] countMaxCost = MaxCostHelper.MaxCostCount(MaxCostData.tree0, MaxCostData.queries0);
             long countRedTriplets = TripletHelper.CountRedTriplets(TripletData.data1(100000)); // 832766690
