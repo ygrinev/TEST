@@ -1,7 +1,34 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 
 namespace HackerRank
 {
+    class Triplet : IComparable
+    {
+        private int[] arr;
+        private void Init(int[] a)
+        {
+            if ((a??new int[0]).Length != 3) throw new InvalidCastException("Wrong type is passed to Triplet ctor");
+            arr = a;
+        }
+        public Triplet(int[] a)
+        {
+            Init(a);
+        }
+        public Triplet(string s) 
+        {
+            Init(Array.ConvertAll((s ?? "").Split(' '), qTemp => Convert.ToInt32(qTemp)));
+        }
+        public int this[int index]
+        {
+            get => arr?[index] ?? int.MinValue;
+        }
+        public int CompareTo(object obj)
+        {
+            if(obj == null) throw new ArgumentNullException("Cannot compare to null");
+            return this[2].CompareTo(((Triplet)obj)[2]);
+        }
+    }
     class TripletHelper
     {
         static int findRoot(int x, int[] sets)
