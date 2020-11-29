@@ -61,5 +61,17 @@ namespace HackerRank
             "38070714 495529501",
             "610348800 235616181"
         };
+        public static string[] dataTest = new string[]
+        {
+            "0 9",
+            "1 1",
+            "2 1",
+            "3 1",
+            "4 1",
+            "5 1",
+            "6 1",
+            "7 1",
+            "8 2"
+        };
     }
 }

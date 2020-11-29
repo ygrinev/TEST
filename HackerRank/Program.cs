@@ -1361,17 +1361,29 @@
             return vrtx.Aggregate(res, (cur, next) => { if (next > 0) { res -= ((long)i * (i - 1) / 2 * (n - i) + (i < 3 ? 0L : (long)i * (i - 1) * (i - 2) / 6))*next; } i++; return res; }) % 1000000007;
         }
 
+        private static long[] getMaxSub(int[] arr) /// get max subset and subarray
+        {
+            long max1 = arr.Max(), max2 = max1, sum2 = 0;
+            if (max1 > 0)
+            {
+                max1 = arr.Aggregate(0, (sum, cur) => { sum2 += cur; if (cur > 0) { sum += cur; if (sum2 > max2) max2 = sum2; } else { if (sum2 < 0) sum2 = 0; }; return sum; });
+            }
+            return new long[] { max2, max1 };
+        }
         /// <summary>
         /// //////////////////////////////////////////////
         /// </summary>
         /// <param name="args"></param>
         static void Main(string[] args)
         {
+            //long[] maxSubs = getMaxSub(new int[] { 1,2,3,4});
+            long[] maxSubs = getMaxSub(new int[] { 2,-1,2,3,4,-5});
             //long avgWaitTime = MinAvgWaitTimeHelper.MinWaitTime(new string[] { "0 3","1 9","2 5" }); // 8
             //long avgWaitTime = MinAvgWaitTimeHelper.MinWaitTime(new string[] { "0 3","1 9","2 6" }); // 9
             //long avgWaitTime = MinAvgWaitTimeHelper.MinWaitTime(new string[] { "961148050 385599125", "951133776 376367013", "283280121 782916802", "317664929 898415172", "980913391 847912645" });
             //long avgWaitTime = MinAvgWaitTimeHelper.MinWaitTime(new string[] { "0 9","10 4" }); // 6
-            long avgWaitTime = MinAvgWaitTimeHelper.MinWaitTime(MinAvgWaitTimeData.data); // 8485548331, actual: 8412554951
+            //long avgWaitTime = MinAvgWaitTimeHelper.MinWaitTime(MinAvgWaitTimeData.data); // 8485548331, actual: 8412554951
+            long avgWaitTime = MinAvgWaitTimeHelper.MinWaitTime(MinAvgWaitTimeData.dataTest); // 3
             long w = KruskalHelper.getMSTWeight(TripletData.kruskalData.Length, TripletData.kruskalData);
             long[] countMaxCost = MaxCostHelper.MaxCostCount(MaxCostData.tree0, MaxCostData.queries0);
             long countRedTriplets = TripletHelper.CountRedTriplets(TripletData.data1(100000)); // 832766690
