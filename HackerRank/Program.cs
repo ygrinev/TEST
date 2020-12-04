@@ -1,5 +1,6 @@
 ﻿namespace HackerRank
 {
+    using HackerRank.Helpers;
     using System;
     using System.Collections.Generic;
     using System.IO;
@@ -1370,12 +1371,54 @@
             }
             return new long[] { max2, max1 };
         }
+
+        static int introTutorial(int V, int[] arr) // get index in array
+        {
+            int iLeft = 0, iRight = arr.Length - 1;
+            if (arr[iLeft] == V) return iLeft;
+            if (arr[iRight] == V) return iRight;
+            while (iLeft < iRight)
+            {
+                int i = (iLeft + iRight + 1) / 2;
+                if (arr[i] == V) return i;
+                if (arr[i] < V) iLeft = i;
+                else iRight = i;
+            }
+            return -1;
+        }
+
+        static void insertionSort1(int n, int[] arr)
+        {
+            int v = arr[n - 1];
+            bool inserted = false;
+            while (--n > 0)
+            {
+                if (v < arr[n - 1])
+                {
+                    arr[n] = arr[n - 1];
+                    Console.WriteLine(string.Join(" ", arr));
+                }
+                else
+                {
+                    inserted = true;
+                    arr[n] = v;
+                    break;
+                }
+            }
+            if (!inserted) arr[0] = v;
+            Console.WriteLine(string.Join(" ", arr));
+        }
+
         /// <summary>
         /// //////////////////////////////////////////////
         /// </summary>
         /// <param name="args"></param>
         static void Main(string[] args)
         {
+            insertionSort1(5, new int[] { 2, 4, 6, 8, 3 }); // 
+            long count1 = CoinChangeHelper.countChangeWays(4, new List<long> { 1, 2, 3 }); // 4
+            long count = CoinChangeHelper.countChangeWays(10, new List<long> { 2, 5, 3, 6 }); // 5
+            int idx = introTutorial(4, new int[] { 1, 4, 5, 7, 9, 12 }); // 1
             //long[] maxSubs = getMaxSub(new int[] { 1,2,3,4});
             long[] maxSubs = getMaxSub(new int[] { 2,-1,2,3,4,-5});
             //long avgWaitTime = MinAvgWaitTimeHelper.MinWaitTime(new string[] { "0 3","1 9","2 5" }); // 8
