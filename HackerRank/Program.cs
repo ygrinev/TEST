@@ -1415,9 +1415,10 @@
         /// <param name="args"></param>
         static void Main(string[] args)
         {
-            insertionSort1(5, new int[] { 2, 4, 6, 8, 3 }); // 
+            long count0 = CoinChangeHelper.countChangeWays(4, new List<long> { 1, 2 }); // 3
             long count1 = CoinChangeHelper.countChangeWays(4, new List<long> { 1, 2, 3 }); // 4
             long count = CoinChangeHelper.countChangeWays(10, new List<long> { 2, 5, 3, 6 }); // 5
+            insertionSort1(5, new int[] { 2, 4, 6, 8, 3 }); // 
             int idx = introTutorial(4, new int[] { 1, 4, 5, 7, 9, 12 }); // 1
             //long[] maxSubs = getMaxSub(new int[] { 1,2,3,4});
             long[] maxSubs = getMaxSub(new int[] { 2,-1,2,3,4,-5});
