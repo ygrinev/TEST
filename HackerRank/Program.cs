@@ -1409,12 +1409,58 @@
             Console.WriteLine(string.Join(" ", arr));
         }
 
+        static void insert(int v, ref List<int> lst)
+        {
+            if (lst.Count() == 0) lst.Add(v);
+            else
+                for (int iLeft = 0, iRight = lst.Count() - 1; iLeft <= iRight;)
+                {
+                    if (v >= lst.ElementAt(iRight))
+                    {
+                        lst.Add(v);
+                        break;
+                    }
+                    int idx = (iRight + iLeft + 1) / 2, insIdx = -1;
+                    if (v <= lst.ElementAt(iLeft)) insIdx = iLeft;
+                    else if (iLeft > iRight - 2) insIdx = iRight;
+                    else if (v > lst.ElementAt(idx)) iLeft = idx;
+                    else if (v < lst.ElementAt(idx)) iRight = idx;
+                    else insIdx = idx;
+                    if (insIdx > -1)
+                    {
+                        lst.Insert(insIdx, v);
+                        break;
+                    }
+                }
+        }
+        // Complete the insertionSort2 function below.
+        static void insertionSort2(int[] arr)
+        {
+            int n = arr.Length;
+            List<int> ord = new List<int>();
+            for (int i = 0; i < n; i++)
+            {
+                insert(arr[i], ref ord);
+                if(i > 0)
+                {
+                    Console.Write(string.Join(" ", ord));
+                    if (i < n - 1)
+                    {
+                        Console.Write(" ");
+                        Console.Write(string.Join(" ", arr.Skip(i + 1)));
+                        Console.WriteLine("");
+                    }
+                }
+            }
+        }
         /// <summary>
         /// //////////////////////////////////////////////
         /// </summary>
         /// <param name="args"></param>
         static void Main(string[] args)
         {
+            //insertionSort2(new int[] { 1, 4, 3, 5, 6, 2 });
+            insertionSort2(new int[] { 8, 7, 6, 5, 4, 3, 2, 1 });
             long count0 = CoinChangeHelper.countChangeWays(4, new List<long> { 1, 2 }); // 3
             long count1 = CoinChangeHelper.countChangeWays(4, new List<long> { 1, 2, 3 }); // 4
             long count = CoinChangeHelper.countChangeWays(10, new List<long> { 2, 5, 3, 6 }); // 5
