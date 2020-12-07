@@ -1,5 +1,6 @@
 ﻿namespace HackerRank
 {
+    using HackerRank.Data;
     using HackerRank.Helpers;
     using System;
     using System.Collections.Generic;
@@ -1459,6 +1460,10 @@
         /// <param name="args"></param>
         static void Main(string[] args)
         {
+            //List<long> cubes = CubeWeghtHelper.getCubes(4, new string[] { "UPDATE 2 2 2 4", "QUERY 1 1 1 3 3 3", "UPDATE 1 1 1 23", "QUERY 2 2 2 4 4 4", "QUERY 1 1 1 3 3 3" });
+            //List<long> cubes = CubeWeghtHelper.getCubes(2, new string[] { "UPDATE 2 2 2 1", "QUERY 1 1 1 1 1 1", "QUERY 1 1 1 2 2 2", "QUERY 2 2 2 2 2 2" });
+            //List<long> cubes = CubeWeghtHelper.getCubes(4, CubeWeightData.data);
+            List<long> cubes886 = CubeWeghtHelper.getCubes(4, CubeWeightData.data886);
             //insertionSort2(new int[] { 1, 4, 3, 5, 6, 2 });
             insertionSort2(new int[] { 8, 7, 6, 5, 4, 3, 2, 1 });
             long count0 = CoinChangeHelper.countChangeWays(4, new List<long> { 1, 2 }); // 3

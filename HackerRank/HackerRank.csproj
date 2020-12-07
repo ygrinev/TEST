@@ -43,6 +43,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Data\CubeWeightData.cs" />
     <Compile Include="Helpers\CoinChangeHelper.cs" />
     <Compile Include="Model\BNode.cs" />
     <Compile Include="Helpers\CubeWeghtHelper.cs" />

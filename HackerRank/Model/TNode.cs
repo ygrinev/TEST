@@ -1,10 +1,15 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 
 namespace HackerRank
 {
     public class TNode<T> : SNode where T : class, new()
     {
-        public T data = new T();
+        public T data = default(T);
+        public delegate bool travFunc(string key, object[] args, out bool cont);
+        public static travFunc travValidation;
+        private static bool travDefault(string key, object[] args, out bool cont){ cont = true; return true; }
+        private static List<T> travResult = new List<T>();
         public TNode<T> this[string index]
         {
             get => getAt(index);
@@ -18,6 +23,13 @@ namespace HackerRank
         private new TNode<T> getAt(string index)
         {
             return (TNode<T>)base.getAt(index);
+        }
+
+        public TNode<T> AddTNode(TNode<T> node, ref bool hasKey)
+        {
+            TNode<T> res = AddTNode(node.key, ref hasKey);
+            res.data = node.data;
+            return res;
         }
 
         public TNode<T> AddTNode(string newKey, ref bool hasKey)
@@ -43,6 +55,24 @@ namespace HackerRank
         public TNode<T> AddTNode(int newKey, ref bool hasKey)
         {
             return AddTNode(newKey.ToString(), ref hasKey);
+        }
+        public List<T> traverse(object[] args)
+        {
+            if (key.Length == 0) travResult = new List<T>(); // start from the top node all over
+            bool cont;
+            bool res = (travValidation??travDefault)(key, args, out cont);
+            if(res && data != default(T))
+            {
+                travResult.Add(data);
+            }
+            if (cont)
+            {
+                foreach(var child in children)
+                {
+                    ((TNode<T>)child).traverse(args);
+                }
+            }
+            return travResult;
         }
     }
 }
