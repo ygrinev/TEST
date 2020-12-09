@@ -43,8 +43,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Data\ArrayManipulationData.cs" />
     <Compile Include="Data\CubeWeightData.cs" />
+    <Compile Include="Data\KidaAdventureData.cs" />
+    <Compile Include="Helpers\ArrayManipulationHelper.cs" />
     <Compile Include="Helpers\CoinChangeHelper.cs" />
+    <Compile Include="Helpers\KidaAdventureHelper.cs" />
     <Compile Include="Model\BNode.cs" />
     <Compile Include="Helpers\CubeWeghtHelper.cs" />
     <Compile Include="Data\GraphData.cs" />

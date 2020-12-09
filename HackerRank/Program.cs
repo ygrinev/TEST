@@ -1460,6 +1460,11 @@
         /// <param name="args"></param>
         static void Main(string[] args)
         {
+            //long maxKids = KidaAdventureHelper.getMaxFinished(new int[] { 1,0,0 });
+            //long maxKids = KidaAdventureHelper.getMaxFinished(new int[] { 0,1,2 });
+            long maxKids = KidaAdventureHelper.getMaxFinished(KidaAdventureData.data);
+            long i = 0;
+            long res = ArrayManipulationHelper.arrayManipulation(ArrayManipulationData.data, out i); // 8628
             //List<long> cubes = CubeWeghtHelper.getCubes(4, new string[] { "UPDATE 2 2 2 4", "QUERY 1 1 1 3 3 3", "UPDATE 1 1 1 23", "QUERY 2 2 2 4 4 4", "QUERY 1 1 1 3 3 3" });
             //List<long> cubes = CubeWeghtHelper.getCubes(2, new string[] { "UPDATE 2 2 2 1", "QUERY 1 1 1 1 1 1", "QUERY 1 1 1 2 2 2", "QUERY 2 2 2 2 2 2" });
             //List<long> cubes = CubeWeghtHelper.getCubes(4, CubeWeightData.data);
@@ -1559,41 +1564,6 @@
             //4 8 7
             //6 9 1
             /**/
-            int[][] queries = new int[][] { 
-            new int[] {29, 40, 787},
-            new int[] {9, 26, 219},
-            new int[] {21, 31, 214},
-            new int[] {8, 22, 719},
-            new int[] {15, 23, 102},
-            new int[] {11, 24, 83},
-            new int[] {14, 22, 321},
-            new int[] {5, 22, 300},
-            new int[] {11, 30, 832},
-            new int[] {5, 25, 29},
-            new int[] {16, 24, 577},
-            new int[] {3, 10, 905},
-            new int[] {15, 22, 335},
-            new int[] {29, 35, 254},
-            new int[] {9, 20, 20},
-            new int[] {33, 34, 351},
-            new int[] {30, 38, 564},
-            new int[] {11, 31, 969},
-            new int[] {3, 32, 11},
-            new int[] {29, 35, 267},
-            new int[] {4, 24, 531},
-            new int[] {1, 38, 892},
-            new int[] {12, 18, 825},
-            new int[] {25, 32, 99},
-            new int[] {3, 39, 107},
-            new int[] {12, 37, 131},
-            new int[] {3, 26, 640},
-            new int[] {8, 39, 483},
-            new int[] {8, 11, 194},
-            new int[] {12, 37, 502}
-            };
-            int len = 40;
-            long res = arrayManipulation(len, queries); // 8628
-            Console.WriteLine(res);
             Console.ReadKey();
         }
 
@@ -1705,12 +1675,6 @@
                 iEnd--;
             }
             return new string(arr);
-        }
-        static long arrayManipulation(int n, int[][] queries)
-        {
-            long max = 0;
-            queries.Select(q => new int[2][] { new int[] { q[0], q[2] }, new int[] { q[1]+1, -q[2] } }).SelectMany(e => e).GroupBy(e=>e[0]).OrderBy(g=>g.ElementAt(0)[0]).Aggregate(0L, func: (sum, item) => { long res = sum + item.Sum(e=>e[1]); if (res > max) max = res; return res; });
-            return max;
         }
     }
 
