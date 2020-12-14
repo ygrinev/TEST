@@ -1410,39 +1410,40 @@
             Console.WriteLine(string.Join(" ", arr));
         }
 
-        static void insert(int v, ref List<int> lst)
+        static int insert(int v, ref List<int> lst)
         {
             if (lst.Count() == 0) lst.Add(v);
-            else
+            else if(v >= lst.Last())
+            {
+                lst.Add(v);
+                return 0;
+            } else
                 for (int iLeft = 0, iRight = lst.Count() - 1; iLeft <= iRight;)
                 {
-                    if (v >= lst.ElementAt(iRight))
-                    {
-                        lst.Add(v);
-                        break;
-                    }
                     int idx = (iRight + iLeft + 1) / 2, insIdx = -1;
-                    if (v <= lst.ElementAt(iLeft)) insIdx = iLeft;
+                    if (v < lst.ElementAt(iLeft)) insIdx = iLeft;
                     else if (iLeft > iRight - 2) insIdx = iRight;
                     else if (v > lst.ElementAt(idx)) iLeft = idx;
                     else if (v < lst.ElementAt(idx)) iRight = idx;
-                    else insIdx = idx;
+                    else insIdx = idx + 1; // insert after same value - less shifts
                     if (insIdx > -1)
                     {
                         lst.Insert(insIdx, v);
-                        break;
+                        return lst.Count() - 1 - insIdx;
                     }
                 }
+            return 0;
         }
         // Complete the insertionSort2 function below.
-        static void insertionSort2(int[] arr)
+        static long insertionSort2(int[] arr, bool print = true)
         {
             int n = arr.Length;
+            long shiftsCount = 0;
             List<int> ord = new List<int>();
             for (int i = 0; i < n; i++)
             {
-                insert(arr[i], ref ord);
-                if(i > 0)
+                shiftsCount += insert(arr[i], ref ord);
+                if(i > 0 && print)
                 {
                     Console.Write(string.Join(" ", ord));
                     if (i < n - 1)
@@ -1453,6 +1454,7 @@
                     }
                 }
             }
+            return shiftsCount;
         }
         /// <summary>
         /// //////////////////////////////////////////////
@@ -1460,6 +1462,18 @@
         /// <param name="args"></param>
         static void Main(string[] args)
         {
+            //long[] paths = new DijkstraHelper(4, new int[][] { new int[] { 1, 2 }, new int[] { 1, 3 } }, 6).FromNodeBFS(1);
+            //long[] paths = new DijkstraHelper(3, new int[][] { new int[] { 2, 3 }}, 6).FromNodeBFS(2);
+            //long[] paths = new DijkstraHelper(DijkstraData.N, DijkstraData.data, 6).FromNodeBFS(3);
+            //long[] paths = new DijkstraHelper(DijkstraData.N1, DijkstraData.data1, 6).FromNodeBFS(DijkstraData.S1);
+            long[] paths = new DijkstraHelper(30, new int[][] { new int[] { 9, 20 } }, 6).FromNodeBFS(8);
+            //for(int ix = 0; ix < paths.Length && ix < DijkstraData.out1.Length; ix++)
+            //{
+            //    if(paths[ix] != DijkstraData.out1[ix])
+            //    { 
+            //    }
+            //}
+            long shifts = insertionSort2(new int[] { 2, 1, 3, 1, 2 }, false); // 4
             //long maxKids = KidaAdventureHelper.getMaxFinished(new int[] { 1,0,0 });
             //long maxKids = KidaAdventureHelper.getMaxFinished(new int[] { 0,1,2 });
             long maxKids = KidaAdventureHelper.getMaxFinished(KidaAdventureData.data);
@@ -1470,7 +1484,7 @@
             //List<long> cubes = CubeWeghtHelper.getCubes(4, CubeWeightData.data);
             List<long> cubes886 = CubeWeghtHelper.getCubes(4, CubeWeightData.data886);
             //insertionSort2(new int[] { 1, 4, 3, 5, 6, 2 });
-            insertionSort2(new int[] { 8, 7, 6, 5, 4, 3, 2, 1 });
+            //long shifts = insertionSort2(new int[] { 8, 7, 6, 5, 4, 3, 2, 1 });
             long count0 = CoinChangeHelper.countChangeWays(4, new List<long> { 1, 2 }); // 3
             long count1 = CoinChangeHelper.countChangeWays(4, new List<long> { 1, 2, 3 }); // 4
             long count = CoinChangeHelper.countChangeWays(10, new List<long> { 2, 5, 3, 6 }); // 5
