@@ -17,5 +17,12 @@ namespace HackerRank.Helpers
             ret.AddRange(arr.Where(a => a > arr[idx]));
             return ret.ToArray();
         }
+        public static int[] countingSort(int[] arr)
+        {
+            int[] res = new int[arr.Max() + 1];
+            arr.Aggregate(res, (tot, cur) => { res[cur]++; return res; });
+            return res.Select((r, i) => Enumerable.Repeat(i, r)).SelectMany(l => l).ToArray();
+        }
+
     }
 }

@@ -1462,11 +1462,13 @@
         /// <param name="args"></param>
         static void Main(string[] args)
         {
-            //long[] paths = new DijkstraHelper(4, new int[][] { new int[] { 1, 2 }, new int[] { 1, 3 } }, 6).FromNodeBFS(1);
-            //long[] paths = new DijkstraHelper(3, new int[][] { new int[] { 2, 3 }}, 6).FromNodeBFS(2);
-            //long[] paths = new DijkstraHelper(DijkstraData.N, DijkstraData.data, 6).FromNodeBFS(3);
-            //long[] paths = new DijkstraHelper(DijkstraData.N1, DijkstraData.data1, 6).FromNodeBFS(DijkstraData.S1);
-            long[] paths = new DijkstraHelper(30, new int[][] { new int[] { 9, 20 } }, 6).FromNodeBFS(8);
+            //int[] paths = new DijkstraHelper(4, new int[][] { new int[] { 1, 2 }, new int[] { 1, 3 } }, 6).FromNodeBFS(1);
+            //int[] paths = new DijkstraHelper(5, new int[][] { new int[] { 1, 2, 10 }, new int[] { 1, 3, 6 }, new int[] { 2, 4, 8 }, }).FromNodeBFS(2);
+            //int[] paths = new DijkstraHelper(3, new int[][] { new int[] { 2, 3 }}, 6).FromNodeBFS(2);
+            //int[] paths = new DijkstraHelper(DijkstraData.N, DijkstraData.data, 6).FromNodeBFS(3);
+            int[] paths = new DijkstraHelper(DijkstraData.N20, DijkstraData.data20).FromNodeBFS(DijkstraData.S17);
+            //int[] paths = new DijkstraHelper(30, new int[][] { new int[] { 9, 20 } }, 6).FromNodeBFS(8);
+            //long[] paths = new DijkstraHelper(4, new int[][] { new int[] { 1,2,24 }, new int[] { 1,4,20 }, new int[] { 3,1,3 }, new int[] { 4,3,12 } }).FromNodeBFS(1);
             //for(int ix = 0; ix < paths.Length && ix < DijkstraData.out1.Length; ix++)
             //{
             //    if(paths[ix] != DijkstraData.out1[ix])

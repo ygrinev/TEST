@@ -1,17 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
 namespace HackerRank.Model
 {
     class GNode
     {
-        public int id;
+        public int id = 0;
         public bool visited = false;
         public long minDist = 0L;
-        public List<GEdge> siblings = new List<GEdge>();
+        public List<GNode> siblings = new List<GNode>();
     }
-    class GEdge { public int weight; public GNode node; }
+    //class GEdge { public int weight; public GNode node; }
 }
