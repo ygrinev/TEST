@@ -24,5 +24,16 @@ namespace HackerRank.Helpers
             return res.Select((r, i) => Enumerable.Repeat(i, r)).SelectMany(l => l).ToArray();
         }
 
+        public static IEnumerable<string> countSort(string[] queries)
+        {
+            List<string>[] ord = new List<string>[queries.Max(q => int.Parse(q.Split(' ')[0])) + 1];
+            queries.Aggregate(0, (idx, q) =>
+            {
+                string[] vals = q.Split(' '); int ordIdx = int.Parse(vals[0]);
+                if (ord[ordIdx] == null) ord[ordIdx] = new List<string>();
+                ord[ordIdx].Add(idx < queries.Length / 2 ? "-" : vals[1]); return idx + 1;
+            });
+            return ord.Aggregate(new List<string>(), (lst, cur) => { if (cur != null) lst.AddRange(cur); return lst; });
+        }
     }
 }

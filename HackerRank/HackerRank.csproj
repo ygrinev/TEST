@@ -47,6 +47,7 @@
     <Compile Include="Data\CubeWeightData.cs" />
     <Compile Include="Data\DijkstraData.cs" />
     <Compile Include="Data\KidaAdventureData.cs" />
+    <Compile Include="Data\SortData.cs" />
     <Compile Include="Helpers\ArrayManipulationHelper.cs" />
     <Compile Include="Helpers\CoinChangeHelper.cs" />
     <Compile Include="Helpers\DijkstraHelper.cs" />
@@ -77,6 +78,7 @@
   <ItemGroup>
     <None Include=".editorconfig" />
     <None Include="App.config" />
+    <None Include="Data\DijkstraData.zip" />
   </ItemGroup>
   <ItemGroup>
     <Content Include=".gitignore" />

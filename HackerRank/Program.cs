@@ -1456,15 +1456,19 @@
             }
             return shiftsCount;
         }
+
         /// <summary>
         /// //////////////////////////////////////////////
         /// </summary>
         /// <param name="args"></param>
         static void Main(string[] args)
         {
+            IEnumerable<string> ordered = SortHelper.countSort(SortData.data);
+            DateTime t0 = DateTime.Now;
+            //DijkstraHelper.fullTest();
             //int[] paths = new DijkstraHelper(4, new int[][] { new int[] { 1, 2 }, new int[] { 1, 3 } }, 6).FromNodeBFS(1); // 6,6,-1
             //int[] paths = new DijkstraHelper(5, new int[][] { new int[] { 1, 2, 10 }, new int[] { 1, 3, 6 }, new int[] { 2, 4, 8 }, }).FromNodeBFS(2); // 10,16,8,-1
-            int[] paths = new DijkstraHelper(3, new int[][] { new int[] { 2, 3 }}, 6).FromNodeBFS(2); // -1,6
+            //int[] paths = new DijkstraHelper(3, new int[][] { new int[] { 2, 3 }}, 6).FromNodeBFS(2); // -1,6
             //int[] paths = new DijkstraHelper(DijkstraData.N, DijkstraData.data, 6).FromNodeBFS(3);
             //int[] paths = new DijkstraHelper(DijkstraData.N20, DijkstraData.data20).FromNodeBFS(DijkstraData.S17);
             //int[] paths = new DijkstraHelper(30, new int[][] { new int[] { 9, 20 } }, 6).FromNodeBFS(8);
@@ -1475,6 +1479,7 @@
             //    { 
             //    }
             //}
+            double tm = (DateTime.Now - t0).TotalMilliseconds;
             long shifts = insertionSort2(new int[] { 2, 1, 3, 1, 2 }, false); // 4
             //long maxKids = KidaAdventureHelper.getMaxFinished(new int[] { 1,0,0 });
             //long maxKids = KidaAdventureHelper.getMaxFinished(new int[] { 0,1,2 });
