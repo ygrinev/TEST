@@ -1,9 +1,7 @@
-﻿using HackerRank.Model;
-using System;
+﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace HackerRank.Helpers
 {
@@ -12,7 +10,7 @@ namespace HackerRank.Helpers
     {
         private List<int>[] graph;
         private int[][] weight;
-        public DijkstraHelper(int n, int[][] edges, int defWeight = 1)
+        public DijkstraHelper(int n, List<int[]> edges, int defWeight = 1)
         {
             weight = new int[n + 1][].Select(d => new int[n + 1]).ToArray();
             graph = new List<int>[n + 1];
@@ -61,6 +59,41 @@ namespace HackerRank.Helpers
                 }));
             }
             return newVisit.Where(it => it > -1);
+        }
+        public static void fullTest()
+        {
+            string dataFile = "DijkstraData.txt";
+            string[] queries = File.ReadAllLines(Path.Combine(Environment.CurrentDirectory.Replace(@"bin\Debug", "Data"), dataFile));
+            int n = 0, nEdges = 0;
+            int count = 0;
+            int cases = 0;
+            List<int[]> edges = new List<int[]>();
+
+            foreach (string q in queries)
+            {
+                int[] edge = Array.ConvertAll(q.Split(' '), e => Convert.ToInt32(e));
+                switch (edge.Length)
+                {
+                    case 1:
+                        if (count > 0)
+                        {
+                            var result = new DijkstraHelper(n, edges).FromNodeBFS(edge[0]);
+                            Console.WriteLine(string.Join(" ", result));
+                        }
+                        else
+                            cases = edge[0];
+                        break;
+                    case 2:
+                        n = edge[0];
+                        nEdges = edge[1];
+                        edges = new List<int[]>();
+                        break;
+                    case 3:
+                        edges.Add(edge);
+                        break;
+                }
+                count++;
+            }
         }
     }
 }

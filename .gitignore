@@ -3,3 +3,4 @@ obj/
 bin/
 /HackerRank/.editorconfig
 /HackerRank/.sln
+DijkstraDataBig.cs
