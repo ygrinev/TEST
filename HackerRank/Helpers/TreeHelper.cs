@@ -8,10 +8,12 @@ namespace HackerRank
 {
     class TreeHelper
     {
-        private int[] forest;
+        int[] forest;
+        bool[] leafs; // excludes roots
         public TreeHelper(int n)
         {
             forest = Enumerable.Repeat(-1, n+1).ToArray();
+            leafs = new bool[n+1];
         }
         public int getParent(int node)
         {
@@ -19,10 +21,18 @@ namespace HackerRank
                 node = forest[node];
             return node;
         }
-        public bool merge(int n1, int n2)
+        public bool merge(int n1, int n2, out int leaf)
         {
+            leaf = -1;
             int u = getParent(n1), v = getParent(n2);
             if(u == v) return false;
+
+            bool b1 = u == n1, b2 = v == n2;
+            leaf = b1 && forest[u] <= forest[v] ? n1 : b2 && forest[u] > forest[v] ? n2 : -1;
+            if (leaf == n1) leafs[n2] = !(leafs[n1] = true);
+            else if (leaf == n2) leafs[n1] = !(leafs[n2] = true);
+            else leafs[n1] = leafs[n2] = false;
+
             if (forest[u] > forest[v]) { int tmp = v; v = u; u = tmp; } // attach small to big
             forest[u] += forest[v];
             forest[v] = u;

@@ -21,7 +21,8 @@ namespace HackerRank
             while(minHeap.GetSize() > 0 && count < n)
             {
                 Triplet t = minHeap.PopMin();
-                bool ok = tree.merge(t[0], t[1]);
+                int leaf = 0;
+                bool ok = tree.merge(t[0], t[1], out leaf);
                 if(ok)
                 {
                     res += t[2];

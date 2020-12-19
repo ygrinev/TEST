@@ -46,11 +46,13 @@
     <Compile Include="Data\ArrayManipulationData.cs" />
     <Compile Include="Data\CubeWeightData.cs" />
     <Compile Include="Data\DijkstraData.cs" />
+    <Compile Include="Data\EvenTreeData.cs" />
     <Compile Include="Data\KidaAdventureData.cs" />
     <Compile Include="Data\SortData.cs" />
     <Compile Include="Helpers\ArrayManipulationHelper.cs" />
     <Compile Include="Helpers\CoinChangeHelper.cs" />
     <Compile Include="Helpers\DijkstraHelper.cs" />
+    <Compile Include="Helpers\EvenTreeHelper.cs" />
     <Compile Include="Helpers\KidaAdventureHelper.cs" />
     <Compile Include="Helpers\SortHelper.cs" />
     <Compile Include="Model\BNode.cs" />

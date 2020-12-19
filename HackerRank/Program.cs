@@ -1463,6 +1463,7 @@
         /// <param name="args"></param>
         static void Main(string[] args)
         {
+            int rmvEdges = new EvenTreeHelper(10).evenForest(new string[] { "2 1", "3 1", "4 3", "5 2", "6 1", "7 2", "8 6", "9 8", "10 8" }); // 2
             IEnumerable<string> ordered = SortHelper.countSort(SortData.data);
             DateTime t0 = DateTime.Now;
             //DijkstraHelper.fullTest();
