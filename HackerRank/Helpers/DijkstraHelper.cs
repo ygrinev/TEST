@@ -11,7 +11,7 @@ namespace HackerRank.Helpers
     {
         private List<int>[] graph;
         private int[][] weight;
-        public DijkstraHelper(int n, List<int[]> edges, int defWeight = 1)
+        public DijkstraHelper(int n, List<int[]> edges, int defWeight = 1, bool directed = false, bool useMinWeight = true)
         {
             weight = new int[n + 1][].Select(d => new int[n + 1]).ToArray();
             graph = new List<int>[n + 1];
@@ -21,45 +21,54 @@ namespace HackerRank.Helpers
             {
                 int val = useDef ? defWeight : e[2];
                 int curWeight = weight[e[0]][e[1]];
-                if (curWeight == 0 || curWeight > val)
+                if (!useMinWeight || curWeight == 0 || curWeight > val)
                 {
                     if (graph[e[0]] == null) graph[e[0]] = new List<int>();
-                    if (graph[e[1]] == null) graph[e[1]] = new List<int>();
+                    if (!directed && graph[e[1]] == null) graph[e[1]] = new List<int>();
                     if (curWeight == 0)
                     {
                         graph[e[0]].Add(e[1]);
-                        graph[e[1]].Add(e[0]);
+                        if (!directed) graph[e[1]].Add(e[0]);
                     }
-                    weight[e[0]][e[1]] = weight[e[1]][e[0]] = val;
+                    weight[e[0]][e[1]] = val;
+                    if (!directed) weight[e[1]][e[0]] = val;
                 }
             }
         }
         public int[] FromNodeBFS(int startNode)
         {
-            IEnumerable<int> toVisit = new List<int> { startNode };
-            while (toVisit.Count() > 0)
-            {
-                toVisit = getAllShortestPaths(toVisit);
-            }
+            getAllShortestPaths(startNode, startNode);
 
-            return weight.Select((node, j) => node[j] != 0 && j != startNode ? node[j] : j == 0 || j == startNode ? 0 : -1).Where(t => t != 0).ToArray();
+            return weight[startNode].Select((j, idx) => j < 0 && j != int.MinValue && idx != startNode ? -j : idx == 0 || idx == startNode ? 0 : -1).Where(t => t != 0).ToArray();
         }
 
-        private IEnumerable<int> getAllShortestPaths(IEnumerable<int> toVisit)
+        public int FromToNodeBFS(int startNode, int endNode)
         {
-            List<int> newVisit = new List<int>();
-            foreach (int nIdx in toVisit)
+            if (startNode == endNode) return 0;
+            if (weight[startNode][endNode] < 0) return -weight[startNode][endNode];
+            getAllShortestPaths(startNode, startNode);
+
+            return weight[startNode][endNode] == 0 ? -1 : -weight[startNode][endNode];
+        }
+
+        private void getAllShortestPaths(int nIdx, int startNode)
+        {
+            if (graph[nIdx] == null) return;
+            foreach (int i in graph[nIdx])
             {
-                if (graph[nIdx] == null) continue;
-                newVisit.AddRange(graph[nIdx].Select(i => {
-                    int newPath = weight[nIdx][i] + weight[nIdx][nIdx];
-                    bool toAdd = i != nIdx && weight[nIdx][i] != 0
-                        && (weight[i][i] == 0 || newPath < weight[i][i]);
-                    if (toAdd) weight[i][i] = newPath;
-                    return toAdd ? i : -1;
-                }));
+                int newPath = Math.Abs(weight[nIdx][i]) + Math.Abs(weight[startNode][nIdx]);
+                bool visited = weight[startNode][i] < 0;
+                bool update = weight[startNode][i] == 0 || newPath < Math.Abs(weight[startNode][i]);
+                bool add = i != nIdx && weight[nIdx][i] != 0
+                    && (!visited || update);
+                if (add)
+                {
+                    if (update) weight[startNode][i] = -newPath;
+                    else 
+                    if (!visited) weight[startNode][i] = -weight[startNode][i];
+                    getAllShortestPaths(i, startNode);
+                }
             }
-            return newVisit.Where(it => it > -1);
         }
         public static void fullTest()
         {
@@ -98,9 +107,9 @@ namespace HackerRank.Helpers
         }
         public static int shortestPath(int n, string[] moves) // ladders and snakes
         {
-            int[] grph = new int[n + 1].Select((v,i)=>i).ToArray();
+            int[] grph = new int[n + 1].Select((v, i) => i).ToArray();
             int[] counts = new int[n + 1];
-            moves.Aggregate(0, (cur, next)=> { int[] vv = Array.ConvertAll(next.Split(' '), s=>int.Parse(s)); grph[vv[0]] = vv[1]; return 0; });
+            moves.Aggregate(0, (cur, next) => { int[] vv = Array.ConvertAll(next.Split(' '), s => int.Parse(s)); grph[vv[0]] = vv[1]; return 0; });
             getMinPath(1, 6, n, grph, counts);
             return counts[n] <= 0 ? -1 : counts[n];
         }
@@ -111,10 +120,10 @@ namespace HackerRank.Helpers
             int delta = delta0;
             do
             {
-                int idx = v + delta > n ? n+1 : grph[v + delta];
+                int idx = v + delta > n ? n + 1 : grph[v + delta];
                 if (idx <= n)
                 {
-                    if(counts[idx] == 0 || path < counts[idx])
+                    if (counts[idx] == 0 || path < counts[idx])
                     {
                         counts[idx] = path;
                         if (idx < n) getMinPath(idx, delta0, n, grph, counts, path);
@@ -162,6 +171,32 @@ namespace HackerRank.Helpers
                         break;
                 }
             }
+        }
+
+        public static void fullTest2()
+        {
+            string[] queries =  DijkstraData.dataLight; // DijkstraData.dataLight2; // DijkstraData.dataLight3; // 
+            List<int[]> edges = new List<int[]>();
+            DijkstraHelper helper = null;
+            List<int> result = new List<int>();
+
+            foreach (string q in queries)
+            {
+                int[] edge = Array.ConvertAll(q.Split(' '), e => Convert.ToInt32(e));
+                switch (edge.Length)
+                {
+                    case 1:
+                        helper = new DijkstraHelper(5, edges, 1, true, false);
+                        break;
+                    case 2:
+                        result.Add(helper.FromToNodeBFS(edge[0], edge[1]));
+                        break;
+                    case 3:
+                        edges.Add(edge);
+                        break;
+                }
+            }
+            Console.WriteLine(string.Join("\n", result));
         }
     }
 }

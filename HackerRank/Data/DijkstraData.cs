@@ -8,6 +8,50 @@ namespace HackerRank.Data
 {
     class DijkstraData
     {
+        public static string[] dataLight = new string[]
+        {
+            "1 2 20",
+            "1 3 50",
+            "1 4 70",
+            "1 5 90",
+            "2 3 30",
+            "3 4 40",
+            "4 5 60",
+            "8",
+            "1 4",
+            "5 1",
+            "2 5",
+            "3 4",
+            "1 4",
+            "1 2",
+            "3 1",
+            "1 2"
+        };
+        public static string[] dataLight2 = new string[]
+        {
+            "1 2 5",
+            "1 4 24",
+            "2 4 6",
+            "3 4 4",
+            "3 2 7",
+            "3",
+            "1 2",
+            "3 1",
+            "1 4"
+        };
+        public static string[] dataLight3 = new string[]
+        {
+            "1 2 1",
+            "3 2 150",
+            "4 3 99",
+            "1 4 100",
+            "3 1 200",
+            "4",
+            "3 2",
+            "1 2",
+            "4 3",
+            "1 2"
+        };
         public static string[] data100 = new string[]
         {
             "3",
