@@ -1457,12 +1457,39 @@
             return shiftsCount;
         }
 
+        static IEnumerable<int> closestNumbers(int[] arr)
+        {
+            MinHeap<int> store = new MinHeap<int>();
+            Array.ForEach(arr, a => store.Add(a));
+            int min = int.MaxValue;
+            List<int> res = new List<int>();
+            if (arr.Length < 3) return arr;
+            int prev = store.PopMin();
+            while (store.GetSize() > 0)
+            {
+                int cur = store.PopMin();
+                if (cur - prev <= min)
+                {
+                    if (cur - prev < min)
+                    {
+                        res.Clear();
+                        min = cur - prev;
+                    }
+                    res.Add(prev); res.Add(cur);
+                }
+                prev = cur;
+            }
+            return res;
+        }
+
         /// <summary>
         /// //////////////////////////////////////////////
         /// </summary>
         /// <param name="args"></param>
         static void Main(string[] args)
         {
+            //var clsNums = closestNumbers(new int[] { 5,4,3,2 }); // 2 3 3 4 4 5
+            var clsNums = closestNumbers(new int[] { -20, -3916237, -357920, -3620601, 7374819, -7330761, 30, 6246457, -6461594, 266854 }); // -20 30
             int rmvEdges = new EvenTreeHelper(10).evenForest(new string[] { "2 1", "3 1", "4 3", "5 2", "6 1", "7 2", "8 6", "9 8", "10 8" }); // 2
             IEnumerable<string> ordered = SortHelper.countSort(SortData.data);
             DateTime t0 = DateTime.Now;
