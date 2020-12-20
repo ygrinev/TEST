@@ -8,6 +8,24 @@ namespace HackerRank.Data
 {
     class DijkstraData
     {
+        public static string[] data100 = new string[]
+        {
+            "3",
+            "2",
+            "3 54",
+            "37 100",
+            "1",
+            "56 33",
+            "2",
+            "3 57",
+            "8 100",
+            "1",
+            "88 44",
+            "1",
+            "7 98",
+            "1",
+            "99 1"
+        };
         public static int N = 10;
         public static int[][] data = new int[][] {
             new int[] { 3, 1 },

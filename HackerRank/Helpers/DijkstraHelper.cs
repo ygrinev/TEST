@@ -1,4 +1,5 @@
-﻿using System;
+﻿using HackerRank.Data;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -93,6 +94,73 @@ namespace HackerRank.Helpers
                         break;
                 }
                 count++;
+            }
+        }
+        public static int shortestPath(int n, string[] moves) // ladders and snakes
+        {
+            int[] grph = new int[n + 1].Select((v,i)=>i).ToArray();
+            int[] counts = new int[n + 1];
+            moves.Aggregate(0, (cur, next)=> { int[] vv = Array.ConvertAll(next.Split(' '), s=>int.Parse(s)); grph[vv[0]] = vv[1]; return 0; });
+            getMinPath(1, 6, n, grph, counts);
+            return counts[n] <= 0 ? -1 : counts[n];
+        }
+
+        private static void getMinPath(int v, int delta0, int n, int[] grph, int[] counts, int path = 0)
+        {
+            path++;
+            int delta = delta0;
+            do
+            {
+                int idx = v + delta > n ? n+1 : grph[v + delta];
+                if (idx <= n)
+                {
+                    if(counts[idx] == 0 || path < counts[idx])
+                    {
+                        counts[idx] = path;
+                        if (idx < n) getMinPath(idx, delta0, n, grph, counts, path);
+                    }
+                }
+            }
+            while (--delta > 0);
+        }
+        public static void fullTest1()
+        {
+            int cases = 2, count = 0;
+            bool started = false;
+            List<int> result = new List<int>();
+            List<string> moves = new List<string>();
+            string[] queries = DijkstraData.data100;
+
+            foreach (string move in queries)
+            {
+                string[] ss = move.Split(' ');
+                switch (ss.Length)
+                {
+                    case 1:
+                        if (started)
+                        {
+                            cases--;
+                            count = int.Parse(ss[0]);
+                            if (count == 0 && cases == 0)
+                            {
+                                cases = 2;
+                                Console.WriteLine(shortestPath(100, moves.ToArray()));
+                            }
+                        }
+                        else started = true;
+                        break;
+                    case 2:
+                        moves.Add(move);
+                        if (--count == 0 && cases == 0)
+                        {
+                            cases = 2;
+                            Console.WriteLine(shortestPath(100, moves.ToArray()));
+                            moves.Clear();
+                        }
+                        break;
+                    default:
+                        break;
+                }
             }
         }
     }

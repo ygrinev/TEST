@@ -1488,6 +1488,9 @@
         /// <param name="args"></param>
         static void Main(string[] args)
         {
+            //int minPath = DijkstraHelper.shortestPath(100, new string[] { "32 62", "42 68", "12 98", "95 13", "97 25", "93 37", "79 27", "75 19", "49 47", "67 17" });
+            //int minPath = DijkstraHelper.shortestPath(100, new string[] { "8 52", "6 80", "26 42", "2 72", "51 19", "39 11", "37 29", "81 3", "59 5", "79 23", "53 7", "43 33", "77 21" });
+            DijkstraHelper.fullTest1();
             //var clsNums = closestNumbers(new int[] { 5,4,3,2 }); // 2 3 3 4 4 5
             var clsNums = closestNumbers(new int[] { -20, -3916237, -357920, -3620601, 7374819, -7330761, 30, 6246457, -6461594, 266854 }); // -20 30
             int rmvEdges = new EvenTreeHelper(10).evenForest(new string[] { "2 1", "3 1", "4 3", "5 2", "6 1", "7 2", "8 6", "9 8", "10 8" }); // 2
