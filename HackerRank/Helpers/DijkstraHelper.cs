@@ -59,8 +59,7 @@ namespace HackerRank.Helpers
                 int newPath = Math.Abs(weight[nIdx][i]) + Math.Abs(weight[startNode][nIdx]);
                 bool visited = weight[startNode][i] < 0;
                 bool update = weight[startNode][i] == 0 || newPath < Math.Abs(weight[startNode][i]);
-                bool add = i != nIdx && weight[nIdx][i] != 0
-                    && (!visited || update);
+                bool add = i != nIdx && weight[nIdx][i] != 0 && (!visited || update);
                 if (add)
                 {
                     if (update) weight[startNode][i] = -newPath;

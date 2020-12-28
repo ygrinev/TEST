@@ -8,6 +8,11 @@ namespace HackerRank.Helpers
 {
     class SortHelper
     {
+        private int[] temp;
+        public SortHelper(int n)
+        {
+            temp = new int[n + 1];
+        }
         public static int[] quickSortPartition(int[] arr, int idx = 0)
         {
             if (idx < 0 || idx > arr.Length - 1) return arr;
@@ -34,6 +39,53 @@ namespace HackerRank.Helpers
                 ord[ordIdx].Add(idx < queries.Length / 2 ? "-" : vals[1]); return idx + 1;
             });
             return ord.Aggregate(new List<string>(), (lst, cur) => { if (cur != null) lst.AddRange(cur); return lst; });
+        }
+        public long mergeSort(int[] s, int left, int right)
+        {
+            long shift = 0;
+            if (left < right)
+            {
+                int mid = left + (right - left) / 2;
+                shift += mergeSort(s, left, mid);
+                shift += mergeSort(s, mid + 1, right);
+                shift += joinParts(s, left, mid + 1, right);
+            }
+            return shift;
+        }
+        long joinParts(int[] s, int left, int mid, int right)
+        {
+            long shift = 0;
+            int i = left, j = mid, k = left;
+            while (i < mid && j <= right)
+            {
+                if (s[i] <= s[j])
+                {
+                    temp[k] = s[i];
+                    k++; i++;
+                }
+                else
+                {
+                    temp[k] = s[j];
+                    k++; j++;
+                    shift += mid - i;
+                }
+            }
+            while (i < mid)
+            {
+                temp[k] = s[i];
+                k++; i++;
+            }
+            while (j <= right)
+            {
+                temp[k] = s[j];
+                k++; j++;
+            }
+            while (left <= right)
+            {
+                s[left] = temp[left];
+                left++;
+            }
+            return shift;
         }
     }
 }
