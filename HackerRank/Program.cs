@@ -1488,6 +1488,8 @@
         /// <param name="args"></param>
         static void Main(string[] args)
         {
+            //int msgs = new MedianHelper().activityNotifications2(new int[] { 1, 2, 3, 4, 4 }, 4);
+            int msgs = new MedianHelper().activityNotifications(new int[] { 2, 3, 4, 2, 3, 6, 8, 4, 5 }, 5);
             //int minPath = DijkstraHelper.shortestPath(100, new string[] { "32 62", "42 68", "12 98", "95 13", "97 25", "93 37", "79 27", "75 19", "49 47", "67 17" });
             //int minPath = DijkstraHelper.shortestPath(100, new string[] { "8 52", "6 80", "26 42", "2 72", "51 19", "39 11", "37 29", "81 3", "59 5", "79 23", "53 7", "43 33", "77 21" });
             //DijkstraHelper.fullTest1();
@@ -1553,7 +1555,7 @@
             int[] cntNames = contacts(new string[][] { new string[] { "add", "s" }, new string[] { "add", "ss" }, new string[] { "add", "sss" }, new string[] { "add", "ssss" }, new string[] { "add", "sssss" },
                                         new string[] { "find", "s" }, new string[] { "find", "ss" }, new string[] { "find", "sss" }, new string[] { "find", "ssss" }, new string[] { "find", "sssss" }, new string[] { "find", "ssssss" } }); // 1 2 3 4 5 0
             //int[] cntNames = contacts(new string[][] { new string[] { "add", "hack" }, new string[] { "add", "hackerrank" }, new string[] { "find", "hac" }, new string[] { "find", "hak" } });
-            int[] med = runningMedian(new int[] { 12, 4, 5, 3, 8, 7 });
+            int[] med = new MedianHelper().runningMedian(new int[] { 12, 4, 5, 3, 8, 7 });
             int cntSweets = cookies(105823341, Enumerable.Repeat(1, 100000).ToArray()); // 99999
             //int cntSweets = cookies(1000, new int[] { 52, 96, 13, 37 }); // -1
             //int cntSweets = cookies(7, new int[] { 1, 2, 3, 9, 10, 12 }); // 2

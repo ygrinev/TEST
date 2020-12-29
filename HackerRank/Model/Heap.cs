@@ -7,6 +7,10 @@ namespace HackerRank
     public class MinHeap<T> where T : IComparable
     {
         private List<T> elements = new List<T>();
+        public void Remove(T t)
+        {
+            if (elements.Count > 0) elements.Remove(t);
+        }
 
         public int GetSize()
         {
@@ -130,6 +134,10 @@ namespace HackerRank
     public class MaxHeap<T> where T : IComparable
     {
         private List<T> elements = new List<T>();
+        public void Remove(T t)
+        {
+            if (elements.Count > 0) elements.Remove(t);
+        }
 
         public int GetSize()
         {

@@ -87,5 +87,28 @@ namespace HackerRank.Helpers
             }
             return shift;
         }
+        public static int findIdxToInsert(int v, ref List<int> lst, bool toInsert = false)
+        {
+            if (lst.Count() == 0 || v >= lst.Last())
+            {
+                if(toInsert) lst.Add(v);
+                return lst.Count - 1;
+            }
+            else if(v < lst.First())
+            {
+                if(toInsert) lst.Insert(0, v);
+                return 0;
+            }
+            // find index inside the list
+            int idx = (lst.Count() - 1) / 2;
+            for (int iLeft = 0, iRight = lst.Count() - 1; idx > iLeft; idx = (iLeft + iRight) / 2)
+            {
+                if (v > lst.ElementAt(idx)) iLeft = idx;
+                else if (v < lst.ElementAt(idx)) iRight = idx;
+                else break;
+            }
+            if(toInsert) lst.Insert(idx + 1, v); // insert after same or lower value
+            return !toInsert && lst.ElementAt(idx) == v ? idx : idx + 1;
+        }
     }
 }
