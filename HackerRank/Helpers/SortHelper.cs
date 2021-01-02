@@ -110,5 +110,56 @@ namespace HackerRank.Helpers
             if(toInsert) lst.Insert(idx + 1, v); // insert after same or lower value
             return !toInsert && lst.ElementAt(idx) == v ? idx : idx + 1;
         }
+        public int getSwapsToSort(int[] arr)
+        {
+            int count = 0, nextIdx = 0, visited = 0, countRvs = 0, visitedRvs = 0, nextIdxRvs = 0;
+            int[][] srtMap = arr.Select((a, i) => new int[] { a, i }).OrderBy(e=>e[0]).ToArray();
+            int[][] srtMapRvs = srtMap.Reverse().ToArray();
+            int[] tempRvs = new int[arr.Length];
+            while(nextIdx < arr.Length || nextIdxRvs < arr.Length)
+            {
+                if(nextIdx < arr.Length) // asc
+                {
+                    visited = nextIdx;
+                    int idx = nextIdx;
+                    int origIdx = srtMap[idx][1];
+                    temp[idx] = idx + 1;
+                    while(idx != origIdx && origIdx != nextIdx)
+                    {
+                        count++;
+                        temp[origIdx] = origIdx + 1;
+                        idx = origIdx;
+                        origIdx = srtMap[idx][1];
+                    }
+                    while(visited < arr.Length - 1 && temp[visited+1] > 0)
+                    {
+                        visited++;
+                    }
+                    nextIdx = visited;
+                    nextIdx++;
+                }
+                if (nextIdxRvs < arr.Length) // desc
+                {
+                    visitedRvs = nextIdxRvs;
+                    int idxRvs = nextIdxRvs;
+                    int origIdxRvs = srtMapRvs[idxRvs][1];
+                    tempRvs[idxRvs] = idxRvs + 1;
+                    while (idxRvs != origIdxRvs && origIdxRvs != nextIdxRvs)
+                    {
+                        countRvs++;
+                        tempRvs[origIdxRvs] = origIdxRvs + 1;
+                        idxRvs = origIdxRvs;
+                        origIdxRvs = srtMapRvs[idxRvs][1];
+                    }
+                    while (visitedRvs < arr.Length - 1 && tempRvs[visitedRvs + 1] > 0)
+                    {
+                        visitedRvs++;
+                    }
+                    nextIdxRvs = visitedRvs;
+                    nextIdxRvs++;
+                }
+            }
+            return Math.Min(count, countRvs);
+        }
     }
 }

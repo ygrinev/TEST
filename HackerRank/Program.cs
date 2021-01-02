@@ -1482,12 +1482,49 @@
             return res;
         }
 
+        static string balancedSums(List<int> arr)
+        {
+            if (arr == null || arr.Count < 2) return "YES";
+            long lSum = 0, rSum = arr.Skip(1).Sum();
+            if (lSum == rSum) return "YES";
+            for (int idx = 1; idx < arr.Count; idx++)
+            {
+                if ((lSum += arr[idx - 1]) == (rSum -= arr[idx])) return "YES";
+            }
+            return "NO";
+        }
+
+        static int[] icecreamParlor(int m, int[] arr)
+        {
+            int[] radix = new int[10001];
+            int idx = 1;
+            foreach (int a in arr)
+            {
+                if (a < m && radix[m - a] > 0) return new int[] { radix[m - a], idx };
+                radix[a] = idx++;
+            }
+            return null;
+        }
+
+        static int[] missingNumbers(int[] arr, int[] brr)
+        {
+            int[] hashOrig = new int[100];
+            int[] hashNew = new int[100];
+            int minOrig = brr.Min();
+            Array.ForEach(brr, el => hashOrig[el - minOrig]++);
+            Array.ForEach(arr, el => hashNew[el - minOrig]++);
+            return hashOrig.Select((h, i) => h > hashNew[i] ? i + minOrig : int.MinValue).Where(a => a > int.MinValue).ToArray();
+        }
         /// <summary>
         /// //////////////////////////////////////////////
         /// </summary>
         /// <param name="args"></param>
         static void Main(string[] args)
         {
+            int[] missNums = missingNumbers(new int[] { 203, 204, 205, 206, 207, 208, 203, 204, 205, 206 }, new int[] { 203, 204, 204, 205, 206, 207, 205, 208, 203, 206, 205, 206, 204 }); // 
+            int swaps = new SortHelper(4).getSwapsToSort(new int[] { 15, 7, 12, 3 });
+            //int swaps = new SortHelper(4).getSwapsToSort(new int[] { 2, 5, 3, 1 }); // 2
+            string balanced = balancedSums(new List<int> { 1 }); // YES
             //int msgs = new MedianHelper().activityNotifications2(new int[] { 1, 2, 3, 4, 4 }, 4);
             int msgs = new MedianHelper().activityNotifications(new int[] { 2, 3, 4, 2, 3, 6, 8, 4, 5 }, 5);
             //int minPath = DijkstraHelper.shortestPath(100, new string[] { "32 62", "42 68", "12 98", "95 13", "97 25", "93 37", "79 27", "75 19", "49 47", "67 17" });
