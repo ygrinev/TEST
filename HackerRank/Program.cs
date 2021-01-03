@@ -1506,21 +1506,59 @@
             return null;
         }
 
-        static int[] missingNumbers(int[] arr, int[] brr)
+        static int[] missingNumbers(int[] arr, int[] brr, int range)
         {
-            int[] hash = new int[100];
+            int[] hash = new int[range];
             int min = brr.Min();
             Array.ForEach(brr, el => hash[el - min]++);
             Array.ForEach(arr, el => hash[el - min]--);
             return hash.Select((h, i) => h > 0 ? i + min : min-1).Where(a => a >= min).ToArray();
         }
+
+        public static List<long> findSum(List<int> numbers, List<List<int>> queries)
+        {
+            int n = numbers.Count + 1;
+            int[] zeros = new int[n];
+            long[] sums = new long[n];
+            int zCount = 0;
+            int idx = 1;
+            numbers.Aggregate(0L, (cur, next) =>
+            {
+                if (next == 0) zCount++;
+                else cur += next;
+                zeros[idx] = zCount;
+                sums[idx] = cur;
+                idx++;
+                return cur;
+            });
+            return queries.Select(q => sums[q[1]] - sums[q[0]-1] + (zeros[q[1]] - zeros[q[0]-1]) * q[2]).ToList();
+        }
+        static int pairs(int k, int[] arr)
+        {
+            if (k == 0 || arr == null || arr.Length < 2) return 0;
+            int count = 0;
+            int n = Math.Abs(k);
+            int[] ord = arr.OrderBy(e => e).ToArray();
+
+            for (int l = 0, r = 1; r < arr.Length; r++)
+            {
+                while (Math.Abs(ord[r] - ord[l]) > n) l++;
+                if (Math.Abs(ord[r] - ord[l]) == n) count++;
+            }
+            return count;
+
+        }
+
         /// <summary>
         /// //////////////////////////////////////////////
         /// </summary>
         /// <param name="args"></param>
         static void Main(string[] args)
         {
-            int[] missNums = missingNumbers(new int[] { 203, 204, 205, 206, 207, 208, 203, 204, 205, 206 }, new int[] { 203, 204, 204, 205, 206, 207, 205, 208, 203, 206, 205, 206, 204 }); // 
+            int numPairs = pairs(2, new int[] { 1, 3, 5, 8, 6, 4, 2 });  // 5
+            //List<long> sums = findSum(new List<int> { 5,10,10}, new List<List<int>> { new List<int> { 1, 2, 5 } }); // 15
+            List<long> sums = findSum(new List<int> {-5,0}, new List<List<int>> { new List<int> { 2, 2, 20 }, new List<int> { 1, 2, 10 } }); // 20 5
+            int[] missNums = missingNumbers(new int[] { 203, 204, 205, 206, 207, 208, 203, 204, 205, 206 }, new int[] { 203, 204, 204, 205, 206, 207, 205, 208, 203, 206, 205, 206, 204 }, 100); // 
             int swaps = new SortHelper(4).getSwapsToSort(new int[] { 15, 7, 12, 3 });
             //int swaps = new SortHelper(4).getSwapsToSort(new int[] { 2, 5, 3, 1 }); // 2
             string balanced = balancedSums(new List<int> { 1 }); // YES
