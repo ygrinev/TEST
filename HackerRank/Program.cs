@@ -1509,10 +1509,10 @@
         static int[] missingNumbers(int[] arr, int[] brr)
         {
             int[] hash = new int[100];
-            int minOrig = brr.Min();
-            Array.ForEach(brr, el => hash[el - minOrig]++);
-            Array.ForEach(arr, el => hash[el - minOrig]--);
-            return hash.Select((h, i) => h > hash[i] ? i + minOrig : int.MinValue).Where(a => a > int.MinValue).ToArray();
+            int min = brr.Min();
+            Array.ForEach(brr, el => hash[el - min]++);
+            Array.ForEach(arr, el => hash[el - min]--);
+            return hash.Select((h, i) => h > 0 ? i + min : min-1).Where(a => a >= min).ToArray();
         }
         /// <summary>
         /// //////////////////////////////////////////////
