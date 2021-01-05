@@ -35,6 +35,11 @@ namespace HackerRank.Helpers
                 }
             }
         }
+        public DijkstraHelper(int n, int m)
+        {
+            weight = new int[n][];
+            Array.ForEach(weight, item => item = new int[m]);
+        }
         public int[] FromNodeBFS(int startNode)
         {
             getAllShortestPaths(startNode, startNode);
@@ -196,6 +201,40 @@ namespace HackerRank.Helpers
                 }
             }
             Console.WriteLine(string.Join("\n", result));
+        }
+
+        public static int countConnectedCells(int i, int j, int[][] matrix)
+        {
+            int count = matrix[i][j] > 0 ? 1 : 0;
+            if(matrix[i][j] > 0)
+            {
+                matrix[i][j] = 0;
+                foreach(int[] pair in new int[8][] { new int[]{i-1,j-1}, new int[]{i-1,j}, new int[]{i,j-1}, new int[]{i-1,j+1}, new int[]{i+1,j-1}, new int[]{i,j+1}, new int[]{i+1,j}, new int[]{i+1,j+1} })
+                {
+                    if(pair[0] >= 0 && pair[0] < matrix.Length 
+                    && pair[1] >= 0 && pair[1] < matrix[i].Length
+                    && matrix[pair[0]][pair[1]] > 0) 
+                        count += countConnectedCells(pair[0], pair[1], matrix);
+                }
+
+            }
+            return count;
+        }
+
+        public static int connectedCell(int[][] matrix)
+        {
+            int max = 0;
+            for (int i = 0; i < matrix.Length; i++)
+            {
+                for(int j = 0; j < matrix[i].Length; j++)
+                {
+                    if(matrix[i][j] > 0)
+                    {
+                        max = Math.Max(max, countConnectedCells(i, j, matrix));
+                    }
+                }
+            }
+            return max;
         }
     }
 }

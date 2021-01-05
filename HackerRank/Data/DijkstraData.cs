@@ -8,6 +8,15 @@ namespace HackerRank.Data
 {
     class DijkstraData
     {
+        public static int[][] data4x4 = new int[][] { new int[] {1,1,0,0},
+                                                        new int[] {0,1,1,0},
+                                                        new int[] {0,0,1,0},
+                                                        new int[] {1,0,0,0}};
+        public static int[][] data5x5 = new int[][] { new int[] {1,1,0,0,0},
+                                                        new int[] {0,1,1,0,0},
+                                                        new int[] {0,0,1,0,1},
+                                                        new int[] {1,0,0,0,1},
+                                                        new int[] {0,1,0,1,1}};
         public static string[] dataLight = new string[]
         {
             "1 2 20",

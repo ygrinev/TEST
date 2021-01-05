@@ -1555,6 +1555,8 @@
         /// <param name="args"></param>
         static void Main(string[] args)
         {
+            int connCells = DijkstraHelper.connectedCell(DijkstraData.data4x4); // 5
+            //int connCells = DijkstraHelper.connectedCell(DijkstraData.data5x5); // 5
             int numPairs = pairs(2, new int[] { 1, 3, 5, 8, 6, 4, 2 });  // 5
             //List<long> sums = findSum(new List<int> { 5,10,10}, new List<List<int>> { new List<int> { 1, 2, 5 } }); // 15
             List<long> sums = findSum(new List<int> {-5,0}, new List<List<int>> { new List<int> { 2, 2, 20 }, new List<int> { 1, 2, 10 } }); // 20 5
