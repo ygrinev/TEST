@@ -1548,6 +1548,14 @@
             return count;
 
         }
+        static int lonelyinteger(int[] a)
+        {
+            int loneInt = 0;
+            int[] cnt = new int[101];
+            a.Aggregate(0, (dum, next) => { cnt[next]++; return dum; });
+            while (loneInt < 101 && cnt[loneInt] != 1) loneInt++;
+            return loneInt;
+        }
 
         /// <summary>
         /// //////////////////////////////////////////////
@@ -1555,6 +1563,11 @@
         /// <param name="args"></param>
         static void Main(string[] args)
         {
+            int lonelyInt = lonelyinteger(new int[] { 1});
+            //string luck0 = new DijkstraHelper(new string[] { "*.M",".X."}, '.', 'M', '*').countLuck(1); // "Impressed"
+            string luck0 = new DijkstraHelper(new string[] { "*.X","X.X","X.M"}, '.', 'M', '*').countLuck(0); // "Impressed"
+            //string luck1 = new DijkstraHelper(DijkstraData.strData1, '.', 'M', '*').countLuck(3); // "Impressed"
+            //string luck = new DijkstraHelper(DijkstraData.strData1, '.', 'M', '*').countLuck(4); // "Oops!"
             int connCells = DijkstraHelper.connectedCell(DijkstraData.data4x4); // 5
             //int connCells = DijkstraHelper.connectedCell(DijkstraData.data5x5); // 5
             int numPairs = pairs(2, new int[] { 1, 3, 5, 8, 6, 4, 2 });  // 5

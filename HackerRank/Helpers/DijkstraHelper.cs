@@ -11,6 +11,8 @@ namespace HackerRank.Helpers
     {
         private List<int>[] graph;
         private int[][] weight;
+        private int[] ptStart, ptEnd;
+        private int maxLuck = int.MaxValue;
         public DijkstraHelper(int n, List<int[]> edges, int defWeight = 1, bool directed = false, bool useMinWeight = true)
         {
             weight = new int[n + 1][].Select(d => new int[n + 1]).ToArray();
@@ -40,6 +42,21 @@ namespace HackerRank.Helpers
             weight = new int[n][];
             Array.ForEach(weight, item => item = new int[m]);
         }
+        public DijkstraHelper(string[] matrix, char go, char start, char end)
+        {
+            weight = new int[matrix.Length][];
+            int row = 0;
+            Array.ForEach(weight, item =>
+            {
+                weight[row] = matrix[row].ToCharArray().Select((c, col) =>
+                {
+                    if (c == start) ptStart = new int[] { row, col };
+                    if (c == end) ptEnd = new int[] { row, col };
+                    return c == go || c == end ? -1 : -2;
+                }).ToArray(); row++;
+            });
+            weight[ptEnd[0]][ptEnd[1]] = int.MaxValue;
+        }
         public int[] FromNodeBFS(int startNode)
         {
             getAllShortestPaths(startNode, startNode);
@@ -68,7 +85,7 @@ namespace HackerRank.Helpers
                 if (add)
                 {
                     if (update) weight[startNode][i] = -newPath;
-                    else 
+                    else
                     if (!visited) weight[startNode][i] = -weight[startNode][i];
                     getAllShortestPaths(i, startNode);
                 }
@@ -179,7 +196,7 @@ namespace HackerRank.Helpers
 
         public static void fullTest2()
         {
-            string[] queries =  DijkstraData.dataLight; // DijkstraData.dataLight2; // DijkstraData.dataLight3; // 
+            string[] queries = DijkstraData.dataLight; // DijkstraData.dataLight2; // DijkstraData.dataLight3; // 
             List<int[]> edges = new List<int[]>();
             DijkstraHelper helper = null;
             List<int> result = new List<int>();
@@ -206,14 +223,14 @@ namespace HackerRank.Helpers
         public static int countConnectedCells(int i, int j, int[][] matrix)
         {
             int count = matrix[i][j] > 0 ? 1 : 0;
-            if(matrix[i][j] > 0)
+            if (matrix[i][j] > 0)
             {
                 matrix[i][j] = 0;
-                foreach(int[] pair in new int[8][] { new int[]{i-1,j-1}, new int[]{i-1,j}, new int[]{i,j-1}, new int[]{i-1,j+1}, new int[]{i+1,j-1}, new int[]{i,j+1}, new int[]{i+1,j}, new int[]{i+1,j+1} })
+                foreach (int[] pair in new int[8][] { new int[] { i - 1, j - 1 }, new int[] { i - 1, j }, new int[] { i, j - 1 }, new int[] { i - 1, j + 1 }, new int[] { i + 1, j - 1 }, new int[] { i, j + 1 }, new int[] { i + 1, j }, new int[] { i + 1, j + 1 } })
                 {
-                    if(pair[0] >= 0 && pair[0] < matrix.Length 
+                    if (pair[0] >= 0 && pair[0] < matrix.Length
                     && pair[1] >= 0 && pair[1] < matrix[i].Length
-                    && matrix[pair[0]][pair[1]] > 0) 
+                    && matrix[pair[0]][pair[1]] > 0)
                         count += countConnectedCells(pair[0], pair[1], matrix);
                 }
 
@@ -226,9 +243,9 @@ namespace HackerRank.Helpers
             int max = 0;
             for (int i = 0; i < matrix.Length; i++)
             {
-                for(int j = 0; j < matrix[i].Length; j++)
+                for (int j = 0; j < matrix[i].Length; j++)
                 {
-                    if(matrix[i][j] > 0)
+                    if (matrix[i][j] > 0)
                     {
                         max = Math.Max(max, countConnectedCells(i, j, matrix));
                     }
@@ -236,5 +253,84 @@ namespace HackerRank.Helpers
             }
             return max;
         }
+        List<int[]> getDirs(int i, int j, int prevI, int prevJ, int k, out int cnt)
+        {
+            bool start = i - prevI == 0 && j - prevJ == 0;
+            List<int[]> dirs = new List<int[]>();
+            int[][] nextCells = new int[][] { new int[] { i - 1, j - 1 }, new int[] { i, j - 1 }, new int[] { i + 1, j - 1 }, new int[] { i + 1, j }, new int[] { i + 1, j + 1 }, new int[] { i, j + 1 }, new int[] { i - 1, j + 1 }, new int[] { i - 1, j }, new int[] { i - 1, j - 1 } };
+            int cntDirs = 0, count = 0;
+            nextCells.Aggregate(true, (stat, next) =>
+            {
+                bool tmpStat = next[0] >= 0
+                         && next[0] < weight.Length
+                         && next[1] >= 0
+                         && next[1] < weight[i].Length
+                         && (weight[next[0]][next[1]] >= -1);
+                if (tmpStat)
+                {
+                    if(count < 8 
+                    && (start || Math.Max(Math.Abs(prevI - next[0]), Math.Abs(prevJ - next[1])) == 2)
+                    && (weight[next[0]][next[1]] == -1 || weight[next[0]][next[1]] > k)) 
+                        dirs.Add(next);
+                    if (!stat) cntDirs++;
+                }
+                count++;
+                return tmpStat;
+            });
+            cnt = cntDirs > 0 ? cntDirs : dirs.Count > 0 ? 1 : 0;
+            return dirs;
+        }
+        List<int[]> getDirsUDLR(int i, int j, int prevI, int prevJ, int k, out int cnt)
+        {
+            bool start = i - prevI == 0 && j - prevJ == 0;
+            List<int[]> dirs = new List<int[]>();
+            int[][] nextCells = new int[][] { new int[] { i + 1, j }, new int[] { i - 1, j }, new int[] { i, j - 1 }, new int[] { i, j + 1 } };
+            cnt = nextCells.Aggregate(0, (cntDirs, next) =>
+            {
+                if(next[0] >= 0
+                && next[0] < weight.Length
+                && next[1] >= 0
+                && next[1] < weight[i].Length
+                && (start || prevI != next[0] || prevJ != next[1])
+                && (weight[next[0]][next[1]] == -1
+                || weight[next[0]][next[1]] > k))
+                {
+                    dirs.Add(next);
+                    cntDirs++;
+                }
+                return cntDirs;
+            });
+            return dirs;
+        }
+        bool hasLuck(int i, int j, int prevI, int prevJ, int k = 0)
+        {
+            if (ptEnd[0] == i && ptEnd[1] == j)
+            {
+                if (weight[ptEnd[0]][ptEnd[1]] > k)
+                {
+                    weight[ptEnd[0]][ptEnd[1]] = k;
+                }
+                return k == maxLuck;
+            }
+            bool isMatch = false;
+            int cntDirs = 0;
+            List<int[]> nextCells = getDirsUDLR(i, j, prevI, prevJ, k, out cntDirs);
+            if (cntDirs > 1) k++;
+            if (cntDirs < 1 || weight[i][j] > -1 && weight[i][j] < k || maxLuck < k) return false;
+            weight[i][j] = k;
+            foreach (int[] pair in nextCells)
+            {
+                if (weight[pair[0]][pair[1]] == -1 || weight[pair[0]][pair[1]] > k)
+                    isMatch = hasLuck(pair[0], pair[1], i, j, k) || isMatch;
+            }
+            return isMatch;
+        }
+        public string countLuck(int k)
+        {
+            maxLuck = k;
+            hasLuck(ptStart[0], ptStart[1], ptStart[0], ptStart[1]);
+            return weight[ptEnd[0]][ptEnd[1]] == k ? "Impressed" : "Oops!";
+        }
+
     }
 }

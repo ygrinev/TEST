@@ -8,6 +8,13 @@ namespace HackerRank.Data
 {
     class DijkstraData
     {
+        public static string[] strData1 = new string[]
+        {
+            ".X.X......X",
+            ".X*.X.XXX.X",
+            ".XX.X.XM...",
+            "......XXXX."
+        };
         public static int[][] data4x4 = new int[][] { new int[] {1,1,0,0},
                                                         new int[] {0,1,1,0},
                                                         new int[] {0,0,1,0},
