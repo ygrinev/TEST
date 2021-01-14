@@ -1548,13 +1548,64 @@
             return count;
 
         }
-        static int lonelyinteger(int[] a)
+        static int lonelyinteger(int[] a, int range)
         {
             int loneInt = 0;
-            int[] cnt = new int[101];
+            int[] cnt = new int[range+1];
             a.Aggregate(0, (dum, next) => { cnt[next]++; return dum; });
-            while (loneInt < 101 && cnt[loneInt] != 1) loneInt++;
+            while (loneInt < range+1 && cnt[loneInt] != 1) loneInt++;
             return loneInt;
+        }
+
+        private static int fillSubtrees(int[,] tree, int v, int parent = -1)
+        {
+            int sumSubTree = 0;
+            for(int i = 1; i < tree.GetLength(1); i++)
+            {
+                if (v == i || i == parent || tree[v, i] == 0) continue;
+                sumSubTree += fillSubtrees(tree, i, v);
+            }
+            return tree[v, v] += sumSubTree; 
+        }
+
+        public static int cutTheTree(List<int> data, List<List<int>> edges)
+        {
+            int diff = int.MaxValue;
+            int[,] tree = new int[data.Count+1, data.Count+1];
+            data.Aggregate(1, (idx, next)=>{ tree[idx, idx] = next; return ++idx; });
+            edges.Aggregate(0, (dum, next) => { tree[next[0], next[1]] = tree[next[1], next[0]] = 1; return dum; });
+            fillSubtrees(tree, 1);
+            for(int i = 2; i < data.Count+1; i++)
+            {
+                int tmp = Math.Abs(tree[1, 1] - tree[i,i] * 2);
+                if (tmp < diff) diff = tmp;
+            }
+            return diff;
+        }
+        static int maximizingXor(int l, int r)
+        {
+            if (r == l) return 0;
+            int xor = 1, xor0 = r ^ l;
+            for (int cnt = 1, pow = 2; xor0 >> cnt > 0; cnt++, pow *= 2)
+            {
+                xor += pow;
+            }
+            return xor;
+        }
+
+        static string counterGame(long n) // if 1 - wins Richard, otherwise - who set n to 1
+        {
+            bool skipZeroes = n % 2 == 1;
+            int count = 0;
+            while ((n = n >> 1) > 0)
+            {
+                bool is1 = n % 2 == 1;
+                if (is1 || !skipZeroes)
+                    count++;
+                if (!skipZeroes && is1)
+                    skipZeroes = true;
+            }
+            return count % 2 == 0 ? "Richard" : "Louise";
         }
 
         /// <summary>
@@ -1563,7 +1614,9 @@
         /// <param name="args"></param>
         static void Main(string[] args)
         {
-            int lonelyInt = lonelyinteger(new int[] { 1});
+            //int treeDiff = cutTheTree(GraphData.dataVrtxs, GraphData.dataEdges);
+            int treeDiff = cutTheTree(GraphData.dataVrtxs1, GraphData.dataEdges1);
+            int lonelyInt = lonelyinteger(new int[] { 1}, 100);
             //string luck0 = new DijkstraHelper(new string[] { "*.M",".X."}, '.', 'M', '*').countLuck(1); // "Impressed"
             string luck0 = new DijkstraHelper(new string[] { "*.X","X.X","X.M"}, '.', 'M', '*').countLuck(0); // "Impressed"
             //string luck1 = new DijkstraHelper(DijkstraData.strData1, '.', 'M', '*').countLuck(3); // "Impressed"
