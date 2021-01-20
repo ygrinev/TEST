@@ -1608,12 +1608,57 @@
             return count % 2 == 0 ? "Richard" : "Louise";
         }
 
+        static int sansaXor(int[] arr)
+        {
+            int n = arr.Length, i = 0;
+            return n % 2 == 0 ? 0 : arr.Aggregate(0, (xor, a) => (i++) % 2 == 1 ? xor : xor ^ a);
+        }
+
+        static long andProduct(long a, long b) // having a < b find a&(a+1)&...&(b-1)&b
+        {
+            if (a == b) return a;
+            long res = 0;
+            int pow = 0;
+            while (a >> ++pow > 1) ;
+            if (b >> pow > 1) return 0;
+            for(long bit = 1<<pow; pow >=0; bit = 1 << --pow)
+            {
+                if ((a & bit) == (b & bit)) res += a & bit;
+                else break;
+            }
+            return res;
+        }
+
+        static string cipher(int k, string s)
+        {
+            if (k == 0) return s;
+            int xor = 0;
+            char[] res = s.Substring(k - 1, s.Length - k + 1).ToCharArray();
+            for(int i = res.Length - 1; i > -1; i--)
+            {
+                res[i] = (int.Parse(res[i].ToString()) ^ xor).ToString()[0];
+                if(i > 0)
+                {
+                    if (i < res.Length - k + 1)
+                        xor = int.Parse(res[i + k - 1].ToString()) ^ xor;
+                    xor = int.Parse(res[i].ToString()) ^ xor;
+                }
+            }
+            return string.Join("", res);
+        }
+        //101111
+        // 101111
+        //1110001
         /// <summary>
         /// //////////////////////////////////////////////
         /// </summary>
         /// <param name="args"></param>
         static void Main(string[] args)
         {
+            //string origin = cipher(4, "1110100110"); // 1001010
+            string origin = cipher(2, "1110001"); // 101111
+            long andProd = andProduct(17, 23); // 16
+            int xor = sansaXor(new int[] { 1,2,3}); // 2
             //int treeDiff = cutTheTree(GraphData.dataVrtxs, GraphData.dataEdges);
             int treeDiff = cutTheTree(GraphData.dataVrtxs1, GraphData.dataEdges1);
             int lonelyInt = lonelyinteger(new int[] { 1}, 100);
