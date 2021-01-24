@@ -6,6 +6,7 @@
     using System.Collections.Generic;
     using System.IO;
     using System.Linq;
+    using System.Numerics;
     using System.Text;
     using System.Text.RegularExpressions;
 
@@ -1646,9 +1647,12 @@
             }
             return string.Join("", res);
         }
-        //101111
-        // 101111
-        //1110001
+
+        static int xoringNinja(int[] arr)
+        {
+            return (int)((arr.Aggregate(default(BigInteger), (orb, next) => orb |= next) << (arr.Length - 1)) % 1000000007);
+        }
+
         /// <summary>
         /// //////////////////////////////////////////////
         /// </summary>
