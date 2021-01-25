@@ -1653,12 +1653,42 @@
             return (int)((arr.Aggregate(default(BigInteger), (orb, next) => orb |= next) << (arr.Length - 1)) % 1000000007);
         }
 
+        static long getElementAt(long i)
+        {
+            return i % 4 == 3 ? 0 : i % 4 == 0 ? i : i % 4 == 1 ? 1 : i + 1;
+        }
+        // Complete the xorSequence function below.
+        static long xorSequence(long l, long r)
+        {
+            long xor = 0;
+            if (r - l < 9)
+            {
+                while (l <= r)
+                    xor ^= getElementAt(l++);
+
+            }
+            else
+            {
+                long l8 = l + 8 - (l % 8), r8 = r - (r % 8);
+                while (l < l8)
+                    xor ^= getElementAt(l++);
+                l = r8;
+                while (l <= r)
+                    xor ^= getElementAt(l++);
+            }
+            return xor;
+        }
+
         /// <summary>
         /// //////////////////////////////////////////////
         /// </summary>
         /// <param name="args"></param>
         static void Main(string[] args)
         {
+            // 0 1 3 0 4 1 7 0 8 1 11
+            long xorSeq = xorSequence(2, 8); // 9
+            //long xorSeq = xorSequence(2, 4); // 7
+            //long xorSeq = xorSequence(5, 9); // 15
             //string origin = cipher(4, "1110100110"); // 1001010
             string origin = cipher(2, "1110001"); // 101111
             long andProd = andProduct(17, 23); // 16
