@@ -1679,12 +1679,26 @@
             return xor;
         }
 
+        static BigInteger sumXor(BigInteger n) // count all x+n==x֍n where 0 <= x < n
+        {
+            int pow = 0;
+            while (n > 0)
+            {
+                if (n % 2 == 0)
+                    pow++;
+                n >>= 1;
+            }
+            return (BigInteger)1 << pow;
+        }
+
         /// <summary>
         /// //////////////////////////////////////////////
         /// </summary>
         /// <param name="args"></param>
         static void Main(string[] args)
         {
+            BigInteger cntXors = sumXor(1099511627776); // 1099511627776
+            // long cntXors = sumXor(5); // 2
             // 0 1 3 0 4 1 7 0 8 1 11
             long xorSeq = xorSequence(2, 8); // 9
             //long xorSeq = xorSequence(2, 4); // 7
