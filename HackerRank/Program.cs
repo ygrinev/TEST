@@ -1691,6 +1691,15 @@
             return (ulong)1 << pow;
         }
 
+        static ulong theGreatXor(ulong x)
+        {
+            int cnt = -1;
+            return Convert.ToString((long)x, 2).ToCharArray().Reverse().Aggregate((ulong)0, (sum, next)=> {
+                cnt++; 
+                return sum + (next == '0' ? (ulong)1<<cnt : 0 );
+            });
+        }
+
         /// <summary>
         /// //////////////////////////////////////////////
         /// </summary>
