@@ -1700,6 +1700,15 @@
             });
         }
 
+        static int luckBalance(int k, int[][] contests)
+        {
+            int impNum = contests.Count(el => el[1] > 0);
+            int cnt = 0;
+            return contests.OrderByDescending(a => a[1]).ThenBy(e => e[0]).Aggregate(0, (bal, next) =>
+                    bal += (cnt++ < impNum - k && next[1] > 0) ? -next[0] : next[0]
+                );
+        }
+
         /// <summary>
         /// //////////////////////////////////////////////
         /// </summary>
