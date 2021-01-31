@@ -1709,6 +1709,22 @@
                 );
         }
 
+        static int[] maximumPerimeterTriangle(int[] sticks)
+        {
+            int[] none = new int[] { -1 };
+            if (sticks == null || sticks.Length < 3) return none;
+            IEnumerable<int> ord = sticks.OrderByDescending(s => s);
+            int maxEdge = ord.ElementAt(0), midEdge = ord.ElementAt(1);
+            foreach (int edge in ord.Skip(2))
+            {
+                if (edge + midEdge > maxEdge)
+                    return new int[] { edge, midEdge, maxEdge };
+                maxEdge = midEdge;
+                midEdge = edge;
+            }
+            return none;
+        }
+
         /// <summary>
         /// //////////////////////////////////////////////
         /// </summary>
