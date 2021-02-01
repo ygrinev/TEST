@@ -1725,12 +1725,49 @@
             return none;
         }
 
+        static int beautifulPairs(int[] A, int[] B) // make 1 change in B first to keep max matching pairs
+        {
+            if (A == null || A.Length == 0) return 0;
+            var ordA = A.GroupBy(a => a).OrderBy(g => g.ElementAt(0));
+            var ordB = B.GroupBy(b => b).OrderBy(g => g.ElementAt(0));
+            int count = 0, idxB = 0;
+            bool exA = false, exB = false;
+            foreach (var gA in ordA)
+            {
+                if (idxB > ordB.Count() - 1)
+                {
+                    exA = true;
+                    break;
+                }
+                var gB = ordB.ElementAt(idxB);
+                int curA = gA.ElementAt(0),
+                    curB = gB.ElementAt(0);
+                while (curA > curB && idxB < ordB.Count() - 1)
+                {
+                    if (!exB) exB = true;
+                    gB = ordB.ElementAt(++idxB);
+                    curB = gB.ElementAt(0);
+                }
+                if (curA == curB)
+                {
+                    idxB++;
+                    int cntA = gA.Count(), cntB = gB.Count();
+                    count += Math.Min(cntA, cntB);
+                    if (!exB && cntB > cntA) exB = true;
+                }
+                else
+                    if (!exA) exA = true;
+            }
+            return count + (exA && exB ? 1 : 0);
+        }
+
         /// <summary>
         /// //////////////////////////////////////////////
         /// </summary>
         /// <param name="args"></param>
         static void Main(string[] args)
         {
+            int beauPairs = beautifulPairs(new int[] { 3, 5, 7, 11, 5, 8 }, new int[] { 5, 7, 11, 10, 5, 8 }); // 6
             ulong cntXors = sumXor(1099511627776); // 1099511627776
             // long cntXors = sumXor(5); // 2
             // 0 1 3 0 4 1 7 0 8 1 11
