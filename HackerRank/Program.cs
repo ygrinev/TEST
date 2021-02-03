@@ -1761,12 +1761,26 @@
             return count + (exA && exB ? 1 : 0);
         }
 
+        static void decentNumber(int n)
+        {
+            for (int i = 0; n >= 0; n -= 5, i++)
+            {
+                if (n % 3 == 0)
+                {
+                    Console.WriteLine(new string('5', n) + new string('3', 5 * i));
+                    return;
+                }
+            }
+            Console.WriteLine("-1");
+        }
+
         /// <summary>
         /// //////////////////////////////////////////////
         /// </summary>
         /// <param name="args"></param>
         static void Main(string[] args)
         {
+            decentNumber(13); // 5553333333333
             int beauPairs = beautifulPairs(new int[] { 3, 5, 7, 11, 5, 8 }, new int[] { 5, 7, 11, 10, 5, 8 }); // 6
             ulong cntXors = sumXor(1099511627776); // 1099511627776
             // long cntXors = sumXor(5); // 2
