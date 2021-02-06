@@ -78,6 +78,7 @@
     <Compile Include="Helpers\TreeHelper.cs" />
     <Compile Include="Data\TripletData.cs" />
     <Compile Include="Helpers\TripletHelper.cs" />
+    <Compile Include="Solution01.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include=".editorconfig" />

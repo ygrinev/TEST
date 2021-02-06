@@ -21,7 +21,7 @@
         }
     }
 
-    class Solution
+    partial class Solution
     {
         //static void minimumBribes(int[] q)
         //{
@@ -1763,15 +1763,21 @@
 
         static void decentNumber(int n)
         {
-            for (int i = 0; n >= 0; n -= 5, i++)
-            {
-                if (n % 3 == 0)
+            Console.WriteLine(n%3 == 2 && n < 5 || n%3 == 1 && n < 10 ? "-1" : new string('5', n-5*((3-n%3)%3)) + new string('3', 5*((3-n%3)%3)));
+        }
+
+        static int toys(int[] w) // minimize number of subarrays each having range [ai, ai+4]
+        {
+            IEnumerable<int> ord = w.OrderBy(e => e);
+            int cur = ord.ElementAt(0);
+            return ord.Aggregate(1, (cnt, next) => {
+                if (next > cur + 4)
                 {
-                    Console.WriteLine(new string('5', n) + new string('3', 5 * i));
-                    return;
+                    cnt++;
+                    cur = next;
                 }
-            }
-            Console.WriteLine("-1");
+                return cnt;
+            });
         }
 
         /// <summary>
@@ -1780,6 +1786,9 @@
         /// <param name="args"></param>
         static void Main(string[] args)
         {
+            int[] largestPerm = largestPermutation(220, MinMaxData.permArr);
+            //int[] largestPerm = largestPermutation(1, new int[] { 4, 2, 3, 5, 1 }); // 5 2 3 4 1
+            Console.Write(string.Join(" ", largestPerm));
             decentNumber(13); // 5553333333333
             int beauPairs = beautifulPairs(new int[] { 3, 5, 7, 11, 5, 8 }, new int[] { 5, 7, 11, 10, 5, 8 }); // 6
             ulong cntXors = sumXor(1099511627776); // 1099511627776
