@@ -28,6 +28,18 @@ namespace HackerRank
             }
             return arr;
         }
+        static int maximumToys(int[] prices, int k)
+        {
+            int sum = 0;
+            return prices.OrderBy(p => p).Aggregate(0, (cnt, n) => {
+                if (sum + n <= k)
+                {
+                    sum += n;
+                    cnt++;
+                }
+                return cnt;
+            });
+        }
 
     }
 }
