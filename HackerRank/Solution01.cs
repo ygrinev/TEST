@@ -40,6 +40,14 @@ namespace HackerRank
                 return cnt;
             });
         }
-
+        static int getMinimumCost(int k, int[] c)
+        {
+            int m = c.Length / k + 1;
+            int cnt = c.Length % k;
+            return c.OrderBy(e => e).Aggregate(0, (sum, p) => {
+                if (cnt-- == 0) { cnt = k - 1; m--; }
+                return sum + p * m;
+            });
+        }
     }
 }
