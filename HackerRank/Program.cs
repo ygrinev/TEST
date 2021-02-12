@@ -1786,6 +1786,7 @@
         /// <param name="args"></param>
         static void Main(string[] args)
         {
+            int max_min = maxMin(3, new int[] { 100,200,300,350,400,401,402});
             int[] largestPerm = largestPermutation(220, MinMaxData.permArr);
             //int[] largestPerm = largestPermutation(1, new int[] { 4, 2, 3, 5, 1 }); // 5 2 3 4 1
             Console.Write(string.Join(" ", largestPerm));

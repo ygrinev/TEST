@@ -49,5 +49,18 @@ namespace HackerRank
                 return sum + p * m;
             });
         }
+        static int maxMin(int k, int[] arr)
+        {
+            int[] ord = arr.OrderBy(a => a).ToArray();
+            int min = int.MaxValue;
+            for (int idx = 0; idx <= ord.Length - k; idx++)
+            {
+                int newMin = ord[idx + k - 1] - ord[idx];
+                if (newMin < min)
+                    min = newMin;
+            }
+            return min;
+        }
+
     }
 }
