@@ -1786,6 +1786,17 @@
         /// <param name="args"></param>
         static void Main(string[] args)
         {
+            var jimArr = new MinMaxData().jimOrderData;
+            int[] orders = jimOrders(jimArr);
+            int[] JIMres = new TestResults().jimOrderData;
+            int line = 1;
+            for(int ix = 0; ix < orders.Length; ix++)
+            {
+                if(JIMres[ix] != orders[ix])
+                {
+                    Console.WriteLine($"line: {line++}, my: {orders[ix]} [ORD# {jimArr[orders[ix]][0]}, PRICE: {jimArr[orders[ix]][1]}], need: {JIMres[ix]} [ORD# {jimArr[JIMres[ix]][0]}, PRICE: {jimArr[JIMres[ix]][1]}]");
+                }
+            }
             int max_min = maxMin(3, new int[] { 100,200,300,350,400,401,402});
             int[] largestPerm = largestPermutation(220, MinMaxData.permArr);
             //int[] largestPerm = largestPermutation(1, new int[] { 4, 2, 3, 5, 1 }); // 5 2 3 4 1

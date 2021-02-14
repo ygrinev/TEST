@@ -50,6 +50,7 @@
     <Compile Include="Data\EvenTreeData.cs" />
     <Compile Include="Data\KidaAdventureData.cs" />
     <Compile Include="Data\SortData.cs" />
+    <Compile Include="Data\TestResults.cs" />
     <Compile Include="Helpers\ArrayManipulationHelper.cs" />
     <Compile Include="Helpers\CoinChangeHelper.cs" />
     <Compile Include="Helpers\DijkstraHelper.cs" />

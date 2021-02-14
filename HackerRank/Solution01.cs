@@ -31,7 +31,8 @@ namespace HackerRank
         static int maximumToys(int[] prices, int k)
         {
             int sum = 0;
-            return prices.OrderBy(p => p).Aggregate(0, (cnt, n) => {
+            return prices.OrderBy(p => p).Aggregate(0, (cnt, n) =>
+            {
                 if (sum + n <= k)
                 {
                     sum += n;
@@ -44,7 +45,8 @@ namespace HackerRank
         {
             int m = c.Length / k + 1;
             int cnt = c.Length % k;
-            return c.OrderBy(e => e).Aggregate(0, (sum, p) => {
+            return c.OrderBy(e => e).Aggregate(0, (sum, p) =>
+            {
                 if (cnt-- == 0) { cnt = k - 1; m--; }
                 return sum + p * m;
             });
@@ -61,6 +63,10 @@ namespace HackerRank
             }
             return min;
         }
-
+        static int[] jimOrders(int[][] orders)
+        {
+            return orders.Select((e, i) => new int[] { i + 1, e[0] + e[1], e[0] }).
+                OrderBy(it => it[1]).ThenBy(it => it[0]).Select(e => e[0]).ToArray();
+        }
     }
 }
