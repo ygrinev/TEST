@@ -68,5 +68,16 @@ namespace HackerRank
             return orders.Select((e, i) => new int[] { i + 1, e[0] + e[1], e[0] }).
                 OrderBy(it => it[1]).ThenBy(it => it[0]).Select(e => e[0]).ToArray();
         }
+        static string twoArrays(int k, int[] A, int[] B) // permute [if needed] A & B => A[i]+B[i] >= k
+        {
+            int[] ordA = A.OrderBy(a => a).ToArray();
+            int[] ordB = B.OrderByDescending(b => b).ToArray();
+            for (int i = 0; i < A.Length; i++)
+            {
+                if (ordA[i] + ordB[i] < k)
+                    return "NO";
+            }
+            return "YES";
+        }
     }
 }
