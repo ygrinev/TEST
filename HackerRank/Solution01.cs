@@ -79,5 +79,36 @@ namespace HackerRank
             }
             return "YES";
         }
+        static int boardCutting(int[] cost_y, int[] cost_x)
+        {
+            var ordX = cost_x.OrderByDescending(x => x).ToArray();
+            var ordY = cost_y.OrderByDescending(y => y).ToArray();
+            int ix = 0, iy = 0;
+            long tot = 0;
+            long cntX = 1, cntY = 1;
+            while (ix < cost_x.Length || iy < cost_y.Length)
+            {
+                if (ix < cost_x.Length)
+                {
+                    if (iy >= cost_y.Length || ordX[ix] >= ordY[iy])
+                    {
+                        tot += ordX[ix++] * cntX;
+                        cntY++;
+                    }
+                    else
+                    {
+                        tot += ordY[iy++] * cntY;
+                        cntX++;
+                    }
+                }
+                else
+                {
+                    tot += ordY[iy++] * cntY;
+                    cntX++;
+                }
+                if (tot >= 1000000007) tot %= 1000000007;
+            }
+            return (int)tot;
+        }
     }
 }
