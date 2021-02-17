@@ -110,5 +110,12 @@ namespace HackerRank
             }
             return (int)tot;
         }
+        static string gameOfThrones(string s)
+        {
+            return s.Length < 2 ? "YES" : s.Length % 2 == 0
+                ? (s.ToCharArray().GroupBy(c => c).Count(g => g.Count() % 2 != 0) == 0
+                    ? "YES" : "NO")
+                : s.ToCharArray().GroupBy(c => c).Count(g => g.Count() % 2 != 0) == 1 ? "YES" : "NO";
+        }
     }
 }
