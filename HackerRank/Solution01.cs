@@ -117,5 +117,12 @@ namespace HackerRank
                     ? "YES" : "NO")
                 : s.ToCharArray().GroupBy(c => c).Count(g => g.Count() % 2 != 0) == 1 ? "YES" : "NO";
         }
+        static int makingAnagrams(string s1, string s2)
+        {
+            int[] frq = new int[26];
+            s1.Aggregate(0, (sum, a) => { frq[a - 'a']++; return sum; });
+            s2.Aggregate(0, (sum, b) => { frq[b - 'a']--; return sum; });
+            return frq.Aggregate(0, (cnt, n) => cnt + Math.Abs(n));
+        }
     }
 }
