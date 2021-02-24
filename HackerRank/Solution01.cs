@@ -133,5 +133,9 @@ namespace HackerRank
                     (asc, c) => { asc[c - 'a']--; return asc; })
                 .Sum(a => Math.Abs(a)) / 2;
         }
+        static int stringConstruction(string s) // minimize copy to a new str, options: 1. copy any char from origin - $1, copy from new str to the end - free
+        {
+            return s.Aggregate(new int[26], (asc, c) => { asc[c - 'a']++; return asc; }).Sum(n => n > 0 ? 1 : 0);
+        }
     }
 }
