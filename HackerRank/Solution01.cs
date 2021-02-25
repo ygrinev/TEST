@@ -137,5 +137,15 @@ namespace HackerRank
         {
             return s.Aggregate(new int[26], (asc, c) => { asc[c - 'a']++; return asc; }).Sum(n => n > 0 ? 1 : 0);
         }
+        static string isValid(string s) // check if 1 char replacement can make all char count even (if not already)
+        {
+            var radix = s.Aggregate(new int[26], (asc, c) => { asc[c - 'a']++; return asc; }).Where(i => i > 0);
+            var chGroups = radix.GroupBy(n => n);
+            return chGroups.Count() == 1
+                || chGroups.Count() == 2 && chGroups.Any(g => g.Count() == 1) 
+                && (chGroups.Any(g => g.Count() == 1 && g.ElementAt(0) < 2) || chGroups.Max(g=>g.ElementAt(0)) - chGroups.Min(g=>g.ElementAt(0)) < 2)
+                ? "YES"
+                : "NO";
+        }
     }
 }
