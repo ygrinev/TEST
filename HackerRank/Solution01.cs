@@ -147,5 +147,41 @@ namespace HackerRank
                 ? "YES"
                 : "NO";
         }
+        static string highestValuePalindrome(string s, int k)
+        {
+            // fill out all asymmetries, if k exceeded before: -1
+            int len = s.Length, nAsym = 0;
+            char[] arr = s.ToCharArray();
+            bool[] asym = new bool[len / 2];
+            for (int i = 0; i < len / 2; i++)
+            {
+                if (s[i] != arr[len - i - 1])
+                {
+                    k--;
+                    asym[i] = true;
+                    if (k < 0) return "-1";
+                    if (arr[i] - arr[len - i - 1] > 0)
+                    {
+                        arr[len - i - 1] = arr[i];
+                    }
+                    else
+                    {
+                        arr[i] = arr[len - i - 1];
+                    }
+                }
+            }
+            // replace non-9 in pairs s[i], s[len - i - 1], i = 0...len
+            for (int i = 0; i < len / 2 && k >= (asym[i] ? 1 : 2); i++)
+            {
+                if (arr[i] != '9' && (k -= asym[i] ? 1 : 2) >= 0)
+                {
+                    arr[i] = arr[len - i - 1] = '9';
+                }
+            }
+            // if the length is odd and only 1 replacement left - only mid-char can serve
+            if (k >= 1 && len % 2 == 1 && arr[len / 2] != '9')
+                arr[len / 2] = '9';
+            return string.Join("", arr);
+        }
     }
 }
