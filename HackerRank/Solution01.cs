@@ -183,5 +183,40 @@ namespace HackerRank
                 arr[len / 2] = '9';
             return string.Join("", arr);
         }
+        static bool isAnagram(string s, int i1, int i2, int l)
+        {
+            int[] curSum = new int[26];
+            while (--l >= 0)
+            {
+                curSum[s[i1 + l] - 'a']++;
+                curSum[s[i2 + l] - 'a']--;
+            }
+            return curSum.All(n => n == 0);
+        }
+        // Complete the sherlockAndAnagrams function below.
+        static int sherlockAndAnagrams(string s)
+        {
+            int[] chStat = s.Aggregate(new int[26], (a, c) => { a[c - 'a']++; return a; });
+            int count = chStat.Aggregate(0, (sum, n) => sum + (n < 2 ? 0 : n * (n - 1) / 2));
+            for (int l = 2; l < s.Length; l++)
+            {
+                for (int i = 0; i < s.Length - l; i++)
+                {
+                    if (chStat[s[i] - 'a'] < 2) continue;
+                    for (int j = i + 1; j <= s.Length - l; j++)
+                    {
+                        if (chStat[s[j + l - 1] - 'a'] < 2)
+                        {
+                            j += l - 1;
+                            continue;
+                        }
+                        int lInters = Math.Min(j - 1, i + l - 1), rInters = Math.Max(j, i + l);
+                        if (isAnagram(s, i, j, l))
+                            count++;
+                    }
+                }
+            }
+            return count;
+        }
     }
 }

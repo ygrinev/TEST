@@ -1786,6 +1786,8 @@
         /// <param name="args"></param>
         static void Main(string[] args)
         {
+            int cntAnagrams = sherlockAndAnagrams("ifailuhkqqhucpoltgtyovarjsnrbfpvmupwjjjfiwwhrlkpekxxnebfrwibylcvkfealgonjkzwlyfhhkefuvgndgdnbelgruel"); // 399
+            //int cntAnagrams = sherlockAndAnagrams("abba"); // 4
             //string hiValPal = highestValuePalindrome("092282", 3);
             //string hiValPal = highestValuePalindrome("12321", 1);
             string hiValPal = highestValuePalindrome(new ArrayManipulationData().hiValPal, 79655);
