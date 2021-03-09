@@ -1786,6 +1786,9 @@
         /// <param name="args"></param>
         static void Main(string[] args)
         {
+            int pldrIdx = palindromeIndex("hgygsvlfcwnswtuhmyaljkqlqjjqlqkjlaymhutwsnwcwflvsgygh");
+            int sGeneLen = steadyGene(new StringData().geneString);
+            //int sGeneLen = steadyGene("TGATGCCGTCCCCTCAACTTGAGTGCTCCTAATGCGTTGC"); // A:6,C:13,G:9,T:12
             int cntAnagrams = sherlockAndAnagrams("ifailuhkqqhucpoltgtyovarjsnrbfpvmupwjjjfiwwhrlkpekxxnebfrwibylcvkfealgonjkzwlyfhhkefuvgndgdnbelgruel"); // 399
             //int cntAnagrams = sherlockAndAnagrams("abba"); // 4
             //string hiValPal = highestValuePalindrome("092282", 3);

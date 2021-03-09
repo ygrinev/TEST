@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace HackerRank
@@ -217,6 +218,112 @@ namespace HackerRank
                 }
             }
             return count;
+        }
+        static int commonChild(string a, string b) // Longest common subsequence
+        {
+            int[,] grf = new int[a.Length + 1, b.Length + 1];
+
+            for (int i = 0; i < a.Length; i++)
+            {
+                for (int j = 0; j < b.Length; j++)
+                {
+                    if (a[i] == b[j])
+                    {
+                        grf[i + 1, j + 1] = grf[i, j] + 1;
+                    }
+                    else
+                    {
+                        grf[i + 1, j + 1] = Math.Max(grf[i + 1, j], grf[i, j + 1]);
+                    }
+                }
+            }
+            return grf[a.Length, b.Length];
+        }
+        static int steadyGene(string g)
+        {
+            if (g.Length % 4 > 0 || Regex.IsMatch(g, "[^ACGT]")) return -1;
+            // find letters which count > n/4
+            IEnumerable<int> stat = g.Aggregate(new int[26], (s, c) => { s[c - 'A']++; return s; });
+            // create int[26] with differences
+            int len = g.Length, dv = len / 4;
+            int[] diff = stat.Select(s => (s > dv ? dv : -dv - 1)).ToArray();
+            if (!diff.Any(d => d >= 0)) return 0; // all good!!!
+            // go back from last idx intil 1 of those "extra" go < 0, stop at next idx[rIdx].
+            int rIdx = len - 1;
+            for (; rIdx >= 0 && (diff[g[rIdx] - 'A'] >= 0 || diff[g[rIdx] - 'A'] < -dv); rIdx--)
+            {
+                if (diff[g[rIdx] - 'A'] >= 0)
+                {
+                    if (diff[g[rIdx] - 'A'] == 0)
+                    {
+                        rIdx++;
+                        break;
+                    }
+                    diff[g[rIdx]- 'A']--;
+                }
+            }
+            if (rIdx == 0) return 0;
+            int lIdx = 0;
+            int min = rIdx - lIdx;
+            while (rIdx < len)
+            {
+                // from lIdx = 0 go right until same situation, stop ,
+                // rIdx-lIdx - 1st candidate
+                for (; lIdx < len && (diff[g[lIdx] - 'A'] >= 0 || diff[g[lIdx] - 'A'] < -dv); lIdx++)
+                {
+                    if (diff[g[lIdx] - 'A'] >= 0)
+                    {
+                        if (diff[g[lIdx] - 'A'] == 0)
+                            break;
+                        --diff[g[lIdx] - 'A'];
+                    }
+                }
+                if (min == 0) return 1;
+                if (rIdx - lIdx < min)
+                    min = rIdx - lIdx;
+                // rIdx++ until the leftmost lost char restored ->lIdx++ 
+                // till next char goes negative, stop , rIdx-lIdx - 2nd candidate ->
+                //  choose min of last and cur, repeat till rIdx = gene.Length
+                while (diff[g[lIdx] - 'A'] == 0 && rIdx < len)
+                {
+                    if (g[lIdx] - 'A' == g[rIdx] - 'A')
+                        diff[g[lIdx] - 'A']++;
+                    else if (diff[g[rIdx] - 'A'] >= 0)
+                    {
+                        diff[g[rIdx] - 'A']++;
+                    }
+                    rIdx++;
+                }
+            }
+            return min;
+        }
+        static int palindromeIndex(string s) // find exactly 1 char index to remove to make the string a palindrome
+        {
+            int cnt = 0, found = -1;
+            for (int lIdx = 0, rIdx = s.Length - 1; lIdx < rIdx; lIdx++, rIdx--)
+            {
+                if (s[lIdx] != s[rIdx])
+                {
+                    int lTmp = lIdx, rTmp = rIdx;
+                    while (lIdx < rIdx && s[lIdx + 1] == s[rIdx] && s[lIdx] == s[rIdx - 1]) 
+                    { 
+                        lIdx++; rIdx--; 
+                    }
+                    if (s[lIdx + 1] == s[rIdx])
+                    {
+                        found = lTmp;
+                        lIdx++;
+                    }
+                    else if (s[lIdx] == s[rIdx - 1])
+                    {
+                        found = rTmp;
+                        rIdx--;
+                    }
+                    else return -1;
+                    cnt++;
+                }
+            }
+            return cnt == 1 ? found : -1;
         }
     }
 }
