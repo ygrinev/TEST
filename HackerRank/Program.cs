@@ -1786,6 +1786,17 @@
         /// <param name="args"></param>
         static void Main(string[] args)
         {
+            StringData sd = new StringData();
+            TestResults tr = new TestResults();
+            string morganStr3 = morganAndString(sd.morganStr3[0], sd.morganStr3[1]); // AFARAVBWFSEWXBLJXCRQYEUXZHKQPPIDFTF...
+            bool isMorgan3OK = morganStr3.CompareTo(tr.morgan3) == 0;
+            string morganStr01 = morganAndString(sd.morganStr2[0], sd.morganStr2[1]); // AFARAVBWFSEWXBLJXCRQYEUXZHKQPPIDFTF...
+            bool isMorgan2OK = morganStr01.CompareTo(tr.morgan2) == 0;
+            string morganStr0 = morganAndString(sd.morganStr1[0], sd.morganStr1[1]); // FGAKMWMOAWLZBMWEYYDIADTLCOUEGMDBYFWU...
+            string morganStr16 = morganAndString("BABAABABBBAA", "BABAABABBBAA"); // BABAABABAABABABBBAABBBAA
+            string morganStr15 = morganAndString("ZZYYZZZA", "ZZYYZZZB"); // ZZYYZZYYZZZAZZZB
+            string morganStr1 = morganAndString("JACK", "DANIEL"); // DAJACKNIEL
+            string morganStr2 = morganAndString("ABACABA", "ABACABA"); // AABABACABACABA 
             int pldrIdx = palindromeIndex("hgygsvlfcwnswtuhmyaljkqlqjjqlqkjlaymhutwsnwcwflvsgygh");
             int sGeneLen = steadyGene(new StringData().geneString);
             //int sGeneLen = steadyGene("TGATGCCGTCCCCTCAACTTGAGTGCTCCTAATGCGTTGC"); // A:6,C:13,G:9,T:12

@@ -81,6 +81,7 @@
     <Compile Include="Data\TripletData.cs" />
     <Compile Include="Helpers\TripletHelper.cs" />
     <Compile Include="Solution01.cs" />
+    <Compile Include="Solution02.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include=".editorconfig" />
