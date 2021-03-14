@@ -11,53 +11,47 @@ namespace HackerRank
     {
         static string morganAndString(string a, string b)
         {
-            int i = 0, j = 0, aLen = a.Length, bLen = b.Length;
-            int aEq, bEq;
+            int aLen = a.Length, bLen = b.Length;
             StringBuilder sb = new StringBuilder();
+            int i = 0, j = 0;
             while (i < aLen && j < bLen)
             {
-                if (a[i] != b[j]){ sb.Append(a[i] > b[j] ? b[j++] : a[i++]); }
+                if (a[i] != b[j])
+                {
+                    sb.Append(a[i] < b[j] ? a[i++] : b[j++]);
+                }
                 else
                 {
-                    aEq = i; bEq = j;
-                    char ch = a[i];
-                    while (i < aLen && j < bLen && a[i] == b[j] && ch <= a[i-1]) { i++; j++; }
-                    if (i == aLen && j == bLen
-                    || i == aLen && ch < b[j]
-                    || j == bLen && ch < a[i]
-                    || ch < a[i] && ch < b[j])
-                    {   // flush both
-                        SmartFlush(ref sb, a, b, ref aEq, ref bEq, i - aEq);
-                        //sb.Append(a.Substring(aEq, i - aEq));
-                        //sb.Append(a.Substring(aEq, i - aEq));
-                    }
-                    else if (i == aLen || j == bLen)
+                    bool isA = strCompare(a, i + 1, b, j + 1);
+                    string s = isA ? a : b;
+                    int idx = isA ? i : j, len = isA ? aLen : bLen;
+
+                    sb.Append(s[idx++]);
+                    while (idx < len && s[idx] == s[idx - 1])
                     {
-                        //sb.Append(a.Substring(aEq, i - aEq));
-                        if (i == aLen)  // flush b first
-                            SmartFlush(ref sb, b, a, ref bEq, ref aEq, i - aEq + 1);
-                        else j = bEq; // flush a, reverse b
-                            SmartFlush(ref sb, a, b, ref aEq, ref bEq, i - aEq + 1);
+                        sb.Append(s[idx++]);
                     }
-                    else
-                    {
-                        if (a[i] > b[j])  // flush b first
-                            SmartFlush(ref sb, b, a, ref bEq, ref aEq, i - aEq + 1);
-                        else j = bEq; // flush a first
-                            SmartFlush(ref sb, a, b, ref aEq, ref bEq, i - aEq + 1);
-                    }
+                    if (isA) i = idx;
+                    else j = idx;
                 }
             }
             sb.Append(i < aLen ? a.Substring(i, aLen - i) : j < bLen ? b.Substring(j, bLen - j) : "");
             return sb.ToString();
+
         }
 
-        private static void SmartFlush(ref StringBuilder sb, string a, string b, ref int aEq, ref int bEq, int v)
-        {   // ************  TO DO  **************
-            throw new NotImplementedException();
+        private static bool strCompare(string a, int i, string b, int j)
+        {
+            while (i < a.Length && j < b.Length)
+            {
+                if (a[i] < b[j]) return true;
+                if (a[i] > b[j]) return false;
+                i++; j++;
+            }
+            return i < a.Length;
         }
 
-        static string morganAndString2(string a, string b)
+        static string morganAndString3(string a, string b)
         {
             int i = 0, j = 0, aLen = a.Length, bLen = b.Length;
             StringBuilder sb = new StringBuilder();
