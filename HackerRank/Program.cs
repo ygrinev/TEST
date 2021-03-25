@@ -1786,6 +1786,10 @@
         /// <param name="args"></param>
         static void Main(string[] args)
         {
+            int trsmNum = hackerlandRadioTransmitters(new int[] { 1,1 }, 1); // 1
+            //int trsmNum = hackerlandRadioTransmitters(new int[] { 1,2,3,4,5 }, 1); // 2
+            //int trsmNum = hackerlandRadioTransmitters(new int[] { 7, 2, 4, 6, 5, 9, 12, 11 }, 2); // 3 [2, *4, 5, 6, 7, *9, 11, *12]
+            //int trsmNum = hackerlandRadioTransmitters(new int[] { 9, 5, 4, 2, 6, 15, 12 }, 2); // 4
             StringData sd = new StringData();
             TestResults tr = new TestResults();
             string morganStr3 = morganAndString(sd.morganStr3[0], sd.morganStr3[1]); // AFARAVBWFSEWXBLJXCRQYEUXZHKQPPIDFTF...

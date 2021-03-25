@@ -55,6 +55,9 @@ namespace HackerRank
         {
             int i = 0, j = 0, aLen = a.Length, bLen = b.Length;
             StringBuilder sb = new StringBuilder();
+            List<int> l = null;
+            if (l?.Any()??false)
+            { }
             while (i < aLen && j < bLen)
             {
                 if (a[i] != b[j])
@@ -125,6 +128,40 @@ namespace HackerRank
         {
             return unordered.Count() > 199000 ? unordered.OrderBy(s => BigInteger.Parse(s)).ToArray() : unordered.OrderBy(s => s.Length).ThenBy(s => s).ToArray();
         }
-
+        static int hackerlandRadioTransmitters(int[] x, int k)
+        {   // [ 2, *4, 5, 6, *9, *12, *15 ]
+            if (x.Length < 4 && x.Max() - x.Min() <= k) return 1;
+            int i = 0, iLastTrsm = -1, iNewGrp = 0, distFromLastCvrg = k + 1;
+            x = x.OrderBy(el => el).ToArray();
+            return x.Aggregate(0, (cnt, l) => {
+                if (i == 0) { i++; return cnt; }
+                if (x[i] - x[i - 1] > k)
+                {
+                    iNewGrp = i;
+                    if (iLastTrsm < 0 || distFromLastCvrg > 0)
+                    {
+                        iLastTrsm = i - 1;
+                        cnt++;
+                    }
+                    distFromLastCvrg = x[i] - x[iLastTrsm] - k;
+                }
+                else
+                {
+                    if (iLastTrsm >= iNewGrp && (distFromLastCvrg = x[i] - x[iLastTrsm] - k) > 0)
+                    {
+                        iNewGrp = i;
+                    }
+                    if (iLastTrsm < iNewGrp && x[i] - x[iNewGrp] > k)
+                    {
+                        iLastTrsm = i - 1;
+                        distFromLastCvrg = x[i] - x[iLastTrsm] - k;
+                        cnt++;
+                    }
+                }
+                if (i == x.Length - 1 && distFromLastCvrg > 0) cnt++;
+                i++;
+                return cnt;
+            });
+        }
     }
 }
