@@ -51,5 +51,10 @@ namespace HackerRank
             }
             return totalPairs;
         }
+
+        public int countTopParents()
+        {
+            return forest.Where((n,i)=> i > 0 && n < 0).Count();
+        }
     }
 }

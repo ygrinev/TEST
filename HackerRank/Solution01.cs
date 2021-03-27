@@ -151,7 +151,7 @@ namespace HackerRank
         static string highestValuePalindrome(string s, int k)
         {
             // fill out all asymmetries, if k exceeded before: -1
-            int len = s.Length, nAsym = 0;
+            int len = s.Length;
             char[] arr = s.ToCharArray();
             bool[] asym = new bool[len / 2];
             for (int i = 0; i < len / 2; i++)

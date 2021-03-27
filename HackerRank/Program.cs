@@ -1786,6 +1786,11 @@
         /// <param name="args"></param>
         static void Main(string[] args)
         {
+            //int smlrty = stringSimilarity("aa"); // 3
+            //int smlrty = stringSimilarity("ababaa"); // 11
+            long minCostCitiLibsRoars = roadsAndLibraries(5, 6, 1, new int[][] { new int[] { 1, 2 }, new int[] { 1, 3 }, new int[] { 1, 4 } });
+            //long minCostCitiLibsRoars = roadsAndLibraries(3, 2, 1, new int[][] { new int[] { 1, 2 }, new int[] { 3, 1 }, new int[] { 2, 3 } });
+            //long minCostCitiLibsRoars = roadsAndLibraries(6, 2, 5, MaxCostData.cityLibs);
             int trsmNum = hackerlandRadioTransmitters(new int[] { 1,1 }, 1); // 1
             //int trsmNum = hackerlandRadioTransmitters(new int[] { 1,2,3,4,5 }, 1); // 2
             //int trsmNum = hackerlandRadioTransmitters(new int[] { 7, 2, 4, 6, 5, 9, 12, 11 }, 2); // 3 [2, *4, 5, 6, 7, *9, 11, *12]

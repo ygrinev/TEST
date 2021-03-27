@@ -163,5 +163,14 @@ namespace HackerRank
                 return cnt;
             });
         }
+        static long roadsAndLibraries(int n, int c_lib, int c_road, int[][] cities)
+        {
+            if (c_lib <= c_road) return c_lib * (long)n;
+            TreeHelper forest = new TreeHelper(n);
+            long maxRoads = n * ((long)n - 1) / 2;
+            int _d;
+            long actRoads = cities.Aggregate(0L, (sum, pair) => sum + (forest.merge(pair[0], pair[1], out _d) ? 1 : 0));
+            return forest.countTopParents() * (long)c_lib + actRoads * c_road;
+        }
     }
 }
