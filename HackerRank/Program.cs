@@ -1788,6 +1788,7 @@
         {
             //int smlrty = stringSimilarity("aa"); // 3
             //int smlrty = stringSimilarity("ababaa"); // 11
+            int smlrty = stringSimilarity(new StringData().smlrty01); // 109164833 vs 109164833
             long minCostCitiLibsRoars = roadsAndLibraries(5, 6, 1, new int[][] { new int[] { 1, 2 }, new int[] { 1, 3 }, new int[] { 1, 4 } });
             //long minCostCitiLibsRoars = roadsAndLibraries(3, 2, 1, new int[][] { new int[] { 1, 2 }, new int[] { 3, 1 }, new int[] { 2, 3 } });
             //long minCostCitiLibsRoars = roadsAndLibraries(6, 2, 5, MaxCostData.cityLibs);

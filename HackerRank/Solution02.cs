@@ -172,5 +172,76 @@ namespace HackerRank
             long actRoads = cities.Aggregate(0L, (sum, pair) => sum + (forest.merge(pair[0], pair[1], out _d) ? 1 : 0));
             return forest.countTopParents() * (long)c_lib + actRoads * c_road;
         }
+        static int stringSimilarity(string s)
+        {
+            char c0 = s[0];
+            int idx = 0, lastIdx = 0;
+            int[] sums = new int[s.Length];
+            int[] offs = s.Aggregate(new int[s.Length], (arr, c) =>
+            {
+                for(int curIdx = lastIdx, prevIdx = lastIdx; curIdx > 0; prevIdx = curIdx, curIdx = arr[curIdx])
+                {
+                    if(idx == curIdx) continue;
+                    if (s[idx - curIdx] == s[idx])
+                        sums[curIdx]++;
+                    else
+                    {
+                        if (curIdx == lastIdx) lastIdx = arr[lastIdx];
+                        else
+                        {
+                            arr[prevIdx] = arr[curIdx];
+                            curIdx = arr[curIdx];
+                            if (curIdx < 0)
+                                break;
+                        }
+                    }
+                }
+                arr[idx] = c == c0 && idx > 0 ? lastIdx : -1;
+                if (c == c0)
+                {
+                    lastIdx = idx;
+                    sums[idx] = idx == 0 ? s.Length : 1; // 
+                }
+                idx++;
+                return arr;
+            });
+            if (lastIdx == 0) return s.Length;
+            return sums.Sum();
+        }
+        static long stringSimilarity2(String str)
+        {
+            long c = str.Length;
+            int L = 0, R = 0, n = str.Length;
+            char[] s = str.ToCharArray();
+            int[] z = new int[n];
+            for (int i = 1; i < n; i++)
+            {
+                if (i > R)
+                {
+                    L = R = i;
+                    while (R < n && s[R - L] == s[R]) R++;
+                    z[i] = R - L; R--;
+                    c += z[i];
+                }
+                else
+                {
+                    int k = i - L;
+                    if (z[k] < R - i + 1)
+                    {
+                        z[i] = z[k];
+                        c += z[i];
+                    }
+                    else
+                    {
+                        L = i;
+                        while (R < n && s[R - L] == s[R]) R++;
+                        z[i] = R - L;
+                        c += z[i];
+                        R--;
+                    }
+                }
+            }
+            return c;
+        }
     }
 }
