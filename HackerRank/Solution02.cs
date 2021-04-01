@@ -243,5 +243,47 @@ namespace HackerRank
             }
             return c;
         }
+        static long gridlandMetro(int n, int m, int k, int[][] track)
+        {
+            int rowIdx = -1, curIdx = 0; ;
+            Dictionary<int, int> row = new Dictionary<int, int>();
+            long tot = n * (long)m;
+            return k == 0 ? tot : track.OrderBy(t => t[0]).Aggregate(tot, (cnt, crds) => {
+                k--;
+                curIdx = crds[0] - 1;
+                if (curIdx > rowIdx)
+                {
+                    if (rowIdx >= 0)
+                    {
+                        cnt -= countTakenCells(m, row);
+                    }
+                    while (curIdx > ++rowIdx) continue;
+                    row.Clear();
+
+                }
+                row[crds[1] - 1] = (row.ContainsKey(crds[1] - 1) ? row[crds[1] - 1] : 0) + 1;
+                if (crds[2] < m) row[crds[2]] = (row.ContainsKey(crds[2]) ? row[crds[2]] : 0) - 1;
+                if (k == 0) // last track
+                {
+                    cnt -= countTakenCells(m, row);
+                }
+                return cnt;
+            });
+        }
+
+        private static int countTakenCells(int m, Dictionary<int, int> row)
+        {
+            int cnt = 0, trVal = 0, idx = 0, len = row.Keys.Count;
+            foreach (int key in row.Keys.OrderBy(k => k))
+            {
+                len--;
+                cnt += (key - idx) * (trVal > 0 ? 1 : 0);
+                idx = key;
+                trVal += row[key];
+                if(len == 0)
+                    cnt += (m - key) * (trVal > 0 ? 1 : 0);
+            }
+            return cnt;
+        }
     }
 }

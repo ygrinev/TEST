@@ -1786,6 +1786,13 @@
         /// <param name="args"></param>
         static void Main(string[] args)
         {
+            //long freeSpots = gridlandMetro(4, 4, 3, new int[][] { new int[] { 2, 2, 3 },
+            //                                                      new int[] { 3, 1, 4 },
+            //                                                      new int[] { 4, 4, 4 } }); // 9
+            //long freeSpots = gridlandMetro(1, 7, 3, new int[][] { new int[] { 1, 1, 2 },
+            //                                                      new int[] { 1, 2, 4 },
+            //                                                      new int[] { 1, 3, 5 } }); // 2
+            long freeSpots = gridlandMetro(402159386, 855281517, 951, new GraphData().trackData); // 343959391703854850
             //int smlrty = stringSimilarity("aa"); // 3
             //int smlrty = stringSimilarity("ababaa"); // 11
             int smlrty = stringSimilarity(new StringData().smlrty01); // 109164833 vs 109164833
