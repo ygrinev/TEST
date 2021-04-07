@@ -71,6 +71,7 @@
     <Compile Include="Data\MinAvgWaitTimeData.cs" />
     <Compile Include="Helpers\MinAvgWaitTimeHelper.cs" />
     <Compile Include="Data\MinMaxData.cs" />
+    <Compile Include="Model\INode.cs" />
     <Compile Include="Model\PNode.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

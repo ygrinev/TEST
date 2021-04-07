@@ -285,5 +285,39 @@ namespace HackerRank
             }
             return cnt;
         }
+        static long minimumLoss(long[] price)
+        {
+            long prev = long.MaxValue;
+            int pIdx = int.MaxValue;
+            return price.Select((p, i) => new { key = p, idx = i }).OrderByDescending(el => el.key).Aggregate(long.MaxValue, (min, pp) => {
+                if (pp.idx > pIdx && prev - pp.key > 0 && prev - pp.key < min)
+                    min = prev - pp.key;
+                prev = pp.key; pIdx = pp.idx;
+                return min;
+            });
+        }
+        static long maximumSum(long[] a, long m)
+        {
+            int idx = 0;
+            long maxMdl = 0;
+            long curSum = 0;
+            Dictionary<long, List<int>> dct = a.Aggregate(new Dictionary<long, List<int>>(), (map, cur) => {
+                long curMdl = cur % m;
+                if (curMdl > maxMdl) maxMdl = curMdl; // el level
+                curSum = (curSum + curMdl) % m;
+                if (curSum > maxMdl) maxMdl = curSum; // part.sum level
+                if (map.ContainsKey(curSum)) { map[curSum].Add(idx); }
+                else { map[curSum] = new List<int> { idx }; }
+                idx++;
+                return map;
+            });
+            if (maxMdl == m - 1) return maxMdl;
+            dct.Keys.OrderBy(k => k).Aggregate((cur, next) => {
+                if (maxMdl < m - 1 && dct[cur].First() > dct[next].Last() && (cur - next + m) % m > maxMdl) { maxMdl = (cur - next + m) % m; }
+                return next;
+            });
+            return maxMdl;
+        }
+
     }
 }
