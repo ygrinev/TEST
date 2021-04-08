@@ -318,6 +318,113 @@ namespace HackerRank
             });
             return maxMdl;
         }
+        static int[][] knightlOnAChessboard(int n)
+        {
+            bool[,] done = new bool[n, n];
+            int[] fin = new int[] { n-1,n-1};
+            int[][] res = new int[n-1][].Select(a=>Enumerable.Repeat(-1, n-1).ToArray()).ToArray();
+            for(int i = 1; i < n; i++)
+            {
+                for(int j = i; j < n; j++)
+                {
+                    for (int bi = 0; bi < n; bi++) for (int bj = bi; bj < n; bj++) done[bi, bj] = done[bj, bi] = false;
+                    int[] offs = new int[] { i, j };
+                    List<int[]> nextMoves = GetNextMoves(done, n, new int[] { 0, 0 }, offs);
+                    int cnt = 0;
+                    while (nextMoves.Count > 0)
+                    {
+                        cnt++;
+                        if (nextMoves.Any(el => el[0] == fin[0] && el[1] == fin[1]))
+                            break;
+                        nextMoves = nextMoves.Aggregate(new List<int[]>(), (lst, cur) => {
+                            lst.AddRange(GetNextMoves(done, n, cur, offs));
+                            return lst;
+                        });
+                    }
+                    res[i - 1][j - 1] = res[j - 1][i - 1] = nextMoves.Count > 0 ? cnt : -1;
+                }
+            }
 
+            return res;
+        }
+
+        private static List<int[]> GetNextMoves(bool[,] done, int n, int[] start, int[] offs)
+        {
+            done[start[0], start[1]] = true;
+            var nextMoves = new List<int[]>{new int[] {start[0] + offs[0], start[1] + offs[1]},
+                                            new int[] {start[0] + offs[0], start[1] - offs[1]},
+                                            new int[] {start[0] - offs[0], start[1] + offs[1]},
+                                            new int[] {start[0] - offs[0], start[1] - offs[1]},
+            };
+            if (offs[0] != offs[1])
+                nextMoves.AddRange(new List<int[]>{
+                                    new int[] {start[0] + offs[1], start[1] + offs[0]},
+                                    new int[] {start[0] + offs[1], start[1] - offs[0]},
+                                    new int[] {start[0] - offs[1], start[1] + offs[0]},
+                                    new int[] {start[0] - offs[1], start[1] - offs[0]}
+                });
+            return nextMoves.Where(el=> el[0] >= 0 && el[1] >= 0 && el[0] < n && el[1] < n && !done[el[0], el[1]]).ToList();
+        }
+        static int[][] knightlOnAChessboard_fast(int n)
+        {
+            int[][] ret = new int[n - 1][].Select(a => new int[n - 1]).ToArray();
+
+            for (int r = 1; r < n; r++)
+            {
+                for (int c = 1; c < n; c++)
+                {
+                    if (ret[c - 1][r - 1] != 0)
+                    {
+                        ret[r - 1][c - 1] = ret[c - 1][r - 1];
+                        continue;
+                    }
+
+                    if (ret[r - 1][c - 1] == 0)
+                    {
+                        ret[r - 1][c - 1] = move(n, r, c);
+                    }
+                }
+            }
+
+            return ret;
+        }
+
+        private static int move(int n, int a, int b)
+        {
+            int[] rd = new int[] { b, a, b, a, -a, -b, -a, -b };
+            int[] cd = new int[] { a, b, -a, -b, b, a, -b, -a };
+
+            bool[,] visit = new bool[n, n];
+            int er = n - 1;
+            int ec = n - 1;
+
+            Queue<int[]> q = new Queue<int[]>();
+            q.Enqueue(new int[] { 0, 0, 0 });
+            visit[0, 0] = true;
+
+            while (q.Count > 0)
+            {
+                int[] cur = q.Dequeue();
+
+                if (cur[0] == er && cur[1] == ec)
+                {
+                    return cur[2];
+                }
+
+                for (int i = 0; i < 8; i++)
+                {
+                    int nr = rd[i] + cur[0];
+                    int nc = cd[i] + cur[1];
+
+                    if (nr >= 0 && nr < n && nc >= 0 && nc < n && !visit[nr, nc])
+                    {
+                        q.Enqueue(new int[] { nr, nc, cur[2] + 1 });
+                        visit[nr, nc] = true;
+                    }
+                }
+            }
+
+            return -1;
+        }
     }
 }

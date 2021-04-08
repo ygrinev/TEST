@@ -1786,6 +1786,8 @@
         /// <param name="args"></param>
         static void Main(string[] args)
         {
+            int[][] minMoves = knightlOnAChessboard(20); 
+            //int[][] minMoves = knightlOnAChessboard(5); 
             long maxSubArrMdlo = maximumSum(new ArrayManipulationData().subArrData, 1804289384); // 1802192837
             //long freeSpots = gridlandMetro(4, 4, 3, new int[][] { new int[] { 2, 2, 3 },
             //                                                      new int[] { 3, 1, 4 },
