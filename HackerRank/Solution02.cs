@@ -426,5 +426,26 @@ namespace HackerRank
 
             return -1;
         }
+        static long minimumAbsoluteDifference(int[] arr)
+        {
+            long min = long.MaxValue;
+            arr.OrderBy(a => a).Aggregate((cur, next) => {
+                min = Math.Min(min, Math.Abs(next - cur));
+                return next;
+            });
+            return min;
+        }
+        static string gridChallenge(string[] grid)
+        {
+            string cur = string.Join("", grid[0].OrderBy(c => c));
+            for (int i = 1; i < grid.Length; i++)
+            {
+                string next = string.Join("", grid[i].OrderBy(c => c));
+                if (next.Select((nc, j) => nc < cur[j]).Any(b => b))
+                    return "NO";
+                cur = next;
+            }
+            return "YES";
+        }
     }
 }

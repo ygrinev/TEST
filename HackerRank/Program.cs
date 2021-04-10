@@ -1786,6 +1786,7 @@
         /// <param name="args"></param>
         static void Main(string[] args)
         {
+            long minAbsDiff = minimumAbsoluteDifference(new int[] { -59, - 36, - 13, 1, - 53, - 92, - 2, - 96, - 54, 75 });
             int[][] minMoves = knightlOnAChessboard(20); 
             //int[][] minMoves = knightlOnAChessboard(5); 
             long maxSubArrMdlo = maximumSum(new ArrayManipulationData().subArrData, 1804289384); // 1802192837
