@@ -447,5 +447,21 @@ namespace HackerRank
             }
             return "YES";
         }
+        static int powerSum(int X, int N)
+        {
+            if (X == 1) return 1;
+            int max = (int)Math.Floor(Math.Pow(X, 1 / (double)N));
+            int[] nums = new int[max].Select((n,i) => (int)Math.Pow(max - i, N)).ToArray();
+            return numOfSums(nums, 0, -1, X);
+        }
+        static int numOfSums(int[] nums, int partSum, int lastIdx, int X) // count num of ways when SUM of subset of nums = X
+        {
+            if(lastIdx > nums.Length - 1 || partSum > X) return 0;
+            if(partSum == X) return 1;
+            int count = 0;
+            while(++lastIdx < nums.Length)
+                count += numOfSums(nums, partSum + nums[lastIdx], lastIdx, X);
+            return count;
+        }
     }
 }

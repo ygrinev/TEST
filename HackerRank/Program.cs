@@ -1786,6 +1786,8 @@
         /// <param name="args"></param>
         static void Main(string[] args)
         {
+            int powCnt = powerSum(100, 2);
+            //int powCnt = powerSum(10, 2);
             long minAbsDiff = minimumAbsoluteDifference(new int[] { -59, - 36, - 13, 1, - 53, - 92, - 2, - 96, - 54, 75 });
             int[][] minMoves = knightlOnAChessboard(20); 
             //int[][] minMoves = knightlOnAChessboard(5); 
