@@ -463,5 +463,16 @@ namespace HackerRank
                 count += numOfSums(nums, partSum + nums[lastIdx], lastIdx, X);
             return count;
         }
+        static int superDigit(string n, int k) // find super digit of n as int repeated k times
+        {
+            BigInteger b = n.Aggregate((BigInteger)0, (sum, cur) => sum + (cur-'0')) * k;
+            while (b > 9)
+            {
+                BigInteger a = b % 10;
+                while ((b /= 10) > 0) a += b % 10;
+                b = a;
+            }
+            return (int)b;
+        }
     }
 }
