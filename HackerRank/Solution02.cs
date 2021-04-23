@@ -474,5 +474,35 @@ namespace HackerRank
             }
             return (int)b;
         }
+        static int towerBreakers(int n, int m) // remove bricks from n equal towers at each stem by 2 players all=1
+        {
+            return m > 1 && n % 2 == 1 ? 1 : 2;
+        }
+        public static string findWinner(int x, int y)
+        {
+            return x % 4 % 3 == 0 || y % 4 % 3 == 0 ? "First" : "Second";
+        }
+        //static string[] crosswordPuzzle(string[] crossword, string words)
+        //{
+        //    Dictionary<int, List<string>> store = words.Split(';').Aggregate(new Dictionary<int, List<string>>(), (dct, cur) => {
+        //        int len = cur.Length;
+        //        if (dct.ContainsKey(len))
+        //        {
+        //            dct[len].Add(cur);
+        //        }
+        //        else
+        //        {
+        //            dct[len] = new List<string> { cur };
+        //        }
+        //    });
+        //    bool[,] used = crossword.Aggregate(new bool[crossword.Length, crossword.Length], (usd, cur) => { 
+
+        //    });
+        //}
+        static string nimGame(int[] pile)
+        {
+            return pile.Length > 1 && pile.Aggregate(0, (xor, cur) => xor ^ cur) == 0 ? "Second" : "First";
+        }
+
     }
 }
