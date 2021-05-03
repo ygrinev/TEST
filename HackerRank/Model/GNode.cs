@@ -1,13 +1,21 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace HackerRank.Model
 {
-    class GNode
+    public class GNode<T>  where T : class, new()
     {
-        public int id = 0;
-        public bool visited = false;
-        public long minDist = 0L;
-        public List<GNode> siblings = new List<GNode>();
+        public T _data;
+        public List<GNode<T>> siblings = new List<GNode<T>>();
+        public GNode(object src, T data, Func<object, T, List<T>> recur)
+        {
+            _data = data;
+            siblings = recur(src, data).Aggregate(new List<GNode<T>>(), (sbl, cur)=> {
+                sbl.Add(new GNode<T>(src, cur, recur));
+                return sbl;
+            }); // init the tree from src and root
+        }
     }
     //class GEdge { public int weight; public GNode node; }
 }

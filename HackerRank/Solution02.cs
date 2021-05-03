@@ -474,35 +474,141 @@ namespace HackerRank
             }
             return (int)b;
         }
-        static int towerBreakers(int n, int m) // remove bricks from n equal towers at each stem by 2 players all=1
+        static int towerBreakers(int n, int m) // remove bricks from n equal towers at each step by 2 players until all == 1
         {
             return m > 1 && n % 2 == 1 ? 1 : 2;
         }
-        public static string findWinner(int x, int y)
+        public static string findWinner(int x, int y) // chess knight
         {
             return x % 4 % 3 == 0 || y % 4 % 3 == 0 ? "First" : "Second";
         }
-        //static string[] crosswordPuzzle(string[] crossword, string words)
-        //{
-        //    Dictionary<int, List<string>> store = words.Split(';').Aggregate(new Dictionary<int, List<string>>(), (dct, cur) => {
-        //        int len = cur.Length;
-        //        if (dct.ContainsKey(len))
-        //        {
-        //            dct[len].Add(cur);
-        //        }
-        //        else
-        //        {
-        //            dct[len] = new List<string> { cur };
-        //        }
-        //    });
-        //    bool[,] used = crossword.Aggregate(new bool[crossword.Length, crossword.Length], (usd, cur) => { 
-
-        //    });
-        //}
-        static string nimGame(int[] pile)
+        static string nimGame(int[] pile) // last player removing stones WINS
         {
-            return pile.Length > 1 && pile.Aggregate(0, (xor, cur) => xor ^ cur) == 0 ? "Second" : "First";
+            return pile.Aggregate(0, (xor, cur) => xor ^ cur) == 0 ? "Second" : "First";
         }
+        public static string misereNim(List<int> s) // last player removing stones LOOSES
+        {
+            return s.Count == 1 && s.Sum() == 1 || s.Count == s.Sum() && s.Count % 2 == 1
+            || s.Count < s.Sum() && s.Aggregate(0, (cnt, cur) => cnt ^ cur) == 0 ? "Second" : "First";
 
+            //return s.Count == 1 ? (s.Sum() > 1 ? "First" : "Second")
+            //: s.Count == s.Sum() ? (s.Count % 2 == 0 ? "First" : "Second")
+            //: s.Aggregate(0, (cnt, cur) => cnt ^ cur) > 0 ? "First" : "Second";
+
+            //long sum = s.Sum();
+            //int xor = s.Aggregate(0, (cnt, cur) => cnt ^ cur);
+            //return sum == 1 || s.Count == sum && xor > 0 || s.Count < sum && xor == 0 ? "Second" : "First";
+
+        }
+        public static string nimbleGame(List<int> s) // move 1 by 1 all stones to 0-pos, last moved - wins
+        {
+            int cnt = 0;
+            return s.Skip(1).Aggregate(0, (xor, cur) => { cnt++; return xor ^ (cur % 2 == 1 ? cnt : 0); }) > 0 ? "First" : "Second";
+        }
+        public static List<int> initPrimes(int max) // 975852
+        {
+            List<int> primes = new List<int> { 2, 3 };
+            for (int i = 5; i <= (int)Math.Sqrt(max); i += 2)
+            {
+                if (!primes.Any(p => i % p == 0))
+                    primes.Add(i);
+            }
+            return primes;
+        }
+        public static int getPrimCnt(int num, ref List<int> primes)
+        {
+            if (num == 1) return 0;
+            else if (primes.Any(p => p == num)) return 1;
+            int maxSqrt = (int)Math.Sqrt(num), cnt = 0;
+            foreach (int prim in primes)
+            {
+                if (num < 2 || prim > maxSqrt)
+                    break;
+                while (num % prim == 0)
+                {
+                    num /= prim;
+                    cnt++;
+                }
+            }
+            cnt = num > 1 ? cnt + 1 : cnt;
+            Console.Write($"{cnt},");
+            return cnt;
+        }
+        public static int countPrims(int num)
+        {
+            int numPrimeFactors = 0;
+            if (num == 1)
+            {
+                numPrimeFactors = 0;
+            }
+            else if (((num != 0) && (num & (num - 1)) == 0))
+            {
+                // If num is a power of 2
+                numPrimeFactors = num / 2;
+            }
+            else
+            {
+                // Calculate # of prime factors
+                while (num > 1)
+                {
+                    bool foundFactor = false;
+                    for (int j = 2; j * j <= num; j++)
+                    {
+                        if (num % j == 0)
+                        {
+                            numPrimeFactors++;
+                            num /= j;
+                            foundFactor = true;
+                            break;
+                        }
+                    }
+                    if (!foundFactor)
+                    {
+                        // num is prime
+                        numPrimeFactors++;
+                        break;
+                    }
+                }
+            }
+            return numPrimeFactors;
+        }
+        public static int towerBreakers(List<int> arr) // modified version 
+        {
+            int max = arr.Max();
+            if (max < 2) return 2;
+            else if (arr.Count < 2) return 1;
+            List<int> primes = initPrimes(max);
+            int ret = arr.Where(a => a > 1).Aggregate(0, (xor, cur) => xor ^ getPrimCnt(cur, ref primes)) == 0 ? 2 : 1;
+            Console.WriteLine();
+            return ret;
+        }
+        public static string sillyGame(int num)
+        {
+            if (num < 3) return num % 2 == 0 ? "Alice" : "Bob";
+            bool[] primes = new bool[num + 1];
+            primes[0] = primes[1] = true;
+            for (int idx = 4; idx < num + 1; idx += 2) primes[idx] = true; // exclude
+            int cnt = 1; // {2}
+            for (int i = 3; i <= num; i += 2)
+            {
+                if (!primes[i])
+                {
+                    cnt++;
+                    for (int idx = 2 * i; idx < num + 1; idx += i) primes[idx] = true;
+                }
+            }
+            return primes.Where(p => !p).Count() % 2 == 1 ? "Alice" : "Bob";
+        }
+        public static int towerBreakers2(List<int> arr) // modified 2 version - towers are broken into multi..
+        {
+            arr = arr.Select(a => { while (a % 4 == 0) a /= 2; return a; }).ToList();
+            int max = arr.Max();
+            if (max < 2) return 2;
+            else if (arr.Count < 2) return 1;
+            List<int> primes = initPrimes(max);
+            int ret = arr.Aggregate(0, (xor, cur) => xor ^ getPrimCnt(cur, ref primes)) == 0 ? 2 : 1;
+            //Console.WriteLine();
+            return ret;
+        }
     }
 }
