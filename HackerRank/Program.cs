@@ -1786,7 +1786,9 @@
         /// <param name="args"></param>
         static void Main(string[] args)
         {
-            for(int id = 1; id <= 10; id++)
+            int cnt = chocolateInBox(new List<int> { 251149, 86127, 711523, 501067, 617190 }); // 1
+            //char firstWins = zeroMoveNim(new List<int> {2,2});
+            for (int id = 1; id <= 10; id++)
             {
                 Console.Write(sillyGame(id));
                 Console.WriteLine();

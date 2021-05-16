@@ -610,5 +610,20 @@ namespace HackerRank
             //Console.WriteLine();
             return ret;
         }
+        public static char zeroMoveNim(List<int> p) // same as nim classic + 1 zero-move per pile is allowed
+        {
+            return p.Aggregate(0, (xor, cur) => xor ^ (cur % 2 == 0 ? cur - 1 : cur + 1)) == 0 ? 'L' : 'W';
+        }
+        public static int log2(int n) // n > 0
+        {
+            int log = 0;
+            while ((n >>= 1) > 0) log++;
+            return log;
+        }
+        public static int chocolateInBox(List<int> arr) // how many way to start a NIM game to win
+        {
+            int totXor = arr.Aggregate(0, (xor, cur) => xor ^ cur);
+            return arr.Where(a => a > 0 && (a ^ totXor) < a).Count();
+        }
     }
 }
