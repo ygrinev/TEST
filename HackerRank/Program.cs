@@ -1786,6 +1786,26 @@
         /// <param name="args"></param>
         static void Main(string[] args)
         {
+            string dfrstWinner = deforestation(133, new ArrayManipulationData().deforest_5);
+            string dfrstWinner133 = deforestation(133, new ArrayManipulationData().deforest_133);
+            //string dfrstWinner = deforestation(5, new List<List<int>> { new List<int> { 6, 1}, // Alice
+            //                                                            new List<int> { 10, 3 },
+            //                                                            new List<int> { 5, 4 },
+            //                                                            new List<int> { 2, 5 },
+            //                                                            new List<int> { 2, 7 },
+            //                                                            new List<int> { 9, 10 },
+            //                                                            new List<int> { 8, 9 },
+            //                                                            new List<int> { 6, 8 },
+            //                                                            new List<int> { 2, 6 }
+            //});
+            //string dfrstWinner = deforestation(5, new List<List<int>> { new List<int> { 1,2 },
+            //                                                            new List<int> { 3,1 }
+            //});
+            //string dfrstWinner = deforestation(5, new List<List<int>> { new List<int> { 1,2 }, // Alice
+            //                                                            new List<int> { 3,1 },
+            //                                                            new List<int> { 3,4 },
+            //                                                            new List<int> { 4,5 }
+            //});
             int cnt = chocolateInBox(new List<int> { 251149, 86127, 711523, 501067, 617190 }); // 1
             //char firstWins = zeroMoveNim(new List<int> {2,2});
             for (int id = 1; id <= 10; id++)

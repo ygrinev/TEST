@@ -1,4 +1,5 @@
-﻿using System;
+﻿using HackerRank.Model;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
@@ -624,6 +625,20 @@ namespace HackerRank
         {
             int totXor = arr.Aggregate(0, (xor, cur) => xor ^ cur);
             return arr.Where(a => a > 0 && (a ^ totXor) < a).Count();
+        }
+        public static string deforestation(int n, List<List<int>> tree)
+        {
+            int nim = 0;
+            // create the tree
+            GNode<int> root = new GNode<int>(tree, 1);
+            // recursively count nim-value of the tree
+            nim = root.traverse(rcrTrav, 1, false);
+            return nim == 0 ? "Bob" : "Alice";
+        }
+
+        private static int rcrTrav(int aggr, int key)
+        {
+            return aggr^key;
         }
     }
 }
