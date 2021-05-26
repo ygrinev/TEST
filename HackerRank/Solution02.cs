@@ -626,7 +626,7 @@ namespace HackerRank
             int totXor = arr.Aggregate(0, (xor, cur) => xor ^ cur);
             return arr.Where(a => a > 0 && (a ^ totXor) < a).Count();
         }
-        public static string deforestation(int n, List<List<int>> tree)
+        public static string deforestation(int n, List<List<int>> tree) // hackenbush
         {
             int nim = 0;
             // create the tree
@@ -635,10 +635,6 @@ namespace HackerRank
             nim = root.traverse(rcrTrav, 1, false);
             return nim == 0 ? "Bob" : "Alice";
         }
-
-        private static int rcrTrav(int aggr, int key)
-        {
-            return aggr^key;
-        }
+        private static int rcrTrav(int aggr, int key){ return aggr^key; }
     }
 }

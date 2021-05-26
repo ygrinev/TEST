@@ -60,6 +60,7 @@
     <Compile Include="Helpers\KidaAdventureHelper.cs" />
     <Compile Include="Helpers\MedianHelper.cs" />
     <Compile Include="Helpers\SortHelper.cs" />
+    <Compile Include="Helpers\StonePilesHelper.cs" />
     <Compile Include="Model\BNode.cs" />
     <Compile Include="Helpers\CubeWeghtHelper.cs" />
     <Compile Include="Data\GraphData.cs" />
