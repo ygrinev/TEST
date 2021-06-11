@@ -57,7 +57,7 @@ namespace HackerRank
             int i = 0, j = 0, aLen = a.Length, bLen = b.Length;
             StringBuilder sb = new StringBuilder();
             List<int> l = null;
-            if (l?.Any()??false)
+            if (l?.Any() ?? false)
             { }
             while (i < aLen && j < bLen)
             {
@@ -134,7 +134,8 @@ namespace HackerRank
             if (x.Length < 4 && x.Max() - x.Min() <= k) return 1;
             int i = 0, iLastTrsm = -1, iNewGrp = 0, distFromLastCvrg = k + 1;
             x = x.OrderBy(el => el).ToArray();
-            return x.Aggregate(0, (cnt, l) => {
+            return x.Aggregate(0, (cnt, l) =>
+            {
                 if (i == 0) { i++; return cnt; }
                 if (x[i] - x[i - 1] > k)
                 {
@@ -180,9 +181,9 @@ namespace HackerRank
             int[] sums = new int[s.Length];
             int[] offs = s.Aggregate(new int[s.Length], (arr, c) =>
             {
-                for(int curIdx = lastIdx, prevIdx = lastIdx; curIdx > 0; prevIdx = curIdx, curIdx = arr[curIdx])
+                for (int curIdx = lastIdx, prevIdx = lastIdx; curIdx > 0; prevIdx = curIdx, curIdx = arr[curIdx])
                 {
-                    if(idx == curIdx) continue;
+                    if (idx == curIdx) continue;
                     if (s[idx - curIdx] == s[idx])
                         sums[curIdx]++;
                     else
@@ -249,7 +250,8 @@ namespace HackerRank
             int rowIdx = -1, curIdx = 0; ;
             Dictionary<int, int> row = new Dictionary<int, int>();
             long tot = n * (long)m;
-            return k == 0 ? tot : track.OrderBy(t => t[0]).Aggregate(tot, (cnt, crds) => {
+            return k == 0 ? tot : track.OrderBy(t => t[0]).Aggregate(tot, (cnt, crds) =>
+            {
                 k--;
                 curIdx = crds[0] - 1;
                 if (curIdx > rowIdx)
@@ -281,7 +283,7 @@ namespace HackerRank
                 cnt += (key - idx) * (trVal > 0 ? 1 : 0);
                 idx = key;
                 trVal += row[key];
-                if(len == 0)
+                if (len == 0)
                     cnt += (m - key) * (trVal > 0 ? 1 : 0);
             }
             return cnt;
@@ -290,7 +292,8 @@ namespace HackerRank
         {
             long prev = long.MaxValue;
             int pIdx = int.MaxValue;
-            return price.Select((p, i) => new { key = p, idx = i }).OrderByDescending(el => el.key).Aggregate(long.MaxValue, (min, pp) => {
+            return price.Select((p, i) => new { key = p, idx = i }).OrderByDescending(el => el.key).Aggregate(long.MaxValue, (min, pp) =>
+            {
                 if (pp.idx > pIdx && prev - pp.key > 0 && prev - pp.key < min)
                     min = prev - pp.key;
                 prev = pp.key; pIdx = pp.idx;
@@ -302,7 +305,8 @@ namespace HackerRank
             int idx = 0;
             long maxMdl = 0;
             long curSum = 0;
-            Dictionary<long, List<int>> dct = a.Aggregate(new Dictionary<long, List<int>>(), (map, cur) => {
+            Dictionary<long, List<int>> dct = a.Aggregate(new Dictionary<long, List<int>>(), (map, cur) =>
+            {
                 long curMdl = cur % m;
                 if (curMdl > maxMdl) maxMdl = curMdl; // el level
                 curSum = (curSum + curMdl) % m;
@@ -313,7 +317,8 @@ namespace HackerRank
                 return map;
             });
             if (maxMdl == m - 1) return maxMdl;
-            dct.Keys.OrderBy(k => k).Aggregate((cur, next) => {
+            dct.Keys.OrderBy(k => k).Aggregate((cur, next) =>
+            {
                 if (maxMdl < m - 1 && dct[cur].First() > dct[next].Last() && (cur - next + m) % m > maxMdl) { maxMdl = (cur - next + m) % m; }
                 return next;
             });
@@ -322,11 +327,11 @@ namespace HackerRank
         static int[][] knightlOnAChessboard(int n)
         {
             bool[,] done = new bool[n, n];
-            int[] fin = new int[] { n-1,n-1};
-            int[][] res = new int[n-1][].Select(a=>Enumerable.Repeat(-1, n-1).ToArray()).ToArray();
-            for(int i = 1; i < n; i++)
+            int[] fin = new int[] { n - 1, n - 1 };
+            int[][] res = new int[n - 1][].Select(a => Enumerable.Repeat(-1, n - 1).ToArray()).ToArray();
+            for (int i = 1; i < n; i++)
             {
-                for(int j = i; j < n; j++)
+                for (int j = i; j < n; j++)
                 {
                     for (int bi = 0; bi < n; bi++) for (int bj = bi; bj < n; bj++) done[bi, bj] = done[bj, bi] = false;
                     int[] offs = new int[] { i, j };
@@ -337,7 +342,8 @@ namespace HackerRank
                         cnt++;
                         if (nextMoves.Any(el => el[0] == fin[0] && el[1] == fin[1]))
                             break;
-                        nextMoves = nextMoves.Aggregate(new List<int[]>(), (lst, cur) => {
+                        nextMoves = nextMoves.Aggregate(new List<int[]>(), (lst, cur) =>
+                        {
                             lst.AddRange(GetNextMoves(done, n, cur, offs));
                             return lst;
                         });
@@ -364,7 +370,7 @@ namespace HackerRank
                                     new int[] {start[0] - offs[1], start[1] + offs[0]},
                                     new int[] {start[0] - offs[1], start[1] - offs[0]}
                 });
-            return nextMoves.Where(el=> el[0] >= 0 && el[1] >= 0 && el[0] < n && el[1] < n && !done[el[0], el[1]]).ToList();
+            return nextMoves.Where(el => el[0] >= 0 && el[1] >= 0 && el[0] < n && el[1] < n && !done[el[0], el[1]]).ToList();
         }
         static int[][] knightlOnAChessboard_fast(int n)
         {
@@ -430,7 +436,8 @@ namespace HackerRank
         static long minimumAbsoluteDifference(int[] arr)
         {
             long min = long.MaxValue;
-            arr.OrderBy(a => a).Aggregate((cur, next) => {
+            arr.OrderBy(a => a).Aggregate((cur, next) =>
+            {
                 min = Math.Min(min, Math.Abs(next - cur));
                 return next;
             });
@@ -452,21 +459,21 @@ namespace HackerRank
         {
             if (X == 1) return 1;
             int max = (int)Math.Floor(Math.Pow(X, 1 / (double)N));
-            int[] nums = new int[max].Select((n,i) => (int)Math.Pow(max - i, N)).ToArray();
+            int[] nums = new int[max].Select((n, i) => (int)Math.Pow(max - i, N)).ToArray();
             return numOfSums(nums, 0, -1, X);
         }
         static int numOfSums(int[] nums, int partSum, int lastIdx, int X) // count num of ways when SUM of subset of nums = X
         {
-            if(lastIdx > nums.Length - 1 || partSum > X) return 0;
-            if(partSum == X) return 1;
+            if (lastIdx > nums.Length - 1 || partSum > X) return 0;
+            if (partSum == X) return 1;
             int count = 0;
-            while(++lastIdx < nums.Length)
+            while (++lastIdx < nums.Length)
                 count += numOfSums(nums, partSum + nums[lastIdx], lastIdx, X);
             return count;
         }
         static int superDigit(string n, int k) // find super digit of n as int repeated k times
         {
-            BigInteger b = n.Aggregate((BigInteger)0, (sum, cur) => sum + (cur-'0')) * k;
+            BigInteger b = n.Aggregate((BigInteger)0, (sum, cur) => sum + (cur - '0')) * k;
             while (b > 9)
             {
                 BigInteger a = b % 10;
@@ -635,7 +642,7 @@ namespace HackerRank
             nim = root.traverse(rcrTrav, 1, false);
             return nim == 0 ? "Bob" : "Alice";
         }
-        private static int rcrTrav(int aggr, int key){ return aggr^key; }
+        private static int rcrTrav(int aggr, int key) { return aggr ^ key; }
 
         public static string verticalRooks(List<int> r1, List<int> r2) // N*N board each column has 2 rocks of player-1 and player-2
         {
@@ -645,11 +652,11 @@ namespace HackerRank
         {
             if (n % 2 == 1) return 1;
             int g = getGrd(n);
-            int G = getGrd(n)^1; // total grd
+            int G = getGrd(n) ^ 1; // total grd
             int tneGrd = 1 << (getGrd(G) - 1); // min num with the same GRD is pow of 2
             int theNum = 1 << (tneGrd - 1); // the num to reduce
             int newGrd = tneGrd ^ G; // grd after reducing
-            int newNum = tneGrd - newGrd == 1 ? theNum / 2 : ((1<<newGrd)-1);
+            int newNum = tneGrd - newGrd == 1 ? theNum / 2 : ((1 << newGrd) - 1);
             return theNum - newNum;
         }
         private static int getGrd(int n)
@@ -657,6 +664,10 @@ namespace HackerRank
             int grd = 0;
             while ((n >> grd) > 0) grd++;
             return grd;
+        }
+        public static string newYearGame(List<int> arr)
+        {
+            return arr.Aggregate(0, (xor, a) => xor ^ (a % 3)) == 0 ? "Koca" : "Balsa";
         }
     }
 }
