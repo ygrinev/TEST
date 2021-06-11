@@ -636,5 +636,27 @@ namespace HackerRank
             return nim == 0 ? "Bob" : "Alice";
         }
         private static int rcrTrav(int aggr, int key){ return aggr^key; }
+
+        public static string verticalRooks(List<int> r1, List<int> r2) // N*N board each column has 2 rocks of player-1 and player-2
+        {
+            return r1.Select((n, i) => Math.Abs(n - r2.ElementAt(i)) - 1).Aggregate((cur, next) => cur ^ next) == 0 ? "player-1" : "player-2";
+        }
+        public static int half(int n)
+        {
+            if (n % 2 == 1) return 1;
+            int g = getGrd(n);
+            int G = getGrd(n)^1; // total grd
+            int tneGrd = 1 << (getGrd(G) - 1); // min num with the same GRD is pow of 2
+            int theNum = 1 << (tneGrd - 1); // the num to reduce
+            int newGrd = tneGrd ^ G; // grd after reducing
+            int newNum = tneGrd - newGrd == 1 ? theNum / 2 : ((1<<newGrd)-1);
+            return theNum - newNum;
+        }
+        private static int getGrd(int n)
+        {
+            int grd = 0;
+            while ((n >> grd) > 0) grd++;
+            return grd;
+        }
     }
 }

@@ -57,6 +57,7 @@
     <Compile Include="Helpers\CrosswordHelper.cs" />
     <Compile Include="Helpers\DijkstraHelper.cs" />
     <Compile Include="Helpers\EvenTreeHelper.cs" />
+    <Compile Include="Helpers\HackenbushHelper.cs" />
     <Compile Include="Helpers\KidaAdventureHelper.cs" />
     <Compile Include="Helpers\MedianHelper.cs" />
     <Compile Include="Helpers\SortHelper.cs" />
