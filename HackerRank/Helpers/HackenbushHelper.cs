@@ -17,7 +17,9 @@ namespace HackerRank.Helpers
         // Get list of PARENT nodes/keys: those appearing only first in pairs
         private List<int> GetRoots(List<List<int>> paths, List<int> query)
         {
-            return paths.Where(p => !paths.Any(n => p.First() == n.Last())).Select(p=>p.First()).ToList();
+            IEnumerable<int> fList = paths.GroupBy(p => p.First()).Select(g => g.ElementAt(0).First());
+            IEnumerable<int> lList = paths.GroupBy(p => p.Last()).Select(g => g.ElementAt(0).Last());
+            return fList.Where(p => !lList.Any(n => p == n)).ToList();
         }
 
         // Create GNode tree for every parent: new GNode(src, key)

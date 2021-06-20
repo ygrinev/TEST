@@ -25,9 +25,9 @@ namespace HackerRank.Model
             _key = key;
             if(data?.Count > 0)
             {
-                _data = data.First(p => p.Key == _key).Value;
+                _data = data.FirstOrDefault(p => p.Key == _key).Value;
             }
-            siblings = src.Where(o => o.Any(k => k == key)).Select(ok=>ok.First(k=>k != key))
+            siblings = src.Where(l => l.First() == key).Select(el=>el.ElementAt(1))
             .Aggregate(new List<GNode<T>>(), (sbl, k)=> {
                 sbl.Add(new GNode<T>(src.Where(o=>!o.Any(e=>e == key)).ToList(), k, data));
                 return sbl;

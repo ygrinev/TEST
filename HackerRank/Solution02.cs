@@ -665,9 +665,44 @@ namespace HackerRank
             while ((n >> grd) > 0) grd++;
             return grd;
         }
-        public static string newYearGame(List<int> arr)
+        public static string newYearGame(List<int> arr) // take a whole pile at a move => abs(sum1-sum2)%3 == 0 - Koca wan
         {
             return arr.Aggregate(0, (xor, a) => xor ^ (a % 3)) == 0 ? "Koca" : "Balsa";
+        }
+        public static int equal(List<int> a) // add 1,2,5 from one pile at a time to make all equal, return min # steps
+        {
+            // giving x chocs to every colleague other than chosen one 
+            // is the same as taking away x chocs from the chosen one
+            int min = a.Min();
+            int numops = 0;
+
+            // consider taking away 5 chocs first (nChocs)
+            for (int i = 0; i < a.Count; i++)
+            {
+                int nChocs = (int)Math.Floor((a[i] - min) / 5.0);
+                a[i] -= (5 * (int)Math.Floor((a[i] - min) / 5.0));
+                numops += nChocs;
+            }
+            min = a.Min(); // min of leftovers in a[]
+
+            // fine tuning for last calc, get freq of diff first
+            int[] freq = new int[5]; // stores diff of 0 to 4
+            for (int i = 0; i < a.Count; i++) freq[a[i] - min]++;
+
+            // case of min num of chocs is min
+            int extra_numops = 1 * (freq[1] + freq[2]) + 2 * (freq[3] + freq[4]);
+
+            // case of min num of chocs is min-1
+            int extra_numops1 = 1 * (freq[0] + freq[1] + freq[4]) +
+                            2 * (freq[2] + freq[3]);
+            if (extra_numops1 < extra_numops) extra_numops = extra_numops1;
+
+            // case of min num of chocs is min-2
+            int extra_numops2 = 1 * (freq[0] + freq[3]) +
+                            2 * (freq[1] + freq[2] + freq[4]);
+            if (extra_numops2 < extra_numops) extra_numops = extra_numops2;
+
+            return numops + extra_numops;
         }
     }
 }
