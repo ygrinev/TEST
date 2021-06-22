@@ -704,5 +704,21 @@ namespace HackerRank
 
             return numops + extra_numops;
         }
+        public static int cost(List<int> B)
+        {
+            int cnt = 0;
+            int prev = B.ElementAt(0);
+            return B.Aggregate(new int[2], (pr, cur) => {
+                if (cnt++ > 0)
+                {
+                    int btm = pr[0];
+                    pr[0] = Math.Max(pr[1] + (prev - 1), pr[0]);
+                    pr[1] = Math.Max(btm + (cur - 1), pr[1] + Math.Abs(cur - prev));
+                    prev = cur;
+                }
+                return pr;
+            }).Max();
+        }
+
     }
 }

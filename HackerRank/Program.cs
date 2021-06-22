@@ -1786,6 +1786,7 @@
         /// <param name="args"></param>
         static void Main(string[] args)
         {
+            int cost1 = cost(new List<int> { 100, 2, 100, 2, 100 }); //396
             int h = half(58);
             string dfrstWinner = deforestation(133, new ArrayManipulationData().deforest_5);
             string dfrstWinner133 = deforestation(133, new ArrayManipulationData().deforest_133);
