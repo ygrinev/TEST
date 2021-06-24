@@ -1786,6 +1786,9 @@
         /// <param name="args"></param>
         static void Main(string[] args)
         {
+            //long totCandies = candies(new int[] { 1, 2, 2 }); // 4
+            //long totCandies = candies(new int[] { 2, 4, 2, 6, 1, 7, 8, 9, 2, 1 }); // 19
+            long totCandies = candies(new ArrayManipulationData().candiesArr); // 204867 vs 204869
             int cost1 = cost(new List<int> { 100, 2, 100, 2, 100 }); //396
             int h = half(58);
             string dfrstWinner = deforestation(133, new ArrayManipulationData().deforest_5);

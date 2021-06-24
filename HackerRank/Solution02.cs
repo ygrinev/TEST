@@ -704,7 +704,7 @@ namespace HackerRank
 
             return numops + extra_numops;
         }
-        public static int cost(List<int> B)
+        public static int cost(List<int> B) // dynamic programming
         {
             int cnt = 0;
             int prev = B.ElementAt(0);
@@ -719,6 +719,37 @@ namespace HackerRank
                 return pr;
             }).Max();
         }
-
+        public static long candies(int[] arr)
+        {
+            int prev = arr[0], negCount = 0, lastTop = 0;
+            long sum = 0L;
+            arr[0] = 1;
+            for (int i = 1; i < arr.Length; i++)
+            {
+                int cur = arr[i];
+                if (prev <= cur || i == arr.Length - 1)
+                {
+                    if (prev > cur) negCount++;
+                    if (negCount > 0)
+                    {
+                        sum += (negCount + 1) * (negCount) / 2 + Math.Max(lastTop, negCount+1); // sum of full negative slope
+                        arr[i - 1] = 1;
+                        negCount = 0;
+                        lastTop = 0;
+                    }
+                    else if (i == 1) sum = 1L;
+                    arr[i] = prev < cur ? arr[i - 1] + 1 : 1;
+                    sum += (i == arr.Length - 1 || cur <= arr[i + 1]) && prev <= cur ? arr[i] : 0;
+                }
+                else
+                {
+                    if (negCount == 0)
+                        lastTop = arr[i - 1];
+                    negCount++;
+                }
+                prev = cur;
+            };
+            return sum;
+        }
     }
 }
