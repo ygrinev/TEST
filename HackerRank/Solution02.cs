@@ -732,7 +732,7 @@ namespace HackerRank
                     if (prev > cur) negCount++;
                     if (negCount > 0)
                     {
-                        sum += (negCount + 1) * (negCount) / 2 + Math.Max(lastTop, negCount+1); // sum of full negative slope
+                        sum += (negCount + 1) * ((long)negCount) / 2 + Math.Max(lastTop, negCount+1); // sum of full negative slope
                         arr[i - 1] = 1;
                         negCount = 0;
                         lastTop = 0;
