@@ -10,8 +10,8 @@ namespace HackerRank.Helpers
     {
         class crsWord
         {
-            public int x, y, len;
-            public bool dir;
+            public int x, y; //, len;
+            //public bool dir;
         }
         static string[] crosswordPuzzle(string[] crossword, string words) // fill out crswrd placeholders with given words
         {   /// organise words in a dict
