@@ -1786,7 +1786,7 @@
         /// <param name="args"></param>
         static void Main(string[] args)
         {
-            int countSubstr = substrings("972698438521"); // 445677619
+            long countSubstr = substrings("972698438521"); // 445677619
             //int countSubstr = substrings("16"); // 23
             //int countSubstr = substrings("424242424242424242424242424242424242424242");
             //long totCandies = candies(new int[] { 1, 2, 2 }); // 4
