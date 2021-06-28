@@ -5,6 +5,10 @@ VisualStudioVersion = 16.0.31205.134
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProxyAPI", "ProxyAPI\ProxyAPI.csproj", "{1D0CB84B-2F42-47D2-8A81-52AB5E6777B9}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProviderApi", "ProviderAPI\ProviderApi\ProviderApi.csproj", "{4418AE10-95D0-4BDE-9DD4-292E73B3F72A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DAL", "..\DAL\DAL\DAL.csproj", "{4D518FC8-9B72-4986-8575-1023C7F51F02}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +19,14 @@ Global
 		{1D0CB84B-2F42-47D2-8A81-52AB5E6777B9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1D0CB84B-2F42-47D2-8A81-52AB5E6777B9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1D0CB84B-2F42-47D2-8A81-52AB5E6777B9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4418AE10-95D0-4BDE-9DD4-292E73B3F72A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4418AE10-95D0-4BDE-9DD4-292E73B3F72A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4418AE10-95D0-4BDE-9DD4-292E73B3F72A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4418AE10-95D0-4BDE-9DD4-292E73B3F72A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4D518FC8-9B72-4986-8575-1023C7F51F02}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4D518FC8-9B72-4986-8575-1023C7F51F02}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4D518FC8-9B72-4986-8575-1023C7F51F02}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4D518FC8-9B72-4986-8575-1023C7F51F02}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

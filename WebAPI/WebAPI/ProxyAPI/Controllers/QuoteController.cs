@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using ProxyAPI.Helpers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,31 +10,29 @@ namespace ProxyAPI.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class WeatherForecastController : ControllerBase
+    public class QuoteController : ControllerBase
     {
-        private static readonly string[] Summaries = new[]
-        {
-            "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
-        };
+        private readonly ILogger<QuoteController> _logger;
+        private readonly IQuoteHelper _quoteHelper;
 
-        private readonly ILogger<WeatherForecastController> _logger;
-
-        public WeatherForecastController(ILogger<WeatherForecastController> logger)
+        public QuoteController(ILogger<QuoteController> logger, IQuoteHelper quoteHelper)
         {
             _logger = logger;
+            _quoteHelper = quoteHelper;
         }
 
         [HttpGet]
-        public IEnumerable<WeatherForecast> Get()
+        public Quote Get(int maxPrice, int x, int y, int z)
         {
-            var rng = new Random();
-            return Enumerable.Range(1, 5).Select(index => new WeatherForecast
+            try
             {
-                Date = DateTime.Now.AddDays(index),
-                TemperatureC = rng.Next(-20, 55),
-                Summary = Summaries[rng.Next(Summaries.Length)]
-            })
-            .ToArray();
+                var quote = _quoteHelper.GetBestQuote(maxPrice, x, y, z);
+                return quote ?? new Quote();
+            }
+            catch(Exception e)
+            {
+                return new Quote(500, -1, $"ERROR: {e.Message}");
+            }
         }
     }
 }

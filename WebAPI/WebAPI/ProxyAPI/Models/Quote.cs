@@ -2,14 +2,25 @@ using System;
 
 namespace ProxyAPI
 {
-    public class WeatherForecast
+    public class Quote
     {
-        public DateTime Date { get; set; }
+        public string sPrice { get { return $"{price/100.0:0.##}"; } }
 
-        public int TemperatureC { get; set; }
+        public int price { get; set; }
 
-        public int TemperatureF => 32 + (int)(TemperatureC / 0.5556);
+        public int providerId;
 
-        public string Summary { get; set; }
+        public string description { get; set; }
+
+        public string date { get; set; }
+
+        public Quote() { }
+        public Quote(int price, int id, string desc)
+        {
+            date = DateTime.Now.ToShortDateString();
+            this.price = price;
+            providerId = id;
+            description = desc;
+        }
     }
 }
