@@ -1786,6 +1786,9 @@
         /// <param name="args"></param>
         static void Main(string[] args)
         {
+            //long stockMax = stockmax(new List<int> { 1, 3, 1, 2 }); // 2
+            //long stockMax = stockmax(new List<int> { 5, 3, 2 }); // 0
+            long stockMax = stockmax(new List<int> { 1,2,100 }); // 197
             long countSubstr = substrings("972698438521"); // 445677619
             //int countSubstr = substrings("16"); // 23
             //int countSubstr = substrings("424242424242424242424242424242424242424242");

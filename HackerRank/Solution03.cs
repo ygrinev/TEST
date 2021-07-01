@@ -36,7 +36,7 @@ namespace HackerRank
             long f = 1;
             for (int i = l - 1; i >= 0; i--)
             {
-                res = (res + (s[i] - '0') * f * (i + 1)) % MOD;
+                res = (res + (str[i] - '0') * f * (i + 1)) % MOD;
                 f = (f * 10 + 1) % MOD;
             }
             return (int)res;
@@ -49,6 +49,22 @@ namespace HackerRank
             //    idx++;
             //}
             //return (int)(sum % mod);
+        }
+        public static long stockmax(List<int> prices)
+        {
+            prices.Reverse();
+            int max = prices.ElementAt(0);
+            return prices.Aggregate(0L, (s, cur) => {
+                if (max >= cur) s += max - cur;
+                else max = cur;
+                return s;
+            });
+            //int[] prs = prices.ToArray();
+            //int idx = 0;
+            //return prices.Select((p, i) => new KeyValuePair<int, int>(i, p)).OrderByDescending(pr => pr.Value).Aggregate(0L, (s, cur) => {
+            //    while (++idx <= cur.Key) { s += cur.Value - prs[idx-1]; }
+            //    return s;
+            //});
         }
     }
 }
