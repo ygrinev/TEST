@@ -2,9 +2,9 @@
 {
     public interface IProxyB : IBaseProxy
     {
-        string url { get; }
+        new string url { get; }
 
-        Quote GetQuote(int maxPrice, int x, int y, int z);
-        string MapFieldsToQuote(string src);
+        new Quote GetQuote(int maxPrice, int x, int y, int z);
+        new string MapFieldsToQuote(string src);
     }
 }

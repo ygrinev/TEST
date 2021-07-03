@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using ProviderApi.Models;
 using System;
 using System.Collections.Generic;
@@ -9,6 +10,7 @@ using System.Threading.Tasks;
 
 namespace ProviderApi.Controllers
 {
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class ProviderAController : ControllerBase
@@ -28,22 +30,32 @@ namespace ProviderApi.Controllers
             return $"ProviderA working...{((id??"").ToLower() == "test" ? "" : "\n(unknown parameter'" + (id??"") + "')")}";
         }
 
-        // POST api/<ProviderAController>
-        [HttpPost]
-        public void Post([FromBody] string value)
+        [AllowAnonymous]
+        [HttpPost("authenticate")]
+        public async Task<IActionResult> Authenticate([FromBody] User user)
         {
+            var userInfo = await _userService.Authenticate(user.Username, user.Password);
+
+            if (userInfo == null)
+                return BadRequest(new { message = "Username or password is incorrect" });
+
+            return Ok(userInfo);
         }
 
-        // PUT api/<ProviderAController>/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
-        {
-        }
 
-        // DELETE api/<ProviderAController>/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
-        {
-        }
+        //[HttpPost]
+        //public void Post([FromBody] string value)
+        //{
+        //}
+
+        //[HttpPut("{id}")]
+        //public void Put(int id, [FromBody] string value)
+        //{
+        //}
+
+        //[HttpDelete("{id}")]
+        //public void Delete(int id)
+        //{
+        //}
     }
 }

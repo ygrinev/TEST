@@ -6,5 +6,6 @@ namespace DAL.Data
 {
     class DataA
     {
+
     }
 }

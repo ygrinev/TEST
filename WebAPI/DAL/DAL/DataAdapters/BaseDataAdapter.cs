@@ -4,7 +4,7 @@ using System.Text;
 
 namespace DAL.DataAdapters
 {
-    class BaseDataAdapter
+    public class BaseDataAdapter
     {
     }
 }

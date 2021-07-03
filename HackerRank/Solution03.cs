@@ -66,5 +66,35 @@ namespace HackerRank
             //    return s;
             //});
         }
+
+        static int powMod(int a, int b, int MOD)
+        {
+            return b == 0 ? 1 : b == 1 ? a : b % 2 == 1 ? (int)(powMod(a, b - 1, MOD) * 1L* a % MOD) : (int)(powMod(a, b / 2, MOD) * 1L* powMod(a, b / 2, MOD) % MOD);
+        }
+
+        static int decMod(int a, int b, int MOD)
+        {
+            return (a -= b) < 0 ? a + MOD : a;
+        }
+
+        public static int tastesLikeWinning(int n, int m)
+        {
+            int MOD = 1000000000 + 7;
+            int MAXN = 10000000 + 10;
+
+                int[] dp = new int[MAXN];
+
+            int a = powMod(2, m, MOD) - 1;
+            int allWays = a;
+            dp[0] = 1;
+            dp[1] = 0;
+            for (int i = 2; i <= n; i++)
+            {
+                dp[i] = decMod(a, dp[i - 1], MOD);
+                dp[i] = decMod(dp[i], (int)(dp[i - 2] * 1L * decMod(allWays, (i - 2), MOD) % MOD * 1L * (i - 1) % MOD), MOD);
+                a = (int)(a * 1L* decMod(allWays, i -1, MOD) % MOD);
+            }
+            return decMod(a, dp[n], MOD);
+        }
     }
 }
