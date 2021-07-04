@@ -96,5 +96,32 @@ namespace HackerRank
             }
             return decMod(a, dp[n], MOD);
         }
+        private static int[] primeCnt;
+        private static void initPrimes2(int n)
+        {
+            bool[] primeIdx = new bool[Math.Max(n + 1, 4)]; primeIdx[0] = true; primeIdx[1] = true;
+            int curPrimeCnt = 1;
+            primeCnt = new int[n + 1]; primeCnt[2] = curPrimeCnt;
+            for (int i = 3; i < n; i += 2)
+            {
+                if (!primeIdx[i]) // i is a prime
+                {
+                    curPrimeCnt++;
+                    for (int delta = i * 2, j = i + delta; j < n + 1; j += delta)
+                        primeIdx[j] = true;
+                }
+                primeCnt[i + 1] = primeCnt[i] = curPrimeCnt;
+            }
+        }
+        public static IEnumerable<int> redJohn(List<int> src)
+        {
+            int idx = -1;
+            int[] perms = new int[41].Aggregate(new int[41], (arr, cur) => {
+                arr[++idx] = idx < 4 ? 1 : arr[idx - 1] + arr[idx - 4];
+                return arr;
+            });
+            initPrimes2(perms.Max());
+            return src.Select(n=>primeCnt[perms[n]]);
+        }
     }
 }

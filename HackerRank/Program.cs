@@ -1786,9 +1786,11 @@
         /// <param name="args"></param>
         static void Main(string[] args)
         {
+            var rJohn = redJohn(new List<int> { 34, 3, 31, 35, 10, 38, 18, 27, 15, 3, 38, 14, 18, 4, 5, 23, 9, 31, 10, 25 }); // 3385,0,1432,4522,6,10794,42,462,19,0,10794,15,42,1,2,155,4,1432,6,269
+            //var rJohn = redJohn(new List<int> { 1,7 }); // 0, 3
+            long stockMax = stockmax(new List<int> { 1,2,100 }); // 197
             //long stockMax = stockmax(new List<int> { 1, 3, 1, 2 }); // 2
             //long stockMax = stockmax(new List<int> { 5, 3, 2 }); // 0
-            long stockMax = stockmax(new List<int> { 1,2,100 }); // 197
             long countSubstr = substrings("972698438521"); // 445677619
             //int countSubstr = substrings("16"); // 23
             //int countSubstr = substrings("424242424242424242424242424242424242424242");
