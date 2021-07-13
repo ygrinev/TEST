@@ -1786,6 +1786,11 @@
         /// <param name="args"></param>
         static void Main(string[] args)
         {
+            int lis = longestIncreasingSubsequence(new List<int> { 2,7,4,3,8 }); // 3
+            //int lis = longestIncreasingSubsequence(new List<int> { 2,4,3,7,4,5 }); // 4
+            //int lis = longestIncreasingSubsequence(new ArrayManipulationData().lis1); // 185
+            long maxBrikVals = bricksGame(new List<int> { 999, 1, 1, 1, 0 }, 3); // 1002
+            //long maxBrikVals = bricksGame(new List<int> { 0, 1, 1, 1, 999 }, 3); // 999
             var rJohn = redJohn(new List<int> { 34, 3, 31, 35, 10, 38, 18, 27, 15, 3, 38, 14, 18, 4, 5, 23, 9, 31, 10, 25 }); // 3385,0,1432,4522,6,10794,42,462,19,0,10794,15,42,1,2,155,4,1432,6,269
             //var rJohn = redJohn(new List<int> { 1,7 }); // 0, 3
             long stockMax = stockmax(new List<int> { 1,2,100 }); // 197

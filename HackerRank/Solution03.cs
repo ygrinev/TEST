@@ -123,5 +123,44 @@ namespace HackerRank
             initPrimes2(perms.Max());
             return src.Select(n=>primeCnt[perms[n]]);
         }
+        public static long bricksGame(List<int> arr, int N = 3)
+        {
+            if (arr.Count <= N) return arr.Sum();
+            arr.Reverse();
+            Queue<long> lastNSlns = new Queue<long>(arr.Take(N).Select((n, i) => (long)arr.Take(i + 1).Sum()));
+            arr.Skip(N).Aggregate((long)arr.Take(N).Sum(), (sum, k) =>
+            {
+                sum += k;
+                lastNSlns.Enqueue(sum - lastNSlns.Min());
+                lastNSlns.Dequeue();
+                return sum;
+            });
+            return lastNSlns.ElementAt(N-1);
+        }
+        public static int longestIncreasingSubsequence(List<int> arr) // 2 7 4 3 8
+        {
+            int nextIdx = 0;
+            return arr.Aggregate(new int[arr.Count+1], (idxs, cur) => {
+                if (cur > idxs[nextIdx]) idxs[++nextIdx] = cur;
+                else if(cur < idxs[nextIdx])
+                {
+                    // change next bigger value to cur
+                    int left = 0, right = nextIdx;
+                    while(left < right-1)
+                    {
+                        int newidx = (right + left) / 2;
+                        if (idxs[newidx] >= cur) right = newidx;
+                        else left = newidx;
+                        if (idxs[newidx] == cur) break;
+                    }
+                    idxs[right] = cur;
+                }
+                return idxs;
+            }).Where(n=>n>0).Count(); // O(N*Log(N))
+            //return arr.Aggregate(new int[arr.Max() + 1], (idxs, cur) => {
+            //    idxs[cur] = cur == 1 ? 1 : idxs.Take(cur).Max()+1;
+            //    return idxs;
+            //}).Max(); // O(N^2)
+        }
     }
 }
