@@ -325,5 +325,38 @@ namespace HackerRank
             }
             return cnt == 1 ? found : -1;
         }
+        public static List<int> longestCommonSubsequence(List<int> a, List<int> b)
+        {
+            int[] cmn = new int[1001];
+            a.Aggregate(cmn, (c, e) => { if (c[e] == 0) c[e] = 1; return c; });
+            b.Aggregate(cmn, (c, e) => { if (c[e] == 1) c[e] = 2; return c; });
+            a = a.Where(e => cmn[e] == 2).ToList(); b = b.Where(e => cmn[e] == 2).ToList();
+            if (Math.Min(a.Count, b.Count) < 2) return a.Count <= b.Count ? a : b;
+            int[,] lcs = new int[a.Count, b.Count];
+            int idxA = 0, idxB = 0;
+            foreach (int i in a)
+            {
+                idxB = 0;
+                foreach (int j in b)
+                {
+                    int delta = i == j ? 1 : 0;
+                    lcs[idxA, idxB] = idxA == 0 && idxB == 0 ? delta : idxA == 0 ? Math.Max(lcs[0, idxB - 1], delta) : idxB == 0 ? Math.Max(lcs[idxA - 1, 0], delta) : delta == 1 ? lcs[idxA - 1, idxB - 1] + 1 : Math.Max(lcs[idxA - 1, idxB], lcs[idxA, idxB - 1]); 
+                    idxB++;
+                }
+                idxA++;
+            }
+            List<int> res = new List<int>(); idxA--; idxB--;
+            while (idxA >= 0 && idxB >= 0 && lcs[idxA, idxB] > 0)
+            {
+                if (idxA > 0 && lcs[idxA, idxB] == lcs[idxA - 1, idxB]) idxA--;
+                else if (idxB > 0 && lcs[idxA, idxB] == lcs[idxA, idxB - 1]) idxB--;
+                else
+                {
+                    res.Insert(0, a.ElementAt(idxA));
+                    idxA--; idxB--;
+                }
+            }
+            return res;
+        }
     }
 }
