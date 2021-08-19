@@ -358,5 +358,24 @@ namespace HackerRank
             }
             return res;
         }
+        
+        public static long strangeCounter(long t, int a = 3, int r = 2)
+        {// Sum of geometric sequence S(n) = a*(r.Pow(n)-1)/(r-1)
+            int n = (int)Math.Floor(Math.Log(t / a * (r - 1) + 1, r));
+            if (t == a * (Math.Pow(r, n) - 1) / (r - 1)) n--;
+            return (long)(a * Math.Pow(r, n) - (t - a * (Math.Pow(r, n) - 1) / (r - 1) - 1));
+        }
+        public static long mandragora(List<int> H)
+        {
+            int len = H.Count + 1;
+            long sum = 0L;
+            return H.OrderByDescending(h => h).Aggregate(0L, (ret, cur) => {
+                sum += cur;
+                long tmp = sum * (--len);
+                if (tmp > ret)
+                    ret = tmp;
+                return ret;
+            });
+        }
     }
 }

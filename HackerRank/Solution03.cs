@@ -69,7 +69,7 @@ namespace HackerRank
 
         static int powMod(int a, int b, int MOD)
         {
-            return b == 0 ? 1 : b == 1 ? a : b % 2 == 1 ? (int)(powMod(a, b - 1, MOD) * 1L* a % MOD) : (int)(powMod(a, b / 2, MOD) * 1L* powMod(a, b / 2, MOD) % MOD);
+            return b == 0 ? 1 : b == 1 ? a : b % 2 == 1 ? (int)(powMod(a, b - 1, MOD) * 1L * a % MOD) : (int)(powMod(a, b / 2, MOD) * 1L * powMod(a, b / 2, MOD) % MOD);
         }
 
         static int decMod(int a, int b, int MOD)
@@ -82,7 +82,7 @@ namespace HackerRank
             int MOD = 1000000000 + 7;
             int MAXN = 10000000 + 10;
 
-                int[] dp = new int[MAXN];
+            int[] dp = new int[MAXN];
 
             int a = powMod(2, m, MOD) - 1;
             int allWays = a;
@@ -92,7 +92,7 @@ namespace HackerRank
             {
                 dp[i] = decMod(a, dp[i - 1], MOD);
                 dp[i] = decMod(dp[i], (int)(dp[i - 2] * 1L * decMod(allWays, (i - 2), MOD) % MOD * 1L * (i - 1) % MOD), MOD);
-                a = (int)(a * 1L* decMod(allWays, i -1, MOD) % MOD);
+                a = (int)(a * 1L * decMod(allWays, i - 1, MOD) % MOD);
             }
             return decMod(a, dp[n], MOD);
         }
@@ -121,7 +121,7 @@ namespace HackerRank
                 return arr;
             });
             initPrimes2(perms.Max());
-            return src.Select(n=>primeCnt[perms[n]]);
+            return src.Select(n => primeCnt[perms[n]]);
         }
         public static long bricksGame(List<int> arr, int N = 3)
         {
@@ -135,18 +135,18 @@ namespace HackerRank
                 lastNSlns.Dequeue();
                 return sum;
             });
-            return lastNSlns.ElementAt(N-1);
+            return lastNSlns.ElementAt(N - 1);
         }
         public static int longestIncreasingSubsequence(List<int> arr) // 2 7 4 3 8
         {
             int nextIdx = 0;
-            return arr.Aggregate(new int[arr.Count+1], (idxs, cur) => {
+            return arr.Aggregate(new int[arr.Count + 1], (idxs, cur) => {
                 if (cur > idxs[nextIdx]) idxs[++nextIdx] = cur;
-                else if(cur < idxs[nextIdx])
+                else if (cur < idxs[nextIdx])
                 {
                     // change next bigger value to cur
                     int left = 0, right = nextIdx;
-                    while(left < right-1)
+                    while (left < right - 1)
                     {
                         int newidx = (right + left) / 2;
                         if (idxs[newidx] >= cur) right = newidx;
@@ -156,11 +156,37 @@ namespace HackerRank
                     idxs[right] = cur;
                 }
                 return idxs;
-            }).Where(n=>n>0).Count(); // O(N*Log(N))
+            }).Where(n => n > 0).Count(); // O(N*Log(N))
             //return arr.Aggregate(new int[arr.Max() + 1], (idxs, cur) => {
             //    idxs[cur] = cur == 1 ? 1 : idxs.Take(cur).Max()+1;
             //    return idxs;
             //}).Max(); // O(N^2)
         }
+        static int longestCommonLooseSubsstring(int k, string a, string b)
+        {
+            return Math.Min(commonChild(a, b) + k, Math.Min(a.Length, b.Length));
+        }
+        public static List<List<string>> searchSuggestions(List<string> repository, string customerQuery)
+        {
+            if ((customerQuery?.Length ?? 0) < 2) return new List<List<string>>();
+            int minLen = 2, curLen = minLen;
+            string curStr = customerQuery.Substring(0, curLen).ToUpper();
+            var lst = repository; //.Where(r=>(r??"").ToUpper().IndexOf(curStr) == 0).ToList();
+            var res = new List<List<string>>(customerQuery.Length - minLen + 1);
+            while (curLen <= customerQuery.Length)
+            {
+                curStr = customerQuery.Substring(0, curLen).ToUpper();
+                lst = lst.Where(r => (r ?? "").ToUpper().IndexOf(curStr) == 0).OrderBy(r => r).ToList();
+                res.Add(lst);
+                curLen++;
+            }
+            return res.ToList();
+        }
+        // Gratest Common Divisor
+        public static int GCD(int a, int b)
+        {
+            return a == 0 ? b : GCD(b%a, a);
+        }
+
     }
 }
