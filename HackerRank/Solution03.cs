@@ -188,5 +188,24 @@ namespace HackerRank
             return a == 0 ? b : GCD(b%a, a);
         }
 
+        public static List<int> absolutePermutation(int n, int k) // get min array of int form 1..n by shifting each element to k pos
+        {
+            return k == 0 ? Enumerable.Repeat(0, n).Aggregate(new List<int>(), (lst, cur) => {
+                lst.Add(++k); return lst;
+            }) : n % (2 * k) != 0 ? new List<int> { -1 } : GetSwap(n, n / (2 * k));
+        }
+        private static List<int> GetSwap(int n, int factor)
+        {
+            int k = n / (2 * factor);
+            List<int> ret = new List<int>();
+            for (int i = 0; i < factor; i++)
+            {
+                for (int j = i * 2 * k + 1; j <= i * 2 * k + 2 * k; j++)
+                {
+                    ret.Add(j <= i * 2 * k + k ? j + k : j - k);
+                }
+            }
+            return ret;
+        }
     }
 }
