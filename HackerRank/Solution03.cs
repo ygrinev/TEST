@@ -188,7 +188,7 @@ namespace HackerRank
             return a == 0 ? b : GCD(b%a, a);
         }
 
-        public static List<int> absolutePermutation(int n, int k) // get min array of int form 1..n by shifting each element to k pos
+        public static List<int> absolutePermutation(int n, int k) // get min array of int from 1..n by shifting each element to k pos
         {
             return k == 0 ? Enumerable.Repeat(0, n).Aggregate(new List<int>(), (lst, cur) => {
                 lst.Add(++k); return lst;
@@ -207,5 +207,10 @@ namespace HackerRank
             }
             return ret;
         }
+        public static int gameWithCells(int n, int m) // num of drops to partially cover all cells in n*n area
+        {
+            return (n / 2) * (m / 2) + (n % 2) * m / 2 + (m % 2) * n / 2 + (m * n) % 2;
+        }
+
     }
 }
