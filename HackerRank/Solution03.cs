@@ -211,6 +211,21 @@ namespace HackerRank
         {
             return (n / 2) * (m / 2) + (n % 2) * m / 2 + (m % 2) * n / 2 + (m * n) % 2;
         }
-
+        public static int primeCount(long n)
+        {
+            int[] primes = new int[] { 2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47, 53, 59, 61, 67, 71, 73, 79, 83, 89, 97 }; // first 20 - enough for any long
+            long max = long.MaxValue;
+            int cnt = 0;
+            primes.Aggregate(1L, (acc, cur) =>
+            {
+                if (n >= acc)
+                {
+                    cnt++;
+                    acc = max / cur <= acc ? max : acc * cur;
+                }
+                return acc;
+            });
+            return cnt - 1;
+        }
     }
 }

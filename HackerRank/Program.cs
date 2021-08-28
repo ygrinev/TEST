@@ -1786,6 +1786,7 @@
         /// <param name="args"></param>
         static void Main(string[] args)
         {
+            int pcnt = primeCount(614889782588491410); // 15
             long strangeCnt = strangeCounter(9);//1
             //long strangeCnt = strangeCounter(17);//5
             List <List<string>> autoSrch = searchSuggestions(new List<string> { "coddle","coddles","code","codes","coddls"}, "coddle");
