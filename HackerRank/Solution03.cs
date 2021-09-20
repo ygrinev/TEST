@@ -214,7 +214,7 @@ namespace HackerRank
         public static int primeCount(long n)
         {
             int[] primes = new int[] { 2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47, 53, 59, 61, 67, 71, 73, 79, 83, 89, 97 }; // first 20 - enough for any long
-            long max = long.MaxValue;
+            long max = long.MaxValue - 1;
             int cnt = 0;
             primes.Aggregate(1L, (acc, cur) =>
             {
@@ -226,6 +226,34 @@ namespace HackerRank
                 return acc;
             });
             return cnt - 1;
+        }
+        public static List<double> movingTiles(long l, long s1, long s2, List<long> queries)
+        {
+            double factor = Math.Cos(Math.PI / 4);
+            double vDiff = Math.Abs(s1 - s2);
+            return queries.Select(q => 2 * (l - Math.Sqrt(q)) / vDiff * factor).ToList();
+        }
+        public static int playWithWords(string s)
+        {
+            if (s.Length < 2) return s.Length;
+            int[,] mtx = new int[s.Length, s.Length];
+            for (int i = 0; i < s.Length; i++) mtx[i, s.Length - i - 1] = 1;
+            for (int j = s.Length - 2; j >= 0; j--)
+            {
+                for (int k = 0; k <= j; k++)
+                {
+                    mtx[k, j - k] = s[k] == s[k + (s.Length - j - 1)]
+                        ? mtx[k + 1, j - k + 1] + 2
+                        : new List<int> { mtx[k + 1, j - k], mtx[k, j - k + 1], mtx[k + 1, j - k + 1] }.Max();
+                }
+            }
+            int max = 1;
+            for (int l = 0; l < s.Length - 1; l++)
+            {
+                int newVal = mtx[0, s.Length - l - 1] * mtx[l + 1, 0];
+                if (newVal > max) max = newVal;
+            }
+            return max;
         }
     }
 }
