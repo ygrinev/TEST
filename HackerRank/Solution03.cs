@@ -255,5 +255,40 @@ namespace HackerRank
             }
             return max;
         }
+        //Test cases:
+        //1. Input: aaabccccdd
+        //Output: a3bc4d2
+        //2. Input: yyyyyzzzzzzzzzz
+        //Output: y5z10
+        //3. Input: abcd
+        //Output: abcd(note: not a1b1c1d1)
+        //4. Input: hhhccchhhccc
+        //Output: h3c3h3c3
+        public static string compress(string s)
+        {   // assume the string containing only low-case english letters 
+            if ((s ?? "").Length < 2) return s;
+            char prevChar = '\0';
+            int count = 0;
+            return s.Aggregate(new StringBuilder(), (sb, c) => {
+                if (prevChar == c) count++;
+                else
+                {
+                    sb.Append($"{(count == 0 ? "" : prevChar.ToString())}{(count > 1 ? count.ToString() : "")}");
+                    prevChar = c;
+                    count = 1;
+                }
+                return sb;
+            }).Append($"{s[s.Length - 1]}{(count > 1 ? count.ToString() : "")}").ToString();
+        }
+        private static int NOD(int l, int b)
+        {
+            int min = Math.Min(l, b), max = Math.Max(l, b);
+            return min == 1 || max % min == 0 ? min : NOD(min, max % min);
+        }
+        public static int restaurant(int l, int b)
+        {
+            int nod = NOD(l, b);
+            return l / nod * b / nod;
+        }
     }
 }
