@@ -290,5 +290,10 @@ namespace HackerRank
             int nod = NOD(l, b);
             return l / nod * b / nod;
         }
+        public static string bobAndBen(List<List<int>> trees)
+        {
+            return trees.Aggregate(0, (xor, t) => xor ^ (t[0] == 0 || t[0] == 2 ? 0 : (t[0] - 1) % 2 + 1)) == 0
+            ? "BEN" : "BOB";
+        }
     }
 }
