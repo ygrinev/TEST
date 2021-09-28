@@ -4,3 +4,6 @@ bin/
 /HackerRank/.editorconfig
 /HackerRank/.sln
 DijkstraDataBig.cs
+/AsposeGantt/ExternalLibraries/outputBarChart.xlsx
+/AsposeGantt/ExternalLibraries/LineWithDataMarkerChart.xlsx
+/AsposeGantt/ExternalLibraries/BarStacked.xlsx
