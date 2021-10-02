@@ -295,5 +295,44 @@ namespace HackerRank
             return trees.Aggregate(0, (xor, t) => xor ^ (t[0] == 0 || t[0] == 2 ? 0 : (t[0] - 1) % 2 + 1)) == 0
             ? "BEN" : "BOB";
         }
+        public static int countEvenDivisors(int n) // find even divs of n - correct but slow
+        {
+            int factor = 0;
+            int tmp = n;
+            for (; tmp % 2 == 0; tmp /= 2) factor++;
+
+            List<int> primes = primes = new List<int> { 3, 5, 7, 11, 13, 17, 19 };
+            for (int i = 23; i <= tmp; i += 2)
+            {
+                if (!primes.Any(p => i % p == 0))
+                    primes.Add(i);
+            }
+            if (factor == 0) return 0;
+            int divs = primes.Where(p => p <= tmp).Aggregate(factor, (cnt, p) => {
+                int tmpCnt = 1;
+                while (tmp % p == 0)
+                {
+                    tmp /= p;
+                    tmpCnt++;
+                }
+                return cnt * tmpCnt;
+            });
+            return divs;
+        }
+        public static int countEvenDivisors2(int n) // find even divs of n - correct and fast, but primitive
+        {
+            int ans = 1;
+            if (n % 2 != 0) return 0;
+            for (int i = 2; i <= (int)Math.Sqrt(n); i++)
+            {
+                if (n % i == 0)
+                {
+                    if (i % 2 == 0) ans++;
+                    if ((n / i) % 2 == 0) ans++;
+                    if (i == n / i) ans--;
+                }
+            }
+            return ans;
+        }
     }
 }

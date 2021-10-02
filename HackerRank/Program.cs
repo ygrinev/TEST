@@ -1786,6 +1786,9 @@
         /// <param name="args"></param>
         static void Main(string[] args)
         {
+            List<int> evenDivs = new List<int>();
+            for(int ii = 1; ii < 101; ii++)
+                evenDivs.Add(countEvenDivisors(ii));
             string cmprStr = compress("hhhccchhhccc");
             int maxProdPlndr = playWithWords("dbcbcbededadecbcdecbaeadcecada");// 99
                                             //"adacecdaeabcedcbcedadedebcbcbd"
