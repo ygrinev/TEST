@@ -66,17 +66,14 @@ namespace HackerRank
             //    return s;
             //});
         }
-
         static int powMod(int a, int b, int MOD)
         {
             return b == 0 ? 1 : b == 1 ? a : b % 2 == 1 ? (int)(powMod(a, b - 1, MOD) * 1L * a % MOD) : (int)(powMod(a, b / 2, MOD) * 1L * powMod(a, b / 2, MOD) % MOD);
         }
-
         static int decMod(int a, int b, int MOD)
         {
             return (a -= b) < 0 ? a + MOD : a;
         }
-
         public static int tastesLikeWinning(int n, int m)
         {
             int MOD = 1000000000 + 7;
@@ -333,6 +330,38 @@ namespace HackerRank
                 }
             }
             return ans;
+        }
+        private static int getLCT(int k, string a, string b, int i, int j)
+        {
+            int max = 0, curLen = 0, acc = 0;
+            for (int offs0 = 0, offs1 = 0; i + offs1 < a.Length && j + offs1 < b.Length; offs1++)
+            {
+                if (a[i + offs1] == b[j + offs1] || ++acc <= k) curLen++;
+                else
+                {
+                    max = Math.Max(curLen, max);
+                    while (offs0 < offs1 && a[i + offs0] == b[j + offs0]) offs0++;
+                    if (offs0 < offs1) offs0++;
+                    acc--;
+                    curLen = offs1 - offs0 + 1;
+                }
+            }
+            max = Math.Max(curLen, max);
+            return max;
+        }
+        public static int substringDiff(int k, string a, string b)
+        {
+            int max = 0;
+            for (int j = 0; j < b.Length && max < Math.Min(a.Length, b.Length - j); j++)
+            {
+                max = Math.Max(max, getLCT(k, a, b, 0, j));
+            }
+            for (int i = 1; i < a.Length && max < Math.Min(b.Length, a.Length - i); i++)
+            {
+                max = Math.Max(max, getLCT(k, a, b, i, 0));
+            }
+
+            return max;
         }
     }
 }
