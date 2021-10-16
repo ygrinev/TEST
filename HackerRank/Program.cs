@@ -1786,6 +1786,8 @@
         /// <param name="args"></param>
         static void Main(string[] args)
         {
+            int weirdNum9 = solveMinMltpl(104, getBaseList()); // 9009000
+            //int weirdNum9 = solve(7, getBaseList()); // 9009
             List<int> evenDivs = new List<int>();
             for(int ii = 1; ii < 101; ii++)
                 evenDivs.Add(countEvenDivisors(ii));

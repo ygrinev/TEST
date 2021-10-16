@@ -363,5 +363,35 @@ namespace HackerRank
 
             return max;
         }
+        public static List<int> getBaseList()
+        {
+            List<int> list = new List<int>();
+            for (long fct = 9; fct < (long)int.MaxValue*.9; fct *= 10)
+            {
+                var toAdd = new List<int> { (int)fct };
+                toAdd.AddRange(list.Select(l => l + (int)fct));
+                list.AddRange(toAdd);
+            }
+            return list;
+        }
+        public static int solveMinMltpl(int n, List<int> lst)
+        {
+            return lst.FirstOrDefault(r => r % n == 0);
+        }
+        public static List<string> solveEvenOdd(List<int> arr, List<List<int>> queries)
+        {   // find(int x,int y)
+            // {
+            //     if(x>y) return 1;
+            //     ans = pow(A[x],find(x+1,y))
+            //     return ans
+            // }
+            return queries.Aggregate(new List<string>(), (lst, q) =>
+            {
+                int b = q.ElementAt(0), c = q.ElementAt(1), t = arr.Count;
+                lst.Add(b != c && b < t && arr[b] == 0
+                        ? "Odd" : arr[b - 1] % 2 == 0 ? "Even" : "Odd");
+                return lst;
+            }).ToList();
+        }
     }
 }
