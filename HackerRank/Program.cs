@@ -1786,6 +1786,7 @@
         /// <param name="args"></param>
         static void Main(string[] args)
         {
+            List<int> chooseFromN = solveAllSubSets(229);
             int weirdNum9 = solveMinMltpl(104, getBaseList()); // 9009000
             //int weirdNum9 = solve(7, getBaseList()); // 9009
             List<int> evenDivs = new List<int>();

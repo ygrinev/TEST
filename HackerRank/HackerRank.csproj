@@ -87,6 +87,7 @@
     <Compile Include="Solution01.cs" />
     <Compile Include="Solution02.cs" />
     <Compile Include="Solution03.cs" />
+    <Compile Include="Solution04.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include=".editorconfig" />
