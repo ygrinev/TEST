@@ -25,7 +25,7 @@ namespace HackerRank
             {
                 ret[i] = ret[n - i] = (int)((fctrl(n) / fctrl(n - i) / fctrl(i)) % 1000000000);
             }
-
+            // this is more OOD but slower way
             // List<int> half = Enumerable.Repeat(0, (n + 2) / 2).Select((k, i) => (int)((fctrl(n) / fctrl(n - i) / fctrl(i))%1000000000)).ToList();
             // List<int> rev = new List<int>(); rev.AddRange(half);
             // rev.Reverse();
@@ -33,6 +33,10 @@ namespace HackerRank
 
             // return half;
             return ret;
+        }
+        public static int solveKofN(int n, int k) // K-Candy Store: # of ways to select k from n types of candies
+        {
+            return (int)((fctrl(n + k - 1) / fctrl(n - 1) / fctrl(k)) % 1000000000);
         }
     }
 }
