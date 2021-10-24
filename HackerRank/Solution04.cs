@@ -41,16 +41,16 @@ namespace HackerRank
 
     partial class Solution
     {
-        public static string BuildFileTree(List<string> files)
-        {
-            Node root = new _Node("root/n",0);
-            StringBuilder sb = new StringBuilder();
-            files.Aggregate(sb, (bld, p) => {
-                root.Add(p);
-            });
-            _Node.Traverse(root, sb, 0);
-            return sb;
-        }
+        //public static string BuildFileTree(List<string> files)
+        //{
+        //    Node root = new _Node("root/n",0);
+        //    StringBuilder sb = new StringBuilder();
+        //    files.Aggregate(sb, (bld, p) => {
+        //        root.Add(p);
+        //    });
+        //    _Node.Traverse(root, sb, 0);
+        //    return sb;
+        //}
         private static BigInteger[] fctrs = new BigInteger[1000];
         private static BigInteger fctrl(int n)
         {
