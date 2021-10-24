@@ -6,8 +6,51 @@ using System.Numerics;
 
 namespace HackerRank
 {
+    class _Node
+    {
+        int level;
+        public string data;
+        public _Node(string _data, int _level)
+        {
+            this.data = _data;
+            level = _level;
+        }
+        List<_Node> siblings = new List<_Node>();
+        public static void Traverse(_Node n, StringBuilder sb, int level)
+        {
+            sb.Append($"{string.Join("", Enumerable.Repeat("-", 2 + level))}{n.data}/n");
+            n.siblings.OrderBy(s => s.data).Aggregate(sb, (bld, s) => {
+                Traverse(s, sb, level + 1);
+                return sb;
+            });
+        }
+        public void Add(string path)
+        {
+            IEnumerable<string> sArr = path.Split('/').Where(f => !string.IsNullOrEmpty(f));
+            Add(sArr);
+        }
+        public void Add(IEnumerable<string> path)
+        {
+            string toAdd = path.ElementAt(0);
+            if (data == toAdd)
+                siblings.Add(new _Node(toAdd, level+1));
+            if (path.Count() > 0)
+                siblings.ForEach(s=>s.Add(path.Skip(1)));
+        }
+    }
+
     partial class Solution
     {
+        public static string BuildFileTree(List<string> files)
+        {
+            Node root = new _Node("root/n",0);
+            StringBuilder sb = new StringBuilder();
+            files.Aggregate(sb, (bld, p) => {
+                root.Add(p);
+            });
+            _Node.Traverse(root, sb, 0);
+            return sb;
+        }
         private static BigInteger[] fctrs = new BigInteger[1000];
         private static BigInteger fctrl(int n)
         {
@@ -38,5 +81,7 @@ namespace HackerRank
         {
             return (int)((fctrl(n + k - 1) / fctrl(n - 1) / fctrl(k)) % 1000000000);
         }
+        public static int MaxCmnDiv(int a, int b) { return a % b == 0 ? b : MaxCmnDiv(b, a % b); } // fill tank a or b with water amount c
+        public static string solve3Volumes(int a, int b, int c) { return c <= Math.Max(a, b) && c % MaxCmnDiv(a, b) == 0 ? "YES" : "NO"; }
     }
 }
