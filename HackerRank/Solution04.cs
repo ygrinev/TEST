@@ -81,7 +81,13 @@ namespace HackerRank
         {
             return (int)((fctrl(n + k - 1) / fctrl(n - 1) / fctrl(k)) % 1000000000);
         }
-        public static int MaxCmnDiv(int a, int b) { return a % b == 0 ? b : MaxCmnDiv(b, a % b); } // fill tank a or b with water amount c
+        public static long MaxCmnDiv(long a, long b) { return a % b == 0 ? b : MaxCmnDiv(b, a % b); } // fill tank a or b with water amount c
         public static string solve3Volumes(int a, int b, int c) { return c <= Math.Max(a, b) && c % MaxCmnDiv(a, b) == 0 ? "YES" : "NO"; }
+        public static long solveFloatingRocks(KeyValuePair<long, long> c)
+        {
+            long a = Math.Min(c.Key, c.Value), b = Math.Max(c.Key, c.Value);
+            return a == 0 ? Math.Max(b - 1, 0) : b == 0 ? Math.Max(a - 1, 0)
+            : MaxCmnDiv(a, b) - 1;
+        }
     }
 }

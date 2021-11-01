@@ -1786,8 +1786,8 @@
         /// <param name="args"></param>
         static void Main(string[] args)
         {
-            string dir = BuildFileTree(new List<string> { "dir1/subdir1/file1", "dir1/subdir1/file2", "dir1/subdir1/file0", "dir1/subdir2/file1", "dir1/subdir2/subsubdir1/file1" });
-            List<int> chooseFromN = solveAllSubSets(229);
+            //string dir = BuildFileTree(new List<string> { "dir1/subdir1/file1", "dir1/subdir1/file2", "dir1/subdir1/file0", "dir1/subdir2/file1", "dir1/subdir2/subsubdir1/file1" });
+            int[] chooseFromN = solveAllSubSets(229);
             int weirdNum9 = solveMinMltpl(104, getBaseList()); // 9009000
             //int weirdNum9 = solve(7, getBaseList()); // 9009
             List<int> evenDivs = new List<int>();

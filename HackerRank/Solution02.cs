@@ -590,22 +590,27 @@ namespace HackerRank
             Console.WriteLine();
             return ret;
         }
-        public static string sillyGame(int num)
+        public static bool[] primNumbers;
+        public static bool[] InitPrimeNumbers(int num)
         {
-            if (num < 3) return num % 2 == 0 ? "Alice" : "Bob";
-            bool[] primes = new bool[num + 1];
-            primes[0] = primes[1] = true;
-            for (int idx = 4; idx < num + 1; idx += 2) primes[idx] = true; // exclude
+            primNumbers = new bool[num + 1];
+            primNumbers[0] = primNumbers[1] = true;
+            for (int idx = 4; idx < num + 1; idx += 2) primNumbers[idx] = true; // exclude
             int cnt = 1; // {2}
             for (int i = 3; i <= num; i += 2)
             {
-                if (!primes[i])
+                if (!primNumbers[i])
                 {
                     cnt++;
-                    for (int idx = 2 * i; idx < num + 1; idx += i) primes[idx] = true;
+                    for (int idx = 2 * i; idx < num + 1; idx += i) 
+                        primNumbers[idx] = true;
                 }
             }
-            return primes.Where(p => !p).Count() % 2 == 1 ? "Alice" : "Bob";
+            return primNumbers;
+        }
+        public static string sillyGame(int num)
+        {
+            return num < 3 ? (num % 2 == 0 ? "Alice" : "Bob") : InitPrimeNumbers(num).Where(p => !p).Count() % 2 == 1 ? "Alice" : "Bob";
         }
         public static int towerBreakers2(List<int> arr) // modified 2 version - towers are broken into multi..
         {

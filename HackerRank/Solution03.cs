@@ -277,14 +277,9 @@ namespace HackerRank
                 return sb;
             }).Append($"{s[s.Length - 1]}{(count > 1 ? count.ToString() : "")}").ToString();
         }
-        private static int NOD(int l, int b)
-        {
-            int min = Math.Min(l, b), max = Math.Max(l, b);
-            return min == 1 || max % min == 0 ? min : NOD(min, max % min);
-        }
         public static int restaurant(int l, int b)
         {
-            int nod = NOD(l, b);
+            int nod = (int)MaxCmnDiv(l, b);
             return l / nod * b / nod;
         }
         public static string bobAndBen(List<List<int>> trees)
