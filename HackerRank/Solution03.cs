@@ -326,6 +326,51 @@ namespace HackerRank
             }
             return ans;
         }
+        public static List<int> getAllDivs(int n) // find all divs of n
+        {
+            List<int> lst = new List<int> { 1 };
+            if (n < 2) return lst;
+            List<int> lstHi = new List<int> { n };
+            for (int i = 2; i <= (int)Math.Sqrt(n); i++)
+            {
+                if (n % i == 0)
+                {
+                    lst.Add(i);
+                    if (i != n / i) lstHi.Add(n / i);
+                }
+            }
+            lstHi.Reverse();
+            lst.AddRange(lstHi);
+            return lst;
+        }
+        public static bool isBusValid(List<int> a, int d)
+        {
+            bool isValid = true;
+            int lastSum = a.Aggregate(0, (sum, k) =>
+            {
+                if (isValid)
+                {
+                    sum += k;
+                    if (sum > d)
+                        isValid = false;
+                    else if (sum == d)
+                        sum = 0;
+                }
+                return sum;
+            });
+            return isValid && lastSum == 0;
+        }
+        public static List<int> solveBusStation(List<int> a)
+        {
+            // get all divs of the list SUM
+            List<int> divs = getAllDivs(a.Sum());
+            // for every DIV go through the array to get exact chunks
+            return divs.Where(d => d >= a.Max()).Aggregate(new List<int>(), (lst, d) =>
+            {
+                if (isBusValid(a, d)) lst.Add(d);
+                return lst;
+            }).ToList();
+        }
         private static int getLCT(int k, string a, string b, int i, int j)
         {
             int max = 0, curLen = 0, acc = 0;
