@@ -89,5 +89,48 @@ namespace HackerRank
             return a == 0 ? Math.Max(b - 1, 0) : b == 0 ? Math.Max(a - 1, 0)
             : MaxCmnDiv(a, b) - 1;
         }
+        // (m+n-2)!/((n-1)!* (m-1)!)
+        //private static long[] fctrsMod = new long[2000000];
+        //private static long fctrlMod(int n, int mod = 1000000007)
+        //{
+        //    if (fctrsMod[0] == 0) // fill out first time
+        //        for (int i = 0; i < 2000000; i++)
+        //        {
+        //            fctrsMod[i] = i == 0 ? 1 : (fctrsMod[i - 1] * i)%mod;
+        //        }
+        //    return fctrsMod[n];
+        //}
+        public static int solvePascal(int n, int m)
+        {
+            BigInteger fctrlTop = fctrl(m + n - 2);
+            return Math.Min(n, m) < 2 ? 1 : (int)(( fctrlTop / fctrl(n - 1) / fctrl(m - 1)) % 1000000007);
+        }
+        public static double solveCoordsDiam(List<List<int>> coords)
+        {
+            int minX = int.MaxValue, minY = int.MaxValue, maxX = int.MinValue, maxY = int.MinValue;
+            int[] cnts = coords.Aggregate(new int[2], (p, c) => {
+                int x = c[0], y = c[1];
+                if (x == 0) { p[1]++; if (y < minY) minY = y; if (y > maxY) maxY = y; }
+                if (y == 0) { p[0]++; if (x < minX) minX = x; if (x > maxX) maxX = x; }
+                return p;
+            });
+            long dmX = maxX - minX, dmY = maxY - minY,
+                maxAbsX = Math.Max(Math.Abs(minX), Math.Abs(maxX)),
+                maxAbsY = Math.Max(Math.Abs(minY), Math.Abs(maxY));
+            return cnts[0] == 0 ? (double)dmY : cnts[1] == 0 ? (double)dmX : new List<double> { dmX, dmY, Math.Sqrt(maxAbsX * maxAbsX + maxAbsY * maxAbsY) }.Max();
+        }
+        public static List<string> solveLexOrder(List<char> arr)
+        {
+            var sorted = arr.OrderBy(c => c).ToList();
+            return getSubsets(sorted).Select(sb=>sb.ToString()).Cast<string>().ToList();
+        }
+        private static List<StringBuilder> getSubsets(List<char> sorted)
+        {
+            if (sorted.Count < 1) return new List<StringBuilder>();
+            var res = new List<StringBuilder> { new StringBuilder(sorted[0].ToString()) };
+            res.AddRange(getSubsets(sorted.Skip(1).ToList()).Select(sb => new StringBuilder(sorted[0].ToString()).Append(sb)));
+            res.AddRange(getSubsets(sorted.Skip(1).ToList()));
+            return res;
+        }
     }
 }

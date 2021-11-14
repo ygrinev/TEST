@@ -1786,6 +1786,9 @@
         /// <param name="args"></param>
         static void Main(string[] args)
         {
+            var subsets = solveLexOrder("xyz".ToCharArray().ToList());
+            double diam = solveCoordsDiam(new List<List<int>> { new List<int> {0,-5 },new List<int> {-7, 0 },new List<int> {0,-6 },new List<int> {-4,0 },new List<int> {0,0 } }); //9.219544457293
+            int pskl = solvePascal(134333, 553409); // 741521468
             //string dir = BuildFileTree(new List<string> { "dir1/subdir1/file1", "dir1/subdir1/file2", "dir1/subdir1/file0", "dir1/subdir2/file1", "dir1/subdir2/subsubdir1/file1" });
             int[] chooseFromN = solveAllSubSets(229);
             int weirdNum9 = solveMinMltpl(104, getBaseList()); // 9009000
