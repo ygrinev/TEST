@@ -113,5 +113,31 @@ namespace HackerrankCore
             }
             return (int)BigInteger.ModPow(fa, Math.Abs(b), x); // powRussPeas(fa, b, x);
         }
+        public static long[] fibs = new long[2000];
+        public static int lastIdx = 0;
+        public static string isFibo(long n)
+        {
+            if (lastIdx == 0) fibs[++lastIdx] = 1;
+            int prevIdx = lastIdx;
+            while (fibs[lastIdx] < n)
+            {
+                fibs[++lastIdx] = fibs[lastIdx - 1] + fibs[lastIdx - 2];
+            }
+            if (fibs[lastIdx] == n) return "IsFibo";
+            if (prevIdx == lastIdx)
+            {
+                int left = 0, right = lastIdx;
+                do
+                {
+                    if (fibs[left] == n || fibs[right] == n) return "IsFibo";
+                    int mid = (left + right) / 2;
+                    if (fibs[mid] < n) left = mid;
+                    else right = mid;
+                }
+                while (left < right - 1);
+                if (fibs[left] == n || fibs[right] == n) return "IsFibo";
+            }
+            return "IsNotFibo";
+        }
     }
 }
