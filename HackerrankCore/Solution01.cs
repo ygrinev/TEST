@@ -139,5 +139,23 @@ namespace HackerrankCore
             }
             return "IsNotFibo";
         }
+        private static int ConvertToBase10(List<int> pr)
+        {
+            int bs = pr.ElementAt(0), nm = pr.ElementAt(1);
+            if (bs < 10 && nm.ToString().Any(c => c - '0' >= bs)) return -1;
+            long pow = 1;
+            long ret = 0;
+            while (nm > 0)
+            {
+                ret += (nm % 10) * pow;
+                pow *= bs;
+                nm /= 10;
+            }
+            return (int)ret;
+        }
+        public static long solveDateJoke(List<List<int>> dates)
+        {
+            return (long)dates.Select(pr => ConvertToBase10(pr)).Where(n => n >= 0).GroupBy(k => k).Select(g => (long)g.Count() * ((long)g.Count() - 1) / 2).Aggregate(0L, (sum, cur) => sum + cur);
+        }
     }
 }
