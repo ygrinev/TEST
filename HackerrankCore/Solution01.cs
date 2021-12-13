@@ -157,5 +157,19 @@ namespace HackerrankCore
         {
             return (long)dates.Select(pr => ConvertToBase10(pr)).Where(n => n >= 0).GroupBy(k => k).Select(g => (long)g.Count() * ((long)g.Count() - 1) / 2).Aggregate(0L, (sum, cur) => sum + cur);
         }
+        private static List<int> CalcNext(ref int prev, List<int> lst, int cur)
+        {
+            int gcd = IntOp.GCD(prev, cur);
+            lst.Add((prev / gcd) * (cur / gcd) * gcd);
+            prev = cur;
+            return lst;
+        }
+        public static List<int> solveJohnGCD(List<int> a)
+        {
+            int prev = a.ElementAt(0), prevB = prev;
+            List<int> ret = a.Skip(1).Aggregate(new List<int> { prev }, (lst, cur) => CalcNext(ref prev, lst, cur)).ToList();
+            ret.Add(a.Last());
+            return ret;
+        }
     }
 }
