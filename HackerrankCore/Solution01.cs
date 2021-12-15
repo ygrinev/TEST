@@ -207,23 +207,19 @@ namespace HackerrankCore
             int gcd = IntOp.GCD(evn, tot);
             return $"{evn/gcd}/{tot/gcd}";
         }
+        private static string calcRow(string cur, string prev, string prev2 = null)
+        {
+            int len = (cur ?? "").Length;
+            return string.Join("", prev.Select((c, i) => c == 'O' || (i > 0 && prev[i - 1] == 'O') || (i < len - 1 && prev[i + 1] == 'O') || cur[i] == 'O' || (prev2 != null && prev2[i] == 'O') ? '.' : 'O'));
+        }
         private static List<string> afterExpls(List<string> grid)
         {
             int cnt = 0, len = grid[0].Length, sz = grid.Count;
             string prev = new string('.', len), prev2 = new string('.', len);
             return grid.Aggregate(new List<string>(), (lst, cur) => {
-                if (cnt++ > 0)
-                {
-                    string newPrev = string.Join("", prev.Select((c, i) => c == 'O' || (i > 0 && prev[i - 1] == 'O') || (i < len - 1 && prev[i + 1] == 'O') || cur[i] == 'O' || (cnt > 1 && prev2[i] == 'O') ? '.' : 'O'));
-                    lst.Add(newPrev);
-                }
-                if (cnt == sz)
-                {
-                    string newCur = string.Join("", cur.Select((c, i) => c == 'O' || (i > 0 && cur[i - 1] == 'O') || (i < len - 1 && cur[i + 1] == 'O') || prev[i] == 'O' ? '.' : 'O'));
-                    lst.Add(newCur);
-                }
-                prev2 = prev;
-                prev = cur;
+                if (cnt++ > 0) lst.Add(calcRow(cur, prev, cnt > 1 ? prev2 : null));
+                if (cnt == sz) lst.Add(calcRow(prev, cur));
+                prev2 = prev; prev = cur;
                 return lst;
             });
         }
