@@ -171,5 +171,68 @@ namespace HackerrankCore
             ret.Add(a.Last());
             return ret;
         }
+        private static int[] quads = new int[498].AsEnumerable().Select((n, i) => 4 * (i + 1) * (i + 1)).ToArray();
+        private static bool contains(int div)
+        {
+            int left = 0, right = 497;
+            do
+            {
+                if (quads[left] == div || quads[right] == div) return true;
+                int mid = (left + right) / 2;
+                if (quads[mid] < div) left = mid;
+                else right = mid;
+            }
+            while (left < right - 1);
+            return quads[left] == div || quads[right] == div;
+        }
+        private static int getDivs(int n, out int evn)
+        {
+            int cnt = 1;
+            evn = 0;
+            for (int i = 2; i <= (int)Math.Sqrt(n); i++)
+            {
+                if (n % i == 0)
+                {
+                    cnt += n / i == i ? 1 : 2;
+                    if(contains(i)) evn++;
+                    if(n / i != i && contains(n/i)) evn++;
+                }
+            }
+            return cnt;
+        }
+        public static string solveEvenQuadDiv(int n)
+        {
+            if (n < 8 || n % 4 != 0) return "0";
+            int tot = getDivs(n, out int evn);
+            int gcd = IntOp.GCD(evn, tot);
+            return $"{evn/gcd}/{tot/gcd}";
+        }
+        private static List<string> afterExpls(List<string> grid)
+        {
+            int cnt = 0, len = grid[0].Length, sz = grid.Count;
+            string prev = new string('.', len), prev2 = new string('.', len);
+            return grid.Aggregate(new List<string>(), (lst, cur) => {
+                if (cnt++ > 0)
+                {
+                    string newPrev = string.Join("", prev.Select((c, i) => c == 'O' || (i > 0 && prev[i - 1] == 'O') || (i < len - 1 && prev[i + 1] == 'O') || cur[i] == 'O' || (cnt > 1 && prev2[i] == 'O') ? '.' : 'O'));
+                    lst.Add(newPrev);
+                }
+                if (cnt == sz)
+                {
+                    string newCur = string.Join("", cur.Select((c, i) => c == 'O' || (i > 0 && cur[i - 1] == 'O') || (i < len - 1 && cur[i + 1] == 'O') || prev[i] == 'O' ? '.' : 'O'));
+                    lst.Add(newCur);
+                }
+                prev2 = prev;
+                prev = cur;
+                return lst;
+            });
+        }
+        public static List<string> bomberMan(int n, List<string> grid)
+        {
+            if (n < 2) return grid;
+            if (n % 2 == 0) return grid.Select(s => new string('O', s.Length)).ToList();
+            List<string> res3 = afterExpls(grid), res5 = afterExpls(res3);
+            return n % 4 == 3 ? res3 : res5;
+        }
     }
 }
