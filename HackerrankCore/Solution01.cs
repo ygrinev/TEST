@@ -230,5 +230,9 @@ namespace HackerrankCore
             List<string> res3 = afterExpls(grid), res5 = afterExpls(res3);
             return n % 4 == 3 ? res3 : res5;
         }
+        public static int solveAntiPalindrome(int n, int m)
+        {
+            return n == 1 ? m % 1000000007 : (int)((BigInteger.ModPow(m - 2, n - 2, 1000000007) * m * (m - 1)) % 1000000007);
+        }
     }
 }
