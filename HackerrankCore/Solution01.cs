@@ -234,5 +234,14 @@ namespace HackerrankCore
         {
             return n == 1 ? m % 1000000007 : (int)((BigInteger.ModPow(m - 2, n - 2, 1000000007) * m * (m - 1)) % 1000000007);
         }
+        public static long countPairsOfSum(long n, long sum)
+        {
+            return sum < 3 || 2 * n <= sum ? 0 : Math.Min((sum - 1) / 2, n - sum / 2);
+        }
+        public static long solveDivPairs(int n, int k)
+        {
+            long max = n / k, mod = n % k;
+            return (k - 1) / 2 * ((max + 1) * max / 2) + (k / 2 + 1) * ((max - 1) * max / 2) + mod * max + Math.Max(mod - k / 2, 0);
+        }
     }
 }
