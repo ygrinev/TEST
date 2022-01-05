@@ -103,6 +103,23 @@ namespace HackerrankCore
 
             return gcd;
         }
+        public static long gcdExtended(long a, long b, out long x, out long y)
+        {
+            // Base Case
+            if (a == 0)
+            {
+                x = 0; y = 1;
+                return b;
+            }
+            // To store results of recursive call
+            long gcd = gcdExtended(b % a, a, out long x1, out long y1);
+
+            // Update x and y using results of recursive call
+            x = y1 - (b / a) * x1;
+            y = x1;
+
+            return gcd;
+        }
         public static int solvePowMod(int a, int b, int x)
         {
             int fa = a;
@@ -268,30 +285,30 @@ namespace HackerrankCore
             if (k1 > k2) { k1 ^= k2; k2 ^= k1; k1 ^= k2; } // i.e. make k1 <= k2
 
 
-            while(dx == 0 && k2 + k1 > dy + 1)
+            while (dx == 0 && k2 + k1 > dy + 1)
             {
                 if (k2 > k1) k2--; else k1--;
             }
-            if(dx > 0 && dy < k1) // i.e. dx < k1 && dx < k2 - 2 intersections
+            if (dx > 0 && dy < k1) // i.e. dx < k1 && dx < k2 - 2 intersections
             {
-                if((1 + 4 * (dy-1)) * (1 + 4 * (dy-1)) > (1 + 4 * (dx-1)) * (1 + 4 * (k2-1))) { k1 = dy; k2 = dy; } else { k1 = dx; }
+                if ((1 + 4 * (dy - 1)) * (1 + 4 * (dy - 1)) > (1 + 4 * (dx - 1)) * (1 + 4 * (k2 - 1))) { k1 = dy; k2 = dy; } else { k1 = dx; }
             }
-            else if(dx > 0 && dx < k1 && dy < k2) // 1 intersection
+            else if (dx > 0 && dx < k1 && dy < k2) // 1 intersection
             {
-                if ((1 + 4 * (dx-1)) * (1 + 4 * (k2-1)) > (1 + 4 * (k1-1)) * (1 + 4 * (dy-1))) k1 = dx;  else k2 = dy;
+                if ((1 + 4 * (dx - 1)) * (1 + 4 * (k2 - 1)) > (1 + 4 * (k1 - 1)) * (1 + 4 * (dy - 1))) k1 = dx; else k2 = dy;
             }
-            return (1 + 4 * (k1-1)) * (1 + 4 * (k2-1));
+            return (1 + 4 * (k1 - 1)) * (1 + 4 * (k2 - 1));
         }
         private static int getMaxProdSameKey(int k, IEnumerable<int[]> lstCoords) // , ref int max, ref int min
         {
             int[] coords1 = lstCoords.ElementAt(0);
 
-            return Math.Max(lstCoords.Skip(1).Aggregate(0, (prod, cur) => Math.Max(prod, getSingleProd(k, cur, k, coords1))), 
+            return Math.Max(lstCoords.Skip(1).Aggregate(0, (prod, cur) => Math.Max(prod, getSingleProd(k, cur, k, coords1))),
                 lstCoords.Count() > 1 ? getMaxProdSameKey(k, lstCoords.Skip(1)) : 0);
         }
         private static int getMaxProd2Lists(int k1, IEnumerable<int[]> lstCoordsLo, int k2, IEnumerable<int[]> lstCoordsHi) // , ref int max, ref int min
         {
-            return lstCoordsHi.Aggregate(0, (prod, curHi) => Math.Max(prod, lstCoordsLo.Aggregate(prod, (prd, curLo)=>Math.Max(prd, getSingleProd(k1, curLo, k2, curHi)))));
+            return lstCoordsHi.Aggregate(0, (prod, curHi) => Math.Max(prod, lstCoordsLo.Aggregate(prod, (prd, curLo) => Math.Max(prd, getSingleProd(k1, curLo, k2, curHi)))));
         }
         public static int twoPluses(List<string> grid)
         {
@@ -314,16 +331,51 @@ namespace HackerrankCore
             if (max == 1) return 1;
             int idx = 0;
             var ordKeys = dict.Keys.OrderByDescending(k => k);
-            return ordKeys.Aggregate(0, (prod, k)=>
+            return ordKeys.Aggregate(0, (prod, k) =>
             {
-                if(prod < (1+4 * (k-1))*(1+4 * (k-1)))
+                if (prod < (1 + 4 * (k - 1)) * (1 + 4 * (k - 1)))
                 {
                     prod = Math.Max(prod, getMaxProdSameKey(k, dict[k]));
-                    if (idx++ < dict.Keys.Count) 
-                        prod = Math.Max(prod, ordKeys.Skip(idx).Aggregate(prod, (p, kk) => p < (1 + 4 * (k-1)) * (1 + 4 * (kk-1)) ? Math.Max(p, getMaxProd2Lists(kk, dict[kk], k, dict[k])) : p));
+                    if (idx++ < dict.Keys.Count)
+                        prod = Math.Max(prod, ordKeys.Skip(idx).Aggregate(prod, (p, kk) => p < (1 + 4 * (k - 1)) * (1 + 4 * (kk - 1)) ? Math.Max(p, getMaxProd2Lists(kk, dict[kk], k, dict[k])) : p));
                 }
                 return prod;
             });
+        }
+        public static int solveZeroXorSubsets(long n)
+        {
+            // 2^((2^n)-n)
+            return (int)BigInteger.ModPow(2, BigInteger.ModPow(2, n, 73699066) - n, 1000000007);
+        }
+        public static long minPow2Mod(long n, int mod)
+        {
+            long gcd = gcdExtended(n, mod, out long fn, out long dummy);
+            return fn;
+        }
+        private static long[] initMods(int m, int len)
+        {
+            long[] mods = new long[len];
+            long d = 10 % m, idx = 1;
+            mods[0] = 1; mods[1] = 11 % m;
+            while (idx++ < len-1)
+            {
+                d = (d * d) % m;
+                mods[idx] = (mods[idx - 1]*(d + 1)) % m;
+            }
+            return mods;
+        }
+        public static int solveModOfOnes(long n, int m)
+        {
+            if (n-- < 2) return 1;
+            long d = 1, r = 0, res = 1;
+            do
+            {
+                r = r == 0 ? 1 : (r * d % m + r) % m;
+                d = d == 1 ? 10 % m : d * d % m;
+                res = n % 2 == 1 ? (res * d % m + r) % m : res;
+            }
+            while ((n >>= 1) > 0);
+            return (int)res;
         }
     }
 }

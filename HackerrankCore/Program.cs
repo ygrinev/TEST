@@ -8,6 +8,14 @@ namespace HackerrankCore
     {
         static void Main(string[] args)
         {
+            int modOfOnes52316 = solveModOfOnes(52316, 49422); // 19181
+            int modOfOnes3 = solveModOfOnes(3, 3); // 0
+            int modOfOnes4 = solveModOfOnes(4, 7); // 5 = 1111%7
+            int modOfOnes5 = solveModOfOnes(5, 7); // 2 = 11111%7
+            int modOfOnes7 = solveModOfOnes(7, 50); // 11 = 1111111%50
+            int modOfOnes37 = solveModOfOnes(37, 6); // 1
+            int modOfOnes66 = solveModOfOnes(66, 19); // 7
+            long mod2Pow = minPow2Mod(1073741824, 1000000007);
             int maxPlusProd = twoPluses(new List<string> { "GGGGGGGGGGGG", "GGGGGGGGGGGG", "BGBGGGBGBGBG", "BGBGGGBGBGBG", "GGGGGGGGGGGG", "GGGGGGGGGGGG", "GGGGGGGGGGGG", "GGGGGGGGGGGG", "BGBGGGBGBGBG", "BGBGGGBGBGBG", "BGBGGGBGBGBG", "BGBGGGBGBGBG", "GGGGGGGGGGGG", "GGGGGGGGGGGG" }); // 189=9*21
             //int maxPlusProd = twoPluses(new List<string> { "GGGGGGG", "BGBBBBG", "BGBBBBG", "GGGGGGG", "GGGGGGG", "BGBBBBG" }); // 5
             //int maxPlusProd1 = twoPluses(new List<string> { "BGBBGB", "GGGGGG", "BGBBGB", "GGGGGG", "BGBBGB", "BGBBGB" });  // 25
