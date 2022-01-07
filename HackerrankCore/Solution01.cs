@@ -396,7 +396,7 @@ namespace HackerrankCore
         }
         public static int countXorZeroSubsets(long n)
         {
-            // 2^((2^n)-n)
+            // 2^((2^n)-n), using little Fermat's theorem: for 2 co-prime a,b => a^(b-1)%b == b^(a-1)%a == 1 => 2^N%m == 2^((N-1)%m)%m
             return (int)BigInteger.ModPow(2, (powRussPeasMod(2, n, 1000000006) - n % 1000000006 + 1000000006) % 1000000006, 1000000007);
         }
     }
