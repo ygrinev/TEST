@@ -377,5 +377,22 @@ namespace HackerrankCore
             while ((n >>= 1) > 0);
             return (int)res;
         }
+        private static int longStrToModNum(string a, int m)
+        {
+            int offs = 18, len = a.Length, idx = len - ((len-1)%offs + 1);
+            long fctr = long.Parse($"1{new string('0', (len-1)%offs + 1)}") % m, res = long.Parse(a.Substring(idx)) % m;
+            long mod10s = long.Parse($"1{new string('0', offs)}") % m;
+            while (idx > 0)
+            {
+                idx -= offs;
+                res = (res + long.Parse(a.Substring(idx, offs)) % m * fctr) % m;
+                fctr = fctr * mod10s % m;
+            }
+            return (int)res;
+        }
+        public static int solveBigIntModPow(string a, string b) // mod = 1000000007, 
+        {
+            return (int)BigInteger.ModPow(longStrToModNum(a,1000000007), longStrToModNum(b,1000000006), 1000000007);
+        }
     }
 }

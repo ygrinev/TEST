@@ -8,7 +8,8 @@ namespace HackerrankCore
     {
         static void Main(string[] args)
         {
-            int modOfOnes52316 = solveModOfOnes(52316, 49422); // 19181
+            int strMods = solveBigIntModPow("34543987529435983745230948023948", "3498573497543987543985743989120393097595572309482304"); // 9
+            int modOfOnes52316 = solveModOfOnes(52316, 49422); // 2401
             int modOfOnes3 = solveModOfOnes(3, 3); // 0
             int modOfOnes4 = solveModOfOnes(4, 7); // 5 = 1111%7
             int modOfOnes5 = solveModOfOnes(5, 7); // 2 = 11111%7
