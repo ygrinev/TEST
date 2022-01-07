@@ -56,12 +56,12 @@ namespace HackerrankCore
         }
         public static long powRussPeasMod(int x, long k, int mod = 0)
         {
-            long p = k % 2 == 0 ? 1 : x;
+            long p = k % 2 == 0 ? 1 : x, pow = x;
             while ((k >>= 1) > 0)
             {
-                x *= x; if (mod > 0) x %= mod;
+                pow *= pow; if (mod > 0) pow %= mod;
                 if (k % 2 == 1)
-                    p *= x; if (mod > 0) p %= mod;
+                { p *= pow; if (mod > 0) p %= mod; }
             }
             return p;
         }
@@ -393,6 +393,11 @@ namespace HackerrankCore
         public static int solveBigIntModPow(string a, string b) // mod = 1000000007, 
         {
             return (int)BigInteger.ModPow(longStrToModNum(a,1000000007), longStrToModNum(b,1000000006), 1000000007);
+        }
+        public static int countXorZeroSubsets(long n)
+        {
+            // 2^((2^n)-n)
+            return (int)BigInteger.ModPow(2, (powRussPeasMod(2, n, 1000000006) - n % 1000000006 + 1000000006) % 1000000006, 1000000007);
         }
     }
 }
