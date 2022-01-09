@@ -8,10 +8,11 @@ namespace HackerrankCore
     {
         static void Main(string[] args)
         {
-            //int xorZeroSubsets = countXorZeroSubsets(27); // 701468735
+            almostSorted(new List<int> { 1, 2, 4, 3, 5, 6 });
+            int xorZeroSubsets = countXorZeroSubsets(27); // 701468735
             //int xorZeroSubsets1 = countXorZeroSubsets(29); // 982145115
             //int xorZeroSubsets2 = countXorZeroSubsets(31); // 210242311
-            int xorZeroSubsets3 = countXorZeroSubsets(32); // 663094867
+            //int xorZeroSubsets3 = countXorZeroSubsets(32); // 663094867
             //int xorZeroSubsets4 = countXorZeroSubsets(35); // 318095094
             int strMods = solveBigIntModPow("34543987529435983745230948023948", "3498573497543987543985743989120393097595572309482304"); // 9
             int modOfOnes52316 = solveModOfOnes(52316, 49422); // 2401

@@ -399,5 +399,111 @@ namespace HackerrankCore
             // 2^((2^n)-n), using little Fermat's theorem: for 2 co-prime a,b => a^(b-1)%b == b^(a-1)%a == 1 => 2^N%m == 2^((N-1)%m)%m
             return (int)BigInteger.ModPow(2, (powRussPeasMod(2, n, 1000000006) - n % 1000000006 + 1000000006) % 1000000006, 1000000007);
         }
+        public static void almostSorted(List<int> arr)
+        {
+            int prev2 = -1, prev = arr.First(), idx = 0, len = arr.Count,
+                z1Offs = 0, z1Idx = -1, z1Max = -1, z1Min = -1, z1L = -1, z1R = -1,
+             /*z2Offs = 0,*/z2Idx = -1, z2Val = -1, z2L = -1, z2R = -1;
+            bool up = true;
+            string ret = arr.Skip(1).Aggregate("yes", (r, n) =>
+            {
+                if (r == "no") 
+                    return r;
+
+                if (up)
+                {
+                    if (n < prev) // set up left edge of zigzag
+                    {
+                        //max = Math.Max(max, prev);
+                        if(z2R > 0 || z1Offs > 1)
+                        {
+                            return "no";
+                        }
+                        if (z1Idx < 0) // set up left edge of Z1
+                        {
+                            z1Idx = idx;
+                            z1Max = prev;
+                            z1L = prev2;
+                            z1Offs = 1;
+                            if (idx+1 == len - 1)
+                            {
+                                z2Idx = idx + 1;
+                                z2Val = n;
+                                z2L = prev2;
+                                z1R = z2R = prev + 1;
+                            }
+                        }
+                        else if(z2Idx < 0) // set up left edge of Z2
+                        {
+                            z2Idx = idx+1;
+                            z2Val = n;
+                            z2L = prev;
+                            if (idx+1 == len - 1)
+                            {
+                                z2R = z1Max + 1;
+                            }
+                        }
+                        up = false;
+                    }
+                }
+                else // was going down
+                {
+                    if (n > prev) // set up right edge of zigzag
+                    {
+                        if(n < z1L || z2L > -1 && n < z2L || z1Offs > 1 && n < z1Max)
+                        {
+                            return "no";
+                        }
+                        if(z2Idx < 0)
+                        {
+                            z1R = n;
+                            z1Min = prev;
+                        }
+                        else
+                        {
+                            z2R = n;
+                        }
+                        up = true;
+                    } else
+                    {
+                        if (z1R > 0)
+                        {
+                            return "no";
+                        }
+                        else
+                        {
+                            z1Offs++;
+                            if (idx+1 == len - 1 && z1R < 0)
+                            {
+                                z1R = z1Max + 1;
+                                z1Min = n;
+                            }
+                        }
+                    }
+                }
+                prev2 = prev; prev = n;
+                idx++;
+                return "yes";
+            });
+            if(ret == "yes" && validOrder(z1L, z1Min, z1Max, z2Val, z1R, z2L, z2R))
+            { 
+                Console.WriteLine("yes");
+                if(z1Idx > -1)
+                {
+                    Console.WriteLine(z2Idx > -1 
+                        ? $"swap {z1Idx+1} {z2Idx+1}" 
+                        : $"{(z1Offs == 1 ? "swap" : "reverse")} {z1Idx+1} {z1Idx+z1Offs+1}");
+                }
+            }
+            else
+            {
+                Console.WriteLine("no");
+            }
+        }
+        private static bool validOrder(int z1L, int z1Min, int z1Max, int z2Val, int z1R, int z2L, int z2R)
+        {
+            return z1Max < 0 || z2Val > 0 && z1L < z2Val && z2Val < z1R && z2L < z1Max && z1Max < z2R
+                || z1L < z1Min && z1Max < z1R;
+        }
     }
 }
