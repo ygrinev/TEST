@@ -325,5 +325,23 @@ namespace HackerrankCore
                 return prod;
             });
         }
+        public static int solveOnesMod(long n, int m)
+        {
+            // 111...(n=SUM(2^k)) = 10^n+111...(n-1) = 10^n+10^(n-1)+111...(n-2) = SUM[1..n]10^k = (10^n-1)/9 + 1
+            // => c: (10^n-1)%m==9*c%m => 
+            if (n < 21) return (int)long.Parse(new string('1',(int)n))%m;
+            long pow10 = 10 % m, curModOnes = 1;
+            return (int)new int[17].Aggregate((n%2)*curModOnes, (mod, i) =>
+            {
+                if (n > 0)
+                {
+                    mod = n % 2 == 0 ? mod : ((mod * pow10)%m + curModOnes)%m;
+                    curModOnes = (curModOnes * (pow10 + 1)) % m;
+                    pow10 = (pow10 * pow10) % m;
+                }
+                n >>= 1;
+                return mod;
+            });
+        }
     }
 }

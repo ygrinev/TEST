@@ -8,6 +8,16 @@ namespace HackerrankCore
     {
         static void Main(string[] args)
         {
+            MtxRotate.MatrixRotation(new List<List<int>> { 
+                new List<int>{ 1,2,3,4},
+                new List<int>{ 5,6,7,8},
+                new List<int>{ 9,10,11,12},
+                new List<int>{ 13,14,15,16}
+            }, 2);
+            //int onesMod0 = solveOnesMod(7, 50); // 11
+            int onesMod = solveOnesMod(3, 3);
+            int onesMod1 = solveOnesMod(4, 7);
+            int onesMod2 = solveOnesMod(5, 18);
             int maxPlusProd = twoPluses(new List<string> { "GGGGGGGGGGGG", "GGGGGGGGGGGG", "BGBGGGBGBGBG", "BGBGGGBGBGBG", "GGGGGGGGGGGG", "GGGGGGGGGGGG", "GGGGGGGGGGGG", "GGGGGGGGGGGG", "BGBGGGBGBGBG", "BGBGGGBGBGBG", "BGBGGGBGBGBG", "BGBGGGBGBGBG", "GGGGGGGGGGGG", "GGGGGGGGGGGG" }); // 189=9*21
             //int maxPlusProd = twoPluses(new List<string> { "GGGGGGG", "BGBBBBG", "BGBBBBG", "GGGGGGG", "GGGGGGG", "BGBBBBG" }); // 5
             //int maxPlusProd1 = twoPluses(new List<string> { "BGBBGB", "GGGGGG", "BGBBGB", "GGGGGG", "BGBBGB", "BGBBGB" });  // 25
