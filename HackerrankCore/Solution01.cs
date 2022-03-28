@@ -56,12 +56,12 @@ namespace HackerrankCore
         }
         public static long powRussPeasMod(int x, long k, int mod = 0)
         {
-            long p = k % 2 == 0 ? 1 : x;
+            long p = k % 2 == 0 ? 1 : x, pow = x;
             while ((k >>= 1) > 0)
             {
-                x *= x; if (mod > 0) x %= mod;
+                pow *= pow; if (mod > 0) pow %= mod;
                 if (k % 2 == 1)
-                    p *= x; if (mod > 0) p %= mod;
+                { p *= pow; if (mod > 0) p %= mod; }
             }
             return p;
         }
@@ -96,6 +96,23 @@ namespace HackerrankCore
             }
             // To store results of recursive call
             int gcd = gcdExtended(b % a, a, out int x1, out int y1);
+
+            // Update x and y using results of recursive call
+            x = y1 - (b / a) * x1;
+            y = x1;
+
+            return gcd;
+        }
+        public static long gcdExtended(long a, long b, out long x, out long y)
+        {
+            // Base Case
+            if (a == 0)
+            {
+                x = 0; y = 1;
+                return b;
+            }
+            // To store results of recursive call
+            long gcd = gcdExtended(b % a, a, out long x1, out long y1);
 
             // Update x and y using results of recursive call
             x = y1 - (b / a) * x1;
@@ -268,30 +285,30 @@ namespace HackerrankCore
             if (k1 > k2) { k1 ^= k2; k2 ^= k1; k1 ^= k2; } // i.e. make k1 <= k2
 
 
-            while(dx == 0 && k2 + k1 > dy + 1)
+            while (dx == 0 && k2 + k1 > dy + 1)
             {
                 if (k2 > k1) k2--; else k1--;
             }
-            if(dx > 0 && dy < k1) // i.e. dx < k1 && dx < k2 - 2 intersections
+            if (dx > 0 && dy < k1) // i.e. dx < k1 && dx < k2 - 2 intersections
             {
-                if((1 + 4 * (dy-1)) * (1 + 4 * (dy-1)) > (1 + 4 * (dx-1)) * (1 + 4 * (k2-1))) { k1 = dy; k2 = dy; } else { k1 = dx; }
+                if ((1 + 4 * (dy - 1)) * (1 + 4 * (dy - 1)) > (1 + 4 * (dx - 1)) * (1 + 4 * (k2 - 1))) { k1 = dy; k2 = dy; } else { k1 = dx; }
             }
-            else if(dx > 0 && dx < k1 && dy < k2) // 1 intersection
+            else if (dx > 0 && dx < k1 && dy < k2) // 1 intersection
             {
-                if ((1 + 4 * (dx-1)) * (1 + 4 * (k2-1)) > (1 + 4 * (k1-1)) * (1 + 4 * (dy-1))) k1 = dx;  else k2 = dy;
+                if ((1 + 4 * (dx - 1)) * (1 + 4 * (k2 - 1)) > (1 + 4 * (k1 - 1)) * (1 + 4 * (dy - 1))) k1 = dx; else k2 = dy;
             }
-            return (1 + 4 * (k1-1)) * (1 + 4 * (k2-1));
+            return (1 + 4 * (k1 - 1)) * (1 + 4 * (k2 - 1));
         }
         private static int getMaxProdSameKey(int k, IEnumerable<int[]> lstCoords) // , ref int max, ref int min
         {
             int[] coords1 = lstCoords.ElementAt(0);
 
-            return Math.Max(lstCoords.Skip(1).Aggregate(0, (prod, cur) => Math.Max(prod, getSingleProd(k, cur, k, coords1))), 
+            return Math.Max(lstCoords.Skip(1).Aggregate(0, (prod, cur) => Math.Max(prod, getSingleProd(k, cur, k, coords1))),
                 lstCoords.Count() > 1 ? getMaxProdSameKey(k, lstCoords.Skip(1)) : 0);
         }
         private static int getMaxProd2Lists(int k1, IEnumerable<int[]> lstCoordsLo, int k2, IEnumerable<int[]> lstCoordsHi) // , ref int max, ref int min
         {
-            return lstCoordsHi.Aggregate(0, (prod, curHi) => Math.Max(prod, lstCoordsLo.Aggregate(prod, (prd, curLo)=>Math.Max(prd, getSingleProd(k1, curLo, k2, curHi)))));
+            return lstCoordsHi.Aggregate(0, (prod, curHi) => Math.Max(prod, lstCoordsLo.Aggregate(prod, (prd, curLo) => Math.Max(prd, getSingleProd(k1, curLo, k2, curHi)))));
         }
         public static int twoPluses(List<string> grid)
         {
@@ -314,16 +331,179 @@ namespace HackerrankCore
             if (max == 1) return 1;
             int idx = 0;
             var ordKeys = dict.Keys.OrderByDescending(k => k);
-            return ordKeys.Aggregate(0, (prod, k)=>
+            return ordKeys.Aggregate(0, (prod, k) =>
             {
-                if(prod < (1+4 * (k-1))*(1+4 * (k-1)))
+                if (prod < (1 + 4 * (k - 1)) * (1 + 4 * (k - 1)))
                 {
                     prod = Math.Max(prod, getMaxProdSameKey(k, dict[k]));
-                    if (idx++ < dict.Keys.Count) 
-                        prod = Math.Max(prod, ordKeys.Skip(idx).Aggregate(prod, (p, kk) => p < (1 + 4 * (k-1)) * (1 + 4 * (kk-1)) ? Math.Max(p, getMaxProd2Lists(kk, dict[kk], k, dict[k])) : p));
+                    if (idx++ < dict.Keys.Count)
+                        prod = Math.Max(prod, ordKeys.Skip(idx).Aggregate(prod, (p, kk) => p < (1 + 4 * (k - 1)) * (1 + 4 * (kk - 1)) ? Math.Max(p, getMaxProd2Lists(kk, dict[kk], k, dict[k])) : p));
                 }
                 return prod;
             });
+        }
+        public static int solveZeroXorSubsets(long n)
+        {
+            // 2^((2^n)-n)
+            return (int)BigInteger.ModPow(2, BigInteger.ModPow(2, n, 73699066) - n, 1000000007);
+        }
+        public static long minPow2Mod(long n, int mod)
+        {
+            long gcd = gcdExtended(n, mod, out long fn, out long dummy);
+            return fn;
+        }
+        private static long[] initMods(int m, int len)
+        {
+            long[] mods = new long[len];
+            long d = 10 % m, idx = 1;
+            mods[0] = 1; mods[1] = 11 % m;
+            while (idx++ < len-1)
+            {
+                d = (d * d) % m;
+                mods[idx] = (mods[idx - 1]*(d + 1)) % m;
+            }
+            return mods;
+        }
+        public static int solveModOfOnes(long n, int m)
+        {
+            if (n-- < 2) return 1;
+            long d = 1, r = 0, res = 1;
+            do
+            {
+                r = r == 0 ? 1 : (r * d % m + r) % m;
+                d = d == 1 ? 10 % m : d * d % m;
+                res = n % 2 == 1 ? (res * d % m + r) % m : res;
+            }
+            while ((n >>= 1) > 0);
+            return (int)res;
+        }
+        private static int longStrToModNum(string a, int m)
+        {
+            int offs = 18, len = a.Length, idx = len - ((len-1)%offs + 1);
+            long fctr = long.Parse($"1{new string('0', (len-1)%offs + 1)}") % m, res = long.Parse(a.Substring(idx)) % m;
+            long mod10s = long.Parse($"1{new string('0', offs)}") % m;
+            while (idx > 0)
+            {
+                idx -= offs;
+                res = (res + long.Parse(a.Substring(idx, offs)) % m * fctr) % m;
+                fctr = fctr * mod10s % m;
+            }
+            return (int)res;
+        }
+        public static int solveBigIntModPow(string a, string b) // mod = 1000000007, 
+        {
+            return (int)BigInteger.ModPow(longStrToModNum(a,1000000007), longStrToModNum(b,1000000006), 1000000007);
+        }
+        public static int countXorZeroSubsets(long n)
+        {
+            // 2^((2^n)-n), using little Fermat's theorem: for 2 co-prime a,b => a^(b-1)%b == b^(a-1)%a == 1 => 2^N%m == 2^((N-1)%m)%m
+            return (int)BigInteger.ModPow(2, (powRussPeasMod(2, n, 1000000006) - n % 1000000006 + 1000000006) % 1000000006, 1000000007);
+        }
+        public static void almostSorted(List<int> arr)
+        {
+            int prev2 = -1, prev = arr.First(), idx = 0, len = arr.Count,
+                z1Offs = 0, z1Idx = -1, z1Max = -1, z1Min = -1, z1L = -1, z1R = -1,
+             /*z2Offs = 0,*/z2Idx = -1, z2Val = -1, z2L = -1, z2R = -1;
+            bool up = true;
+            string ret = arr.Skip(1).Aggregate("yes", (r, n) =>
+            {
+                if (r == "no") 
+                    return r;
+
+                if (up)
+                {
+                    if (n < prev) // set up left edge of zigzag
+                    {
+                        //max = Math.Max(max, prev);
+                        if(z2R > 0 || z1Offs > 1)
+                        {
+                            return "no";
+                        }
+                        if (z1Idx < 0) // set up left edge of Z1
+                        {
+                            z1Idx = idx;
+                            z1Max = prev;
+                            z1L = prev2;
+                            z1Offs = 1;
+                            if (idx+1 == len - 1)
+                            {
+                                z2Idx = idx + 1;
+                                z2Val = n;
+                                z2L = prev2;
+                                z1R = z2R = prev + 1;
+                            }
+                        }
+                        else if(z2Idx < 0) // set up left edge of Z2
+                        {
+                            z2Idx = idx+1;
+                            z2Val = n;
+                            z2L = prev;
+                            if (idx+1 == len - 1)
+                            {
+                                z2R = z1Max + 1;
+                            }
+                        }
+                        up = false;
+                    }
+                }
+                else // was going down
+                {
+                    if (n > prev) // set up right edge of zigzag
+                    {
+                        if(n < z1L || z2L > -1 && n < z2L || z1Offs > 1 && n < z1Max)
+                        {
+                            return "no";
+                        }
+                        if(z2Idx < 0)
+                        {
+                            z1R = n;
+                            z1Min = prev;
+                        }
+                        else
+                        {
+                            z2R = n;
+                        }
+                        up = true;
+                    } else
+                    {
+                        if (z1R > 0)
+                        {
+                            return "no";
+                        }
+                        else
+                        {
+                            z1Offs++;
+                            if (idx+1 == len - 1 && z1R < 0)
+                            {
+                                z1R = z1Max + 1;
+                                z1Min = n;
+                            }
+                        }
+                    }
+                }
+                prev2 = prev; prev = n;
+                idx++;
+                return "yes";
+            });
+            if(ret == "yes" && validOrder(z1L, z1Min, z1Max, z2Val, z1R, z2L, z2R))
+            { 
+                Console.WriteLine("yes");
+                if(z1Idx > -1)
+                {
+                    Console.WriteLine(z2Idx > -1 
+                        ? $"swap {z1Idx+1} {z2Idx+1}" 
+                        : $"{(z1Offs == 1 ? "swap" : "reverse")} {z1Idx+1} {z1Idx+z1Offs+1}");
+                }
+            }
+            else
+            {
+                Console.WriteLine("no");
+            }
+        }
+        private static bool validOrder(int z1L, int z1Min, int z1Max, int z2Val, int z1R, int z2L, int z2R)
+        {
+            return z1Max < 0 || z2Val > 0 && z1L < z2Val && z2Val < z1R && z2L < z1Max && z1Max < z2R
+                || z1L < z1Min && z1Max < z1R;
         }
         public static int solveOnesMod(long n, int m)
         {
