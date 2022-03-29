@@ -8,6 +8,8 @@ namespace HackerrankCore
     {
         static void Main(string[] args)
         {
+            //int div = awesDiv(new List<int> { 1000000000, 1000000000 }, 1000000000);
+            int div = awesDiv(Data.Data.awesList, 693085);
             almostSorted(new List<int> { 1, 2, 4, 3, 5, 6 });
             int xorZeroSubsets = countXorZeroSubsets(27); // 701468735
             //int xorZeroSubsets1 = countXorZeroSubsets(29); // 982145115

@@ -523,5 +523,34 @@ namespace HackerrankCore
                 return mod;
             });
         }
+
+        public static int awesDiv(List<int> A, int k)
+        {
+            int gcd = GCD(A);
+            return getMaxDivsInt(gcd, k);
+        }
+        private static int GCD(List<int> A)
+        {
+            return A.Aggregate((cur, next) => IntOp.GCD(cur, next));
+        }
+
+        private static int getMaxDivsInt(int n, int max = 0)
+        {
+            if (max == 0) return n;
+            int ret = max/n*n;
+            int sqrt = (int)Math.Floor(Math.Sqrt(n));
+            for (int i = 2; i <= Math.Min(sqrt, max); i++)
+            {
+                if (n % i == 0)
+                {
+                    int maxLo = max/i*i;
+                    int p = n / i;
+                    int maxHi = max/p*p;
+                    if(maxLo > ret) ret = maxLo;
+                    if(maxHi <= max && maxHi > ret) ret = maxHi;
+                }
+            }
+            return ret;
+        }
     }
 }
