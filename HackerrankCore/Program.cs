@@ -8,6 +8,10 @@ namespace HackerrankCore
     {
         static void Main(string[] args)
         {
+            int my86 = ChandrimaAndXOR(Data.Data.zenIdxs); // 785_032_742
+            int my1 = ChandrimaAndXOR(new List<long> { 1,3,4});
+            int my = ChandrimaAndXOR(new List<long> { 31947491257208451, 28306118998528876, 19049025053244201, 9854731813972501, 2274615912900865, 5446601370175231 });
+            int sprcXor = getSparceXOR(Enumerable.Repeat(1L,3).Select((l,i)=>(long)(i+1)));
             //int div = awesDiv(new List<int> { 1000000000, 1000000000 }, 1000000000);
             int div = awesDiv(Data.Data.awesList, 693085);
             almostSorted(new List<int> { 1, 2, 4, 3, 5, 6 });
