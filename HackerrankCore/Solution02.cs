@@ -25,6 +25,8 @@ namespace HackerrankCore
         // I've got one case here that is failing, probably just barely failing the time limit.
         // Let's try precalculating the powers as the small speedup needed.
 
+        const int mdP = 1000000007;
+        static int SpecialSum(int[] a) => (int)((a.Aggregate(new BigInteger(1), (b, n) => (b * (BigInteger.ModPow(2, n, mdP) + 1)) % mdP) - 1) % mdP); 
         static int ChandrimaAndXOR(IEnumerable<long> a)
         {
             ulong[] fib = new ulong[100]; fib[0] = 1; fib[1] = 2;
@@ -37,14 +39,14 @@ namespace HackerrankCore
             i = pow2.Length;
             ulong ret = 0;
             int idx = 0;
-            ulong pow2_60_mod1000000007 = 536_396_504, mod = 1; // = 2^60 mod 1000000007, 2^61%1000000007=(536_396_504*2)%1000000007
+            ulong pow2_60_mod1000000007 = 536_396_504, mod = 1; // = 2^60 mod mdP, 2^61%mdP=(536_396_504*2)%mdP
             while (i > 0)
             {
-                ret = (ret + mod*(Convert.ToUInt64(string.Join("", pow2.Skip((idx++) * 60).Take(60).Reverse().Select(b=>b?"1":"0")), 2)%1000000007)%1000000007)%1000000007;
-                mod = (mod * pow2_60_mod1000000007) % 1000000007;
+                ret = (ret + mod*(Convert.ToUInt64(string.Join("", pow2.Skip((idx++) * 60).Take(60).Reverse().Select(b=>b?"1":"0")), 2)%mdP)%mdP)%mdP;
+                mod = (mod * pow2_60_mod1000000007) % mdP;
                 i -= 60;
             }
-            return (int)ret; // pow2.Aggregate((ulong)0, (ret, next)=>(ret + poq2mod(pow2[i], ref i))%1000000007);
+            return (int)ret; // pow2.Aggregate((ulong)0, (ret, next)=>(ret + poq2mod(pow2[i], ref i))%mdP);
         }
         private static void zen(ulong[] fibs, bool[] pow2, ulong next)
         {
@@ -83,7 +85,7 @@ namespace HackerrankCore
         //sol = 0
         //for j in range(n) :
         //    sol ^= zeck(nums[j])
-        //print(sol % 1000000007)
+        //print(sol % mdP)
 
         ///
         /// Find first even number of N-row in the pattern:
