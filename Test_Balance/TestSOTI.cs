@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace Test_Balance
 {
@@ -16,7 +18,7 @@ namespace Test_Balance
 		/// <returns>The length of the longest contiguous subarray where where product of its elements equal prod.</returns>
 		private List<int> lst = new List<int>();
 		private int targetProd = 1;
-		private int curProd = 1;
+		private int curTargetProd = 1;
 		private bool adding = false;
 		public int getMaxProdLen(int[] arr, int prod)
 		{
@@ -30,24 +32,24 @@ namespace Test_Balance
 			{
 				if (isDivisor(n))
 				{
-					if(n > 1) curProd *= n;
+					if(n > 1) curTargetProd *= n;
 					lst.Add(n);
-					if(curProd <= targetProd) 
-						maxLen = checkMax(maxLen, curProd, targetProd, lst);
+					if(curTargetProd <= targetProd) 
+						maxLen = checkMax(maxLen, curTargetProd, targetProd, lst);
 					else
 					{
 						int idx = 0;
-						while(idx < lst.Count && curProd > targetProd)
-							curProd /= lst[idx++];
+						while(idx < lst.Count && curTargetProd > targetProd)
+							curTargetProd /= lst[idx++];
                         lst = lst.Skip(idx).ToList();
-						maxLen = checkMax(maxLen, curProd, targetProd, lst);
+						maxLen = checkMax(maxLen, curTargetProd, targetProd, lst);
                     }
 				}
 				else
 				{
 					adding = false;
 					lst = new List<int>();
-					curProd = 1;
+					curTargetProd = 1;
 				}
 			}
 			else
@@ -55,8 +57,8 @@ namespace Test_Balance
 				if(adding = isDivisor(n))
 				{
                     lst.Add(n);
-                    curProd = n;
-                    maxLen = checkMax(maxLen, curProd, targetProd, lst);
+                    curTargetProd = n;
+                    maxLen = checkMax(maxLen, curTargetProd, targetProd, lst);
 
                 }
             }
@@ -64,6 +66,70 @@ namespace Test_Balance
 		}
 
 		private bool isDivisor(int n) => n != 0 && (n==1 || targetProd % n == 0);
-		private int checkMax(int maxLen, int curProd, int targetProd, List<int> lst) => curProd == targetProd ? Math.Max(maxLen, lst.Count) : maxLen;
-	}
+		private int checkMax(int maxLen, int curTargetProd, int targetProd, List<int> lst) => curTargetProd == targetProd ? Math.Max(maxLen, lst.Count) : maxLen;
+
+		public int maxMultiPartitionWithEqualProd(int[] arr)
+		{
+			if (arr.Contains(0)) return arr.Where(n=>n == 0).Count();
+            totalProd = arr.Aggregate(new BigInteger(1), (prod, n) => prod * n);
+			if (totalProd == 1) return arr.Length;
+            // 2 cases: 
+            curProd = arr.Max();
+			maxIndex = Array.FindIndex(arr, x => x == curProd);
+			len = arr.Length;
+
+            return arr?.Aggregate(0, (cnt, n) => getNextAttempt(cnt, n, arr)) ?? 0;
+        }
+		private List<int> idxArr = new List<int> { 0 };
+        BigInteger totalProd = new BigInteger(1);
+        BigInteger curProd = new BigInteger(1);
+        int maxIndex = 0;
+        int len = 0;
+        private int getNextAttempt(int cnt, int n, int[] arr)
+        {
+			int maxCount = 1;
+            for (int i = maxIndex - 1; i >= 0; i--, curProd *= arr[i])
+			{
+				if (arr[i] == 1) continue;
+                for (int j = maxIndex + 1; j < len; j++, curProd *= arr[j])
+				{
+					if (arr[j] == 1 || !checIfPartPossible(curProd, totalProd)) continue;
+					int leftCnt = scoreSubArr(0, i, arr);
+					if (leftCnt < 1) continue;
+					int rightCnt = scoreSubArr(j, len - 1, arr);
+					if (rightCnt < 1) continue;
+                    maxCount = Math.Max(maxCount, 1 + leftCnt + scoreSubArr(j, len - 1, arr));
+				}
+			}
+			return maxCount;
+        }
+
+        private int scoreSubArr(int sIdx, int eIdx, int[] arr)
+        {
+			BigInteger curTotal = getArrProduct(sIdx, eIdx, arr);
+			if(!checIfPartPossible(curProd, curTotal))
+				return 0;
+			BigInteger tmpProd = 1;
+			while (sIdx <= eIdx && (tmpProd *= arr[sIdx++]) < curProd)
+				continue;
+			if(tmpProd > curProd) return 0;
+			int cntPlus = scoreSubArr(sIdx, eIdx, arr);
+			return cntPlus == 0 ? 0 : 1 + cntPlus;
+        }
+
+        private BigInteger getArrProduct(int sIdx, int eIdx, int[] arr)
+        {
+            for(BigInteger curProd = 1; sIdx <= eIdx; sIdx++)
+				curProd *= arr[sIdx];
+			return curProd;
+        }
+
+        private bool checIfPartPossible(BigInteger curProd, BigInteger curTotal)
+		{
+			BigInteger rmd = curTotal;
+			while ((rmd = curTotal / curProd) % curProd == 0)
+				continue;
+			return rmd == 1;
+        }
+    }
 }
