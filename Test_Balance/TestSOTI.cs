@@ -72,49 +72,52 @@ namespace Test_Balance
 		{
 			if (arr.Contains(0)) return arr.Where(n=>n == 0).Count();
             totalProd = arr.Aggregate(new BigInteger(1), (prod, n) => prod * n);
-			if (totalProd == 1) return arr.Length;
+			if (totalProd == 1) return arr.Length;	
             // 2 cases: 
             curProd = arr.Max();
 			maxIndex = Array.FindIndex(arr, x => x == curProd);
 			len = arr.Length;
 
-            return arr?.Aggregate(0, (cnt, n) => getNextAttempt(cnt, n, arr)) ?? 0;
+            return calcPartitions(arr);
         }
 		private List<int> idxArr = new List<int> { 0 };
         BigInteger totalProd = new BigInteger(1);
         BigInteger curProd = new BigInteger(1);
         int maxIndex = 0;
         int len = 0;
-        private int getNextAttempt(int cnt, int n, int[] arr)
+        private int calcPartitions(int[] arr)
         {
 			int maxCount = 1;
-            for (int i = maxIndex - 1; i >= 0; i--, curProd *= arr[i])
+			int pcbCount = 1;
+            for (int i = maxIndex - 1; maxCount < 2 && i >= -1; i--)
 			{
-				if (arr[i] == 1) continue;
-                for (int j = maxIndex + 1; j < len; j++, curProd *= arr[j])
+				if (i >= 0 && arr[i] == 1) continue;
+                for (int j = maxIndex + 1; maxCount < 2 && j <= len; j++, curProd = getArrProduct(i+1, j-1, arr))
 				{
-					if (arr[j] == 1 || !checIfPartPossible(curProd, totalProd)) continue;
-					int leftCnt = scoreSubArr(0, i, arr);
-					if (leftCnt < 1) continue;
-					int rightCnt = scoreSubArr(j, len - 1, arr);
-					if (rightCnt < 1) continue;
-                    maxCount = Math.Max(maxCount, 1 + leftCnt + scoreSubArr(j, len - 1, arr));
+					if (j < len && arr[j] == 1 || !checIfPartPossible(curProd, totalProd)) continue;
+
+					int leftCnt = scoreSubArr(0, i, 0, arr);
+					if (i >= 0 && leftCnt < 1) break;
+					int rightCnt = scoreSubArr(j, len - 1, 0, arr);
+					if (j < arr.Length && rightCnt < 1) continue;
+                    maxCount = Math.Max(maxCount, 1 + leftCnt + rightCnt);
 				}
 			}
 			return maxCount;
         }
 
-        private int scoreSubArr(int sIdx, int eIdx, int[] arr)
+        private int scoreSubArr(int sIdx, int eIdx, int cnt, int[] arr)
         {
-			BigInteger curTotal = getArrProduct(sIdx, eIdx, arr);
+			if (sIdx > eIdx || sIdx < 0 || eIdx > arr.Length -1) return cnt;
+            BigInteger curTotal = getArrProduct(sIdx, eIdx, arr);
 			if(!checIfPartPossible(curProd, curTotal))
 				return 0;
 			BigInteger tmpProd = 1;
 			while (sIdx <= eIdx && (tmpProd *= arr[sIdx++]) < curProd)
 				continue;
-			if(tmpProd > curProd) return 0;
-			int cntPlus = scoreSubArr(sIdx, eIdx, arr);
-			return cntPlus == 0 ? 0 : 1 + cntPlus;
+			if(tmpProd != curProd) return cnt;
+			int cntPlus = scoreSubArr(sIdx, eIdx, cnt+1, arr);
+			return cntPlus;
         }
 
         private BigInteger getArrProduct(int sIdx, int eIdx, int[] arr)
@@ -127,7 +130,7 @@ namespace Test_Balance
         private bool checIfPartPossible(BigInteger curProd, BigInteger curTotal)
 		{
 			BigInteger rmd = curTotal;
-			while ((rmd = curTotal / curProd) % curProd == 0)
+			while ((rmd /= curProd) % curProd == 0)
 				continue;
 			return rmd == 1;
         }
