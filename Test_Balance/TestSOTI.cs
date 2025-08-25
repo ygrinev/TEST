@@ -68,55 +68,80 @@ namespace Test_Balance
 		private bool isDivisor(int n) => n != 0 && (n==1 || targetProd % n == 0);
 		private int checkMax(int maxLen, int curTargetProd, int targetProd, List<int> lst) => curTargetProd == targetProd ? Math.Max(maxLen, lst.Count) : maxLen;
 
+		/// <summary>
+		/// Calculates the maximum number of partitions of the input array where each partition has an equal product.
+		/// </summary>
+		/// <remarks>If the array contains zeros, the method returns the count of zeros in the array, as partitions
+		/// with zero product are trivial. If max == min, the method returns the length of the array,
+		/// as each element can form its own partition.</remarks>
+		/// <param name="arr">An array of integers to be partitioned. The array must not contain negative values.</param>
+		/// <returns>The maximum number of partitions where the product of elements in each partition is equal.</returns>
 		public int maxMultiPartitionWithEqualProd(int[] arr)
 		{
 			if (arr.Contains(0)) return arr.Where(n=>n == 0).Count();
-            totalProd = arr.Aggregate(new BigInteger(1), (prod, n) => prod * n);
-			if (totalProd == 1) return arr.Length;	
-            // 2 cases: 
             curProd = arr.Max();
-			maxIndex = Array.FindIndex(arr, x => x == curProd);
+			BigInteger curMin = arr.Min();
+			if (curProd == curMin) return arr.Length;
+			arr = arr.Where(n => n > 1).ToArray();
+ 			maxIndex = Array.FindIndex(arr, x => x == curProd);
+			leftProd = getArrProduct(0, maxIndex - 1, arr);
+			rightProd = getArrProduct(maxIndex + 1, arr.Length - 1, arr);
+			leftTmpIdx = 0;
+			rightTmpIdx = arr.Length - 1;
+            totalProd = arr.Aggregate(new BigInteger(1), (prod, n) => prod * n);
+            // 2 cases: 
 			len = arr.Length;
 
             return calcPartitions(arr);
         }
-		private List<int> idxArr = new List<int> { 0 };
         BigInteger totalProd = new BigInteger(1);
-        BigInteger curProd = new BigInteger(1);
+        BigInteger curProd, leftProd, rightProd, leftTmpProd, rightTmpProd = new BigInteger(1);
         int maxIndex = 0;
+        int leftTmpIdx = 0, rightTmpIdx = 0;
         int len = 0;
         private int calcPartitions(int[] arr)
         {
-			int maxCount = 1;
-			int pcbCount = 1;
-            for (int i = maxIndex - 1; maxCount < 2 && i >= -1; i--)
+			int maxCount = 1; // at least 1 partition is possible - the whole array
+			bool found = false;
+            for (int i = maxIndex - 1, j = maxIndex + 1; !found && i >= -1 && j <= len; doNextStep(ref i, ref j, arr))
 			{
-				if (i >= 0 && arr[i] == 1) continue;
-                for (int j = maxIndex + 1; maxCount < 2 && j <= len; j++, curProd = getArrProduct(i+1, j-1, arr))
-				{
-					if (j < len && arr[j] == 1 || !checIfPartPossible(curProd, totalProd)) continue;
+				if (!checIfPartPossible(curProd, totalProd)) continue;
 
-					int leftCnt = scoreSubArr(0, i, 0, arr);
-					if (i >= 0 && leftCnt < 1) break;
-					int rightCnt = scoreSubArr(j, len - 1, 0, arr);
-					if (j < arr.Length && rightCnt < 1) continue;
-                    maxCount = Math.Max(maxCount, 1 + leftCnt + rightCnt);
-				}
+				int leftCnt = scoreSubArr(0, i, true, 0, arr);
+				if (i >= 0 && leftCnt < 1) break;
+				int rightCnt = scoreSubArr(j, len - 1, false, 0, arr);
+				if (j < arr.Length && rightCnt < 1) continue;
+				found = true;
+                maxCount = Math.Max(maxCount, 1 + leftCnt + rightCnt);
 			}
 			return maxCount;
         }
 
-        private int scoreSubArr(int sIdx, int eIdx, int cnt, int[] arr)
+        private void doNextStep(ref int i, ref int j, int[] arr)
+        {
+			if (i > -1 && (j >= len - 1 || arr[i] <= arr[j]))
+			{
+				curProd *= arr[i];
+				leftProd /= arr[i];
+                i--;
+			}
+			else if (j < len && (i < 0 || arr[i] >= arr[j]))
+			{
+				curProd *= arr[j];
+				rightProd /= arr[j];
+				j++;        }
+			}
+
+        private int scoreSubArr(int sIdx, int eIdx, bool incr, int cnt, int[] arr)
         {
 			if (sIdx > eIdx || sIdx < 0 || eIdx > arr.Length -1) return cnt;
-            BigInteger curTotal = getArrProduct(sIdx, eIdx, arr);
+            BigInteger curTotal = incr ? leftProd : rightProd;
 			if(!checIfPartPossible(curProd, curTotal))
 				return 0;
-			BigInteger tmpProd = 1;
-			while (sIdx <= eIdx && (tmpProd *= arr[sIdx++]) < curProd)
+			while ((incr && leftTmpIdx <= eIdx || rightTmpIdx >= sIdx) && (incr ? (leftTmpProd *= arr[leftTmpIdx++]) : (rightTmpProd *= arr[rightTmpIdx--])) < curProd)
 				continue;
-			if(tmpProd != curProd) return cnt;
-			int cntPlus = scoreSubArr(sIdx, eIdx, cnt+1, arr);
+			if((incr ? leftTmpProd : rightTmpProd) != curProd) return cnt;
+			int cntPlus = scoreSubArr((incr ? leftTmpIdx : sIdx), (incr ? eIdx : rightTmpIdx), incr, cnt+1, arr);
 			return cntPlus;
         }
 
