@@ -3,7 +3,7 @@
 using Test_Balance;
 do
 {
-    Console.WriteLine($"Max partitions with equal product = {new TestSOTI().maxMultiPartitionWithEqualProd([1, 2, 2, 2])}");
+    Console.WriteLine($"Max partitions with equal product = {new TestSOTI().maxMultiPartitionWithEqualProd([3,2,3,1,3,6,9,3,2,9,6,1,9])}");
     //Console.WriteLine($"Max partitions with equal product = {new TestSOTI().maxMultiPartitionWithEqualProd([1, 2, 1, 1, 1, 8, 1, 1, 2, 1, 1, 8, 1, 1, 2, 2, 1, 1, 2, 7])}");
     //Console.WriteLine($"Max partitions with equal product = {new TestSOTI().maxMultiPartitionWithEqualProd([1, 2, 1, 1, 1, 8, 1, 1, 1, 1, 1, 8, 2, 1, 2, 4, 1, 1, 2])}");
     //Console.WriteLine($"Max subset length = {new TestSOTI().getMaxProdLen([1, 2, 1, 1, 1, 8, 1, 1, 2, 1, 1, 8, 1, 1, 2, 2, 1, 1, 2, 7], 8)}");
