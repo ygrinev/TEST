@@ -96,6 +96,7 @@ namespace Test_Balance
             return calcPartitions(arr);
         }
         BigInteger totalProd = new BigInteger(1);
+        BigInteger minCururProd = new BigInteger(1);
         BigInteger curProd, leftProd, rightProd, leftTmpProd = new BigInteger(1), rightTmpProd = new BigInteger(1);
         int maxIndex = 0;
         int leftTmpIdx = 0, rightTmpIdx = 0;
@@ -105,13 +106,17 @@ namespace Test_Balance
         {
 			int maxCount = 1; // at least 1 partition is possible - the whole array
 			bool found = false;
-            while (!found && curMinLen < len)
+            while (!found && curMinLen < len && BigInteger.Pow(minCururProd, 2) <= totalProd)
 			{
+				BigInteger minCururProd = new BigInteger(1);
 				curMinLen++;
                 for (int i = Math.Max(maxIndex - curMinLen, 0), j = i + curMinLen + 1; j <= Math.Min(len, maxIndex + curMinLen); i++,j++)
 				{
 					curProd = getArrProduct(i+1, i + curMinLen, arr);
-					leftProd = getArrProduct(0, i, arr);
+					if(minCururProd == 1 || curProd < minCururProd)
+						minCururProd = curProd;
+
+                    leftProd = getArrProduct(0, i, arr);
 					rightProd = getArrProduct(j, len-1, arr);
 					if (!checIfPartPossible(curProd, totalProd)) continue;
 
@@ -158,6 +163,7 @@ namespace Test_Balance
 
         private bool checIfPartPossible(BigInteger curProd, BigInteger curTotal)
 		{
+			if (BigInteger.Pow(curProd, 2) > curTotal) return false;
 			BigInteger rmd = curTotal;
 			while ((rmd /= curProd) % curProd == 0)
 				continue;
