@@ -25,6 +25,32 @@ namespace Test_Balance
 			targetProd = prod;
 			return arr?.Aggregate(0, (len, n) => getNextLen(len, n))??0;
 		}
+		public int getMaxProdLen01(int[] arr, int prod) // optimized !!
+		{
+			if ((arr?.Length ?? 0) == 0) return 0;
+			if (prod == 0) return arr.Contains(0) ? arr.Length : 0;
+			var cProd = 1;
+			var len = 0;
+			arr?.Aggregate(new int[2]{0,0}, (ii, n) =>
+			{
+				if(n == 0 || prod%n > 0)
+				{
+					cProd = 1;
+					ii[0] = ii[1] + 1;
+                }
+				else
+				{
+					cProd *= n;
+					while (cProd > prod)
+						cProd /= arr[ii[0]++];
+					if(cProd == prod && len < ii[1] - ii[0] + 1)
+						len = ii[1] - ii[0] + 1;
+                }
+                ii[1]++;
+				return ii;
+			});
+			return len;
+		}
 
 		private int getNextLen(int maxLen, int n)
 		{
